@@ -1134,6 +1134,7 @@ InitVariables(void)
   Scr->CaseSensitive = TRUE;
   Scr->WarpUnmapped = FALSE;
   Scr->DeIconifyToScreen = FALSE;
+  Scr->UnzoomToScreen = FALSE;
   Scr->WarpWindows = FALSE;
   Scr->WarpToTransients = FALSE;
   Scr->WarpToLocalTransients = FALSE;
