@@ -179,7 +179,7 @@ AddToAppletList(RootRegion * list_head, char *name, int type)
   if (nptr == NULL)
   {
     twmrc_error_prefix();
-    fprintf(stderr, "unable to allocate %lu bytes for RegionEntry\n", sizeof(RegionEntry));
+    fprintf(stderr, "unable to allocate %lu bytes for RegionEntry\n", (unsigned long int) sizeof(RegionEntry));
     Done(0);
   }
 

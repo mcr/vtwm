@@ -267,7 +267,7 @@ CreateTitleButton(char *name, int func, char *action, MenuRoot * menuroot, Bool 
 
   if (!tb)
   {
-    fprintf(stderr, "%s:  unable to allocate %lu bytes for title button\n", ProgramName, sizeof(TitleButton));
+    fprintf(stderr, "%s:  unable to allocate %lu bytes for title button\n", ProgramName, (unsigned long int) sizeof(TitleButton));
     return 0;
   }
 
@@ -1979,7 +1979,7 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 	    new_argv = (char *)realloc((char *)my_argv, i * sizeof(char *));
 	    if (new_argv == NULL)
 	    {
-	      fprintf(stderr, "%s: unable to allocate %lu bytes for execvp()\n", ProgramName, i * sizeof(char *));
+	      fprintf(stderr, "%s: unable to allocate %lu bytes for execvp()\n", ProgramName, (unsigned long int) (i * sizeof(char *)));
 	      break;
 	    }
 	    else
@@ -4258,7 +4258,7 @@ Execute(ScreenInfo * scr, char *s)
   char *append_this = " &";
   char *es = (char *)malloc(strlen(s) + strlen(append_this) + 1);
 
-  sprintf(es, s);
+  sprintf(es, "%s", s);
 
   if (scr->EnhancedExecResources)
   {

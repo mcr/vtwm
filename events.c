@@ -1064,7 +1064,7 @@ HandlePropertyNotify(void)
       RedoIconName();
     }
 
-#if 0
+#if 0 /* stale code: */
     if (Tmp_win->icon_w.win && !Tmp_win->forced && Tmp_win->wmhints && (Tmp_win->wmhints->flags & IconMaskHint))
     {
       /*
@@ -1430,12 +1430,8 @@ HandleExpose(void)
 	k += Scr->InfoBevelWidth;
 #endif
       MyFont_DrawString(dpy, &Scr->InfoWindow, &Scr->InfoFont, &Scr->DefaultC,
-#if defined TWM_USE_SPACING && 0
-			Scr->InfoFont.height / 2,
-#else
-			/* centers the lines... djhjr - 5/10/96 */
+			/* centers the lines... djhjr - 5/10/96, flush-left by Scr->InfoFont.height/2 */
 			(JunkWidth - MyFont_TextWidth(&Scr->InfoFont, Info[i], j)) / 2,
-#endif
 			(i * height) + Scr->InfoFont.y + k, Info[i], j);
     }
 
