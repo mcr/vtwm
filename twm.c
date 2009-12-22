@@ -1275,6 +1275,9 @@ InitVariables(void)
 
   Scr->WarpVisible = FALSE;
 
+  Scr->ZoomFunc = ZOOM_NONE;
+  Scr->ZoomTile = 0; /* 'current panel', see ParsePanelIndex() */
+
   Scr->PauseOnExit = 0;
   Scr->PauseOnQuit = 0;
 
@@ -1379,9 +1382,15 @@ Reborder(Time time)
     InstallWindowColormaps(0, &Scr->TwmRoot);	/* force reinstall */
     for (tmp = Scr->TwmRoot.next; tmp != NULL; tmp = tmp->next)
     {
-      /* unzoom to preserve size: */
-      if (tmp->zoomed != ZOOM_NONE)
-	fullzoom(-1, tmp, (tmp->zoomed=(tmp->zoomed==F_PANELGEOMETRYZOOM||tmp->zoomed==F_PANELGEOMETRYMOVE?ZOOM_NONE:tmp->zoomed)));
+      /* unzoom to preserve size only if 'ZoomState' statement is in .vtwmrc: */
+      if (Scr->ZoomFunc != ZOOM_NONE && tmp->zoomed != ZOOM_NONE)
+      {
+	if (Scr->ZoomFunc == tmp->zoomed && tmp->icon == FALSE) /* honour 'IconicState' */
+	{
+	  SetMapStateProp(tmp, ZoomState); /* record 'ZoomState' in _XA_WM_STATE */
+	}
+	fullzoom(Scr->ZoomTile, tmp, (tmp->zoomed=(tmp->zoomed==F_PANELGEOMETRYZOOM||tmp->zoomed==F_PANELGEOMETRYMOVE?ZOOM_NONE:tmp->zoomed)));
+      }
 
       RestoreWithdrawnLocation(tmp);
       XMapWindow(dpy, tmp->w);
