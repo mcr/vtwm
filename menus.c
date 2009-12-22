@@ -1219,6 +1219,8 @@ MakeMenu(MenuRoot * mr)
 #endif
 #ifdef TWM_USE_OPACITY
     SetWindowOpacity(mr->w.win, Scr->MenuOpacity);
+    if (Scr->Shadow)
+	SetWindowOpacity (mr->shadow, Scr->MenuOpacity>>3);
 #endif
 
     XSaveContext(dpy, mr->w.win, MenuContext, (caddr_t) mr);
@@ -1546,6 +1548,8 @@ PopUpMenu(MenuRoot * menu, int x, int y, Bool center)
    * clip to screen
    */
   i = (Scr->MenuBevelWidth > 0) ? 0 : 2 * Scr->BorderWidth;
+  if (Scr->Shadow && (SHADOWWIDTH > i))
+    i = SHADOWWIDTH;
 #ifdef TILED_SCREEN
   if (Scr->use_tiles == TRUE)
   {
