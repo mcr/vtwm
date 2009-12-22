@@ -2748,8 +2748,11 @@ HandleEnterNotify(void)
      */
     if (ewp->window == Scr->Root)
     {
-      if (!scanArgs.leaves && !scanArgs.enters)
-	InstallWindowColormaps(EnterNotify, &Scr->TwmRoot);
+      if (FocusRoot == TRUE) /* not if f.focus active */
+      {
+	if (!scanArgs.leaves && !scanArgs.enters)
+	  InstallWindowColormaps(EnterNotify, &Scr->TwmRoot);
+      }
       return;
     }
 
