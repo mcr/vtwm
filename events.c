@@ -3601,7 +3601,7 @@ FindPointerScreenInfo(void)
 {
   int scrnum;
 
-  XQueryPointer(dpy, Scr->Root, &JunkRoot, &JunkChild, &JunkX, &JunkY, &HotX, &HotY, &JunkMask);
+  XQueryPointer(dpy, DefaultRootWindow(dpy), &JunkRoot, &JunkChild, &JunkX, &JunkY, &HotX, &HotY, &JunkMask);
   for (scrnum = 0; scrnum < NumScreens; scrnum++)
   {
     if (ScreenList[scrnum] != NULL && ScreenList[scrnum]->Root == JunkRoot)
@@ -3613,7 +3613,7 @@ FindPointerScreenInfo(void)
 ScreenInfo *
 FindDrawableScreenInfo(Drawable d)
 {
-  if (XGetGeometry(dpy, d, &JunkRoot, &JunkX, &JunkY, &JunkWidth, &JunkHeight, &JunkBW, &JunkDepth))
+  if (d != None && XGetGeometry(dpy, d, &JunkRoot, &JunkX, &JunkY, &JunkWidth, &JunkHeight, &JunkBW, &JunkDepth))
   {
     int scrnum;
 
@@ -3643,7 +3643,7 @@ FindScreenInfo(Window w)
   XWindowAttributes attr;
 
   attr.screen = NULL;
-  if (XGetWindowAttributes(dpy, w, &attr))
+  if (w != None && XGetWindowAttributes(dpy, w, &attr))
     return FindWindowScreenInfo(&attr);
   return NULL;
 }
