@@ -2449,20 +2449,148 @@ HENQueueScanner(Display * dpy, XEvent * ev, char *args)
 
 
 static Bool
-HENQueueScannerWakeRaiseDelay(Display * dpy, XEvent * ev, char *args)
+HENQueueScannerCancelAutoRaiseDelay(Display * dpy, XEvent * ev, char *args)
 {
-  if (ev->type == ButtonPress || ev->type == KeyPress || ev->type == ConfigureRequest || ev->type == UnmapNotify)
+#ifdef DEBUG_AUTORAISEDELAY
+  /* recover vtwm client-name and -detail: */
+  extern Bool PrintErrorMessages;
+  TwmWindow *tmp = NULL;
+  char *n = "", *d = "";
+
+  if (PrintErrorMessages)
   {
-    /*
-     * This is a trick: tell vtwm we left the window in order to wake
-     * AutoRaiseDelay-sleep on some vtwm Button- or KeyPress binding,
-     * or ConfigureRequest/UnmapNotify event:
-     */
-    ((HENScanArgs *) args)->leaves = True;
-    ((HENScanArgs *) args)->inferior = (0 != 0);
-    return False;
+    if (XFindContext(dpy, ev->xany.window, TwmContext, (caddr_t *) &tmp) == XCNOENT)
+      tmp = NULL;
+    else if (tmp != NULL)
+    {
+      if (ev->xany.window == tmp->frame)
+      {
+	d = " [frame]";
+      }
+      else if (ev->xany.window == tmp->w)
+      {
+	d = " [client]";
+      }
+      else if (ev->xany.window == tmp->title_w.win)
+      {
+	d = " [title]";
+      }
+      else if (ev->xany.window == tmp->hilite_w)
+      {
+	d = " [hilite]";
+      }
+      else if (tmp->list && tmp->list->w.win == ev->xany.window)
+      {
+	d = " [iconmgr]";
+      }
+      else if (tmp->titlebuttons)
+      {
+	register TBWindow *tbw;
+	register int nb = Scr->TBInfo.nleft + Scr->TBInfo.nright;
+	for (tbw = tmp->titlebuttons; nb > 0; tbw++, nb--) {
+	  if (ev->xany.window == tbw->window)
+	  {
+	    d = " [knob]";
+	    break;
+	  }
+	}
+      }
+    }
+    if (tmp == NULL)
+      n = "_???_";
+    else
+      n = tmp->name;
   }
-  return HENQueueScanner(dpy, ev, args); /* go check for Leave-events */
+#endif
+
+  switch (ev->type) {
+  case LeaveNotify:
+    if (ev->xcrossing.window == ((HENScanArgs *) args)->w
+	&& ((ev->xcrossing.mode == NotifyNormal && ev->xcrossing.detail != NotifyInferior)
+	    || ev->xcrossing.mode == NotifyGrab))
+    {
+      /* break autoraise, we left the client window */
+#ifdef DEBUG_AUTORAISEDELAY
+      if (PrintErrorMessages)
+	fprintf(stderr, "AutoRaiseDelay cancelled (LeaveNotify, client = '%s'%s, grab = '%c')\n", n, d, (ev->xcrossing.mode==NotifyGrab?'y':'n'));
+#endif
+      ((HENScanArgs *) args)->leaves = True;
+    }
+    break;
+
+  case ButtonPress:
+    /*
+     * break autoraise, or risk lag in bound mousebutton-press event processing
+     * (if this event were not for us, the mouse have had left the client already, the
+     * above 'LeaveNotify' has cancelled the autoraise; and we wouldn't be here at all)
+     */
+#ifdef DEBUG_AUTORAISEDELAY
+    if (PrintErrorMessages)
+      fprintf(stderr, "AutoRaiseDelay cancelled (ButtonPress, client = '%s'%s)\n", n, d);
+#endif
+    ((HENScanArgs *) args)->leaves = True;
+    break;
+
+  case KeyPress:
+    /*
+     * break autoraise, or risk lag in bound key-press event processing
+     * (if this event were not for us, we have had unfocused the window already
+     * either by moving mouse out or stepping along iconmanager, and autoraising
+     * makes probably no sense anyways)
+     */
+#ifdef DEBUG_AUTORAISEDELAY
+    if (PrintErrorMessages)
+      fprintf(stderr, "AutoRaiseDelay cancelled (KeyPress, client = '%s'%s)\n", n, d);
+#endif
+    ((HENScanArgs *) args)->leaves = True;
+    break;
+
+  case ConfigureRequest:
+    /* break autoraise, or risk lag in configuring any of other/unrelated windows */
+#ifdef DEBUG_AUTORAISEDELAY
+    if (PrintErrorMessages)
+      fprintf(stderr, "AutoRaiseDelay cancelled (ConfigureRequest, client = '%s'%s)\n", n, d);
+#endif
+    ((HENScanArgs *) args)->leaves = True;
+    break;
+
+  case ConfigureNotify:
+    if (ev->xconfigure.event == ((HENScanArgs *) args)->w
+	|| ev->xconfigure.window == ((HENScanArgs *) args)->w)
+    {
+#ifdef DEBUG_AUTORAISEDELAY
+      if (PrintErrorMessages)
+	fprintf(stderr, "AutoRaiseDelay cancelled (ConfigureNotify, client = '%s'%s)\n", n, d);
+#endif
+      ((HENScanArgs *) args)->leaves = True;
+    }
+    break;
+
+  case UnmapNotify:
+    if (ev->xunmap.event == ((HENScanArgs *) args)->w
+	|| ev->xunmap.window == ((HENScanArgs *) args)->w)
+    {
+#ifdef DEBUG_AUTORAISEDELAY
+      if (PrintErrorMessages)
+	fprintf(stderr, "AutoRaiseDelay cancelled (UnmapNotify, client = '%s'%s)\n", n, d);
+#endif
+      ((HENScanArgs *) args)->leaves = True;
+    }
+    break;
+
+  case DestroyNotify:
+    if (ev->xdestroywindow.event == ((HENScanArgs *) args)->w
+	|| ev->xdestroywindow.window == ((HENScanArgs *) args)->w)
+    {
+#ifdef DEBUG_AUTORAISEDELAY
+      if (PrintErrorMessages)
+	fprintf(stderr, "AutoRaiseDelay cancelled (DestroyNotify, client = '%s'%s)\n", n, d);
+#endif
+      ((HENScanArgs *) args)->leaves = True;
+    }
+    break;
+  }
+  return False;
 }
 
 /***********************************************************************
@@ -2767,12 +2895,19 @@ HandleEnterNotify(void)
 		|| (Tmp_win->list != NULL && ewp->window == Tmp_win->list->w.win)))
 	  {
 #if 0
+	    /*
+	     * speedup: if the client is already visible, then no need to auto-raise
+	     */
 	    ColormapWindow *cwin;
 
 	    if (XFindContext(dpy, Tmp_win->w, ColormapContext, (caddr_t *) & cwin) == XCNOENT)
 	      cwin = (ColormapWindow *) NULL;
 
-	    if (!cwin || cwin->visibility != VisibilityUnobscured) /* Composite managers (xcompmgr) cause this 'if' to fail? */
+	    /*
+	     * Composite managers (e.g. xcompmgr of Xorg) cause this 'if' to be FALSE,
+	     * i.e. the auto-raising be non-functional:
+	     */
+	    if (!cwin || cwin->visibility != VisibilityUnobscured)
 #endif
 	    {
 	      static struct timeval timeoutval = { 0, 15000 };
@@ -2786,21 +2921,20 @@ HandleEnterNotify(void)
 	       * pass this way once each time a twm window is
 	       * entered.
 	       */
+	      scanArgs.w = ewp->window;
+	      scanArgs.leaves = False; /* set to 'True' if appropriate X11-event found in pipeline */
 	      for (i = 0; i < RaiseDelay; i += 15)
 	      {
 		/* The timeout needs initialising each time on Linux */
 		timeout = timeoutval;
 		select(0, NULL, NULL, NULL, &timeout);
-		/* Did we leave this window already? */
-		scanArgs.w = ewp->window;
-		scanArgs.leaves = scanArgs.enters = False;
 		/*
 		 * Don't consider pending FocusIn/FocusOut etc events,
 		 * but incoming Leave, UnmapNotify, KeyPress, ButtonPress events
 		 * will interrupt the delay (i.e. cancel auto-raise):
 		 */
-		(void)XCheckIfEvent(dpy, &dummy, HENQueueScannerWakeRaiseDelay, (char *)&scanArgs);
-		if (scanArgs.leaves && !scanArgs.inferior)
+		(void)XCheckIfEvent(dpy, &dummy, HENQueueScannerCancelAutoRaiseDelay, (char *)&scanArgs);
+		if (scanArgs.leaves == True)
 		  break;
 
 		/* Has the pointer moved?  If so reset the loop cnt.
