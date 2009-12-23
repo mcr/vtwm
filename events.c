@@ -957,6 +957,10 @@ HandlePropertyNotify(void)
       XFree((char *)Tmp_win->wmhints);
     Tmp_win->wmhints = XGetWMHints(dpy, Event.xany.window);
 
+    /* Turn off 'initial_state' flag as the client is mapped; this would intervene iconify/deiconify handling */
+    if (Tmp_win->wmhints)
+      Tmp_win->wmhints->flags &= ~StateHint;
+
     if (Tmp_win->wmhints && (Tmp_win->wmhints->flags & WindowGroupHint))
       Tmp_win->group = Tmp_win->wmhints->window_group;
 
