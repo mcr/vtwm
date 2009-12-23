@@ -957,6 +957,10 @@ HandlePropertyNotify(void)
       XFree((char *)Tmp_win->wmhints);
     Tmp_win->wmhints = XGetWMHints(dpy, Event.xany.window);
 
+    /* Turn off 'initial_state' flag as the client is mapped; this would intervene iconify/deiconify handling */
+    if (Tmp_win->wmhints)
+      Tmp_win->wmhints->flags &= ~StateHint;
+
     if (Tmp_win->wmhints && (Tmp_win->wmhints->flags & WindowGroupHint))
       Tmp_win->group = Tmp_win->wmhints->window_group;
 
@@ -1064,7 +1068,7 @@ HandlePropertyNotify(void)
       RedoIconName();
     }
 
-#if 0
+#if 0 /* stale code: */
     if (Tmp_win->icon_w.win && !Tmp_win->forced && Tmp_win->wmhints && (Tmp_win->wmhints->flags & IconMaskHint))
     {
       /*
@@ -1430,12 +1434,8 @@ HandleExpose(void)
 	k += Scr->InfoBevelWidth;
 #endif
       MyFont_DrawString(dpy, &Scr->InfoWindow, &Scr->InfoFont, &Scr->DefaultC,
-#if defined TWM_USE_SPACING && 0
-			Scr->InfoFont.height / 2,
-#else
-			/* centers the lines... djhjr - 5/10/96 */
+			/* centers the lines... djhjr - 5/10/96, flush-left by Scr->InfoFont.height/2 */
 			(JunkWidth - MyFont_TextWidth(&Scr->InfoFont, Info[i], j)) / 2,
-#endif
 			(i * height) + Scr->InfoFont.y + k, Info[i], j);
     }
 
@@ -2451,7 +2451,7 @@ HENQueueScanner(Display * dpy, XEvent * ev, char *args)
 static Bool
 HENQueueScannerCancelAutoRaiseDelay(Display * dpy, XEvent * ev, char *args)
 {
-#if defined DEBUG_AUTORAISEDELAY
+#ifdef DEBUG_AUTORAISEDELAY
   /* recover vtwm client-name and -detail: */
   extern Bool PrintErrorMessages;
   TwmWindow *tmp = NULL;
@@ -2510,7 +2510,7 @@ HENQueueScannerCancelAutoRaiseDelay(Display * dpy, XEvent * ev, char *args)
 	    || ev->xcrossing.mode == NotifyGrab))
     {
       /* break autoraise, we left the client window */
-#if defined DEBUG_AUTORAISEDELAY
+#ifdef DEBUG_AUTORAISEDELAY
       if (PrintErrorMessages)
 	fprintf(stderr, "AutoRaiseDelay cancelled (LeaveNotify, client = '%s'%s, grab = '%c')\n", n, d, (ev->xcrossing.mode==NotifyGrab?'y':'n'));
 #endif
@@ -2524,7 +2524,7 @@ HENQueueScannerCancelAutoRaiseDelay(Display * dpy, XEvent * ev, char *args)
      * (if this event were not for us, the mouse have had left the client already, the
      * above 'LeaveNotify' has cancelled the autoraise; and we wouldn't be here at all)
      */
-#if defined DEBUG_AUTORAISEDELAY
+#ifdef DEBUG_AUTORAISEDELAY
     if (PrintErrorMessages)
       fprintf(stderr, "AutoRaiseDelay cancelled (ButtonPress, client = '%s'%s)\n", n, d);
 #endif
@@ -2538,7 +2538,7 @@ HENQueueScannerCancelAutoRaiseDelay(Display * dpy, XEvent * ev, char *args)
      * either by moving mouse out or stepping along iconmanager, and autoraising
      * makes probably no sense anyways)
      */
-#if defined DEBUG_AUTORAISEDELAY
+#ifdef DEBUG_AUTORAISEDELAY
     if (PrintErrorMessages)
       fprintf(stderr, "AutoRaiseDelay cancelled (KeyPress, client = '%s'%s)\n", n, d);
 #endif
@@ -2546,25 +2546,19 @@ HENQueueScannerCancelAutoRaiseDelay(Display * dpy, XEvent * ev, char *args)
     break;
 
   case ConfigureRequest:
-#if 0  /* <-- enabling this means we break delay only if current window reconfigures, others would have to wait */
-    if (ev->xconfigurerequest.parent == ((HENScanArgs *) args)->w
-	|| ev->xconfigurerequest.window == ((HENScanArgs *) args)->w)
+    /* break autoraise, or risk lag in configuring any of other/unrelated windows */
+#ifdef DEBUG_AUTORAISEDELAY
+    if (PrintErrorMessages)
+      fprintf(stderr, "AutoRaiseDelay cancelled (ConfigureRequest, client = '%s'%s)\n", n, d);
 #endif
-    {
-      /* break autoraise, or risk lag in dragging out (configuring) possibly other/unrelated windows too */
-#if defined DEBUG_AUTORAISEDELAY
-      if (PrintErrorMessages)
-	fprintf(stderr, "AutoRaiseDelay cancelled (ConfigureRequest, client = '%s'%s)\n", n, d);
-#endif
-      ((HENScanArgs *) args)->leaves = True;
-    }
+    ((HENScanArgs *) args)->leaves = True;
     break;
 
   case ConfigureNotify:
     if (ev->xconfigure.event == ((HENScanArgs *) args)->w
 	|| ev->xconfigure.window == ((HENScanArgs *) args)->w)
     {
-#if defined DEBUG_AUTORAISEDELAY
+#ifdef DEBUG_AUTORAISEDELAY
       if (PrintErrorMessages)
 	fprintf(stderr, "AutoRaiseDelay cancelled (ConfigureNotify, client = '%s'%s)\n", n, d);
 #endif
@@ -2576,7 +2570,7 @@ HENQueueScannerCancelAutoRaiseDelay(Display * dpy, XEvent * ev, char *args)
     if (ev->xunmap.event == ((HENScanArgs *) args)->w
 	|| ev->xunmap.window == ((HENScanArgs *) args)->w)
     {
-#if defined DEBUG_AUTORAISEDELAY
+#ifdef DEBUG_AUTORAISEDELAY
       if (PrintErrorMessages)
 	fprintf(stderr, "AutoRaiseDelay cancelled (UnmapNotify, client = '%s'%s)\n", n, d);
 #endif
@@ -2588,21 +2582,13 @@ HENQueueScannerCancelAutoRaiseDelay(Display * dpy, XEvent * ev, char *args)
     if (ev->xdestroywindow.event == ((HENScanArgs *) args)->w
 	|| ev->xdestroywindow.window == ((HENScanArgs *) args)->w)
     {
-#if defined DEBUG_AUTORAISEDELAY
+#ifdef DEBUG_AUTORAISEDELAY
       if (PrintErrorMessages)
 	fprintf(stderr, "AutoRaiseDelay cancelled (DestroyNotify, client = '%s'%s)\n", n, d);
 #endif
       ((HENScanArgs *) args)->leaves = True;
     }
     break;
-
-#if defined DEBUG_AUTORAISEDELAY && 0
-  default:
-    if (PrintErrorMessages)
-      if (ev->type != Expose && ev->type != VisibilityNotify && ev->type != PropertyNotify && ev->type != FocusIn && ev->type != FocusOut && ev->type != EnterNotify && ev->type != MapNotify && ev->type != MapRequest && ev->type != ReparentNotify)
-	printf("AUTORAISE "), dumpevent(ev), fflush(stdout);
-    break;
-#endif
   }
   return False;
 }
@@ -2766,8 +2752,11 @@ HandleEnterNotify(void)
      */
     if (ewp->window == Scr->Root)
     {
-      if (!scanArgs.leaves && !scanArgs.enters)
-	InstallWindowColormaps(EnterNotify, &Scr->TwmRoot);
+      if (FocusRoot == TRUE) /* not if f.focus active */
+      {
+	if (!scanArgs.leaves && !scanArgs.enters)
+	  InstallWindowColormaps(EnterNotify, &Scr->TwmRoot);
+      }
       return;
     }
 
@@ -2909,12 +2898,19 @@ HandleEnterNotify(void)
 		|| (Tmp_win->list != NULL && ewp->window == Tmp_win->list->w.win)))
 	  {
 #if 0
+	    /*
+	     * speedup: if the client is already visible, then no need to auto-raise
+	     */
 	    ColormapWindow *cwin;
 
 	    if (XFindContext(dpy, Tmp_win->w, ColormapContext, (caddr_t *) & cwin) == XCNOENT)
 	      cwin = (ColormapWindow *) NULL;
 
-	    if (!cwin || cwin->visibility != VisibilityUnobscured) /* Composite managers (xcompmgr) cause this 'if' to fail? */
+	    /*
+	     * Composite managers (e.g. xcompmgr of Xorg) cause this 'if' to be FALSE,
+	     * i.e. the auto-raising be non-functional:
+	     */
+	    if (!cwin || cwin->visibility != VisibilityUnobscured)
 #endif
 	    {
 	      static struct timeval timeoutval = { 0, 15000 };
@@ -3204,12 +3200,9 @@ HandleFocusChange(void)
 	    if ((Focus == NULL || !((Focus->group == Tmp_win->group)
 				    || (Tmp_win->transient == TRUE && Tmp_win->transientfor == Focus->w)
 				    || (Focus->transient == TRUE && Focus->transientfor == Tmp_win->w)))
-#if 1		/* check if mouse is over the greedy client, obscured or visible: */
-		&&
+		&& /* check if mouse is over the greedy client, obscured or visible: */
 		(False == XQueryPointer(dpy, Tmp_win->frame, &JunkRoot, &JunkChild, &JunkX, &JunkY, &HotX, &HotY, &JunkMask)
-			|| HotX < 0 || HotX >= Tmp_win->frame_width + f || HotY < 0 || HotY >= Tmp_win->frame_height + f)
-#endif
-		)
+			|| HotX < 0 || HotX >= Tmp_win->frame_width + f || HotY < 0 || HotY >= Tmp_win->frame_height + f))
 	    {
 	      static int attempts = 0;
 	      static long stamp0 = 0; /* milliseconds measure */
@@ -3627,7 +3620,7 @@ FindPointerScreenInfo(void)
 {
   int scrnum;
 
-  XQueryPointer(dpy, Scr->Root, &JunkRoot, &JunkChild, &JunkX, &JunkY, &HotX, &HotY, &JunkMask);
+  XQueryPointer(dpy, DefaultRootWindow(dpy), &JunkRoot, &JunkChild, &JunkX, &JunkY, &HotX, &HotY, &JunkMask);
   for (scrnum = 0; scrnum < NumScreens; scrnum++)
   {
     if (ScreenList[scrnum] != NULL && ScreenList[scrnum]->Root == JunkRoot)
@@ -3639,7 +3632,7 @@ FindPointerScreenInfo(void)
 ScreenInfo *
 FindDrawableScreenInfo(Drawable d)
 {
-  if (XGetGeometry(dpy, d, &JunkRoot, &JunkX, &JunkY, &JunkWidth, &JunkHeight, &JunkBW, &JunkDepth))
+  if (d != None && XGetGeometry(dpy, d, &JunkRoot, &JunkX, &JunkY, &JunkWidth, &JunkHeight, &JunkBW, &JunkDepth))
   {
     int scrnum;
 
@@ -3669,7 +3662,7 @@ FindScreenInfo(Window w)
   XWindowAttributes attr;
 
   attr.screen = NULL;
-  if (XGetWindowAttributes(dpy, w, &attr))
+  if (w != None && XGetWindowAttributes(dpy, w, &attr))
     return FindWindowScreenInfo(&attr);
   return NULL;
 }

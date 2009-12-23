@@ -2074,7 +2074,7 @@ do_squeeze_entry(name_list ** list,	/* squeeze or dont-squeeze list */
     if (!sinfo)
     {
       twmrc_error_prefix();
-      fprintf(stderr, "unable to allocate %lu bytes for squeeze info\n", sizeof(SqueezeInfo));
+      fprintf(stderr, "unable to allocate %lu bytes for squeeze info\n", (unsigned long int) sizeof(SqueezeInfo));
       return;
     }
     sinfo->justify = justify;

@@ -150,7 +150,7 @@ AddToList(name_list ** list_head, char *name, int type, char *ptr)
   nptr = (name_list *) malloc(sizeof(name_list));
   if (nptr == NULL)
   {
-    fprintf(stderr, "%s: unable to allocate %lu bytes for name_list\n", ProgramName, sizeof(name_list));
+    fprintf(stderr, "%s: unable to allocate %lu bytes for name_list\n", ProgramName, (unsigned long int) sizeof(name_list));
     Done(0);
   }
 

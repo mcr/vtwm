@@ -818,13 +818,12 @@ AddPaintRealWindows(TwmWindow * tmp_win, int x, int y)
  *  tiles	tile list to search
  *  pos		return found tile
  */
-int
-FindEmptyArea(TwmWindow * lst, TwmWindow * twm, PlaceXY * tiles, PlaceXY * pos)
-{
-  PlaceXY *t, **pt;
-
 #define OVERLAP(a,f)	((a)->x < (f)->frame_x+(f)->frame_width && (f)->frame_x < (a)->x+(a)->width \
 			&& (a)->y < (f)->frame_y+(f)->frame_height && (f)->frame_y < (a)->y+(a)->height)
+static int
+find_empty_area(TwmWindow * lst, TwmWindow * twm, PlaceXY * tiles, PlaceXY * pos)
+{
+  PlaceXY *t, **pt;
 
   /* skip unmapped windows, iconmanagers, doors and vtwm-desktop: */
   while (lst != NULL && (lst->mapped == FALSE || lst->iconmgr == TRUE
@@ -938,13 +937,41 @@ FindEmptyArea(TwmWindow * lst, TwmWindow * twm, PlaceXY * tiles, PlaceXY * pos)
 
 	(*pt) = t;
 
-	return FindEmptyArea(lst, twm, tiles, pos);	/*continue subtiling */
+	return find_empty_area(lst, twm, tiles, pos);	/*continue subtiling */
       }
-    return FindEmptyArea(lst->next, twm, tiles, pos);	/*start over with next client */
+    return find_empty_area(lst->next, twm, tiles, pos);	/*start over with next client */
   }
   return FALSE;
 }
 
+
+int
+FindEmptyArea(TwmWindow *lst, TwmWindow *twm, PlaceXY *tiles, PlaceXY *pos)
+{
+  TwmWindow *tmp_win;
+  int cnt = 0;
+
+  /* count how many clients there are to be considered */
+  for (tmp_win = lst; tmp_win; tmp_win = tmp_win->next)
+  {
+    if (tmp_win->mapped == FALSE || tmp_win->iconmgr == TRUE
+	|| strcmp(tmp_win->class.res_class, VTWM_DESKTOP_CLASS) == 0
+	|| strcmp(tmp_win->class.res_class, VTWM_DOOR_CLASS) == 0)
+    {
+      continue;
+    }
+    else
+    {
+      if (OVERLAP(tiles, tmp_win))
+	++cnt;
+    }
+  }
+
+  if (cnt > 20)
+    return FALSE; /* the algorithm complexity grows intractably in the number of clients, don't use it */
+  else
+    return find_empty_area (lst, twm, tiles, pos);
+}
 
 /*
  * AddMoveAndResize()

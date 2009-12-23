@@ -461,7 +461,7 @@ ExpandFilename(char *name)
   {
     fprintf(stderr,
 	    "%s:  unable to allocate %lu bytes to expand filename %s/%s\n",
-	    ProgramName, HomeLen + strlen(name) + 2, Home, &name[1]);
+	    ProgramName,  (unsigned long int)(HomeLen + strlen(name) + 2), Home, &name[1]);
   }
   else
   {
@@ -491,7 +491,7 @@ InsertRGBColormap(Atom a, XStandardColormap * maps, int nmaps, Bool replace)
     sc = (StdCmap *) malloc(sizeof(StdCmap));
     if (!sc)
     {
-      fprintf(stderr, "%s:  unable to allocate %lu bytes for StdCmap\n", ProgramName, sizeof(StdCmap));
+      fprintf(stderr, "%s:  unable to allocate %lu bytes for StdCmap\n", ProgramName, (unsigned long int) sizeof(StdCmap));
       return;
     }
   }
@@ -2194,14 +2194,14 @@ CreateImagePixmap(char *name, int w, int h, int depth)
   image = (Image *) malloc(sizeof(struct _Image));
   if (!image)
   {
-    fprintf(stderr, "%s: cannot allocate %lu bytes for Image \"%s\"\n", ProgramName, sizeof(struct _Image), name);
+    fprintf(stderr, "%s: cannot allocate %lu bytes for Image \"%s\"\n", ProgramName, (unsigned long int) sizeof(struct _Image), name);
     return (None);
   }
 
   image->pixmap = XCreatePixmap(dpy, Scr->Root, w, h, depth);
   if (image->pixmap == None)
   {
-    fprintf(stderr, "%s: cannot allocate %lu bytes for pixmap \"%s\"\n", ProgramName, sizeof(image->pixmap), name);
+    fprintf(stderr, "%s: cannot allocate %lu bytes for pixmap \"%s\"\n", ProgramName, (unsigned long int) sizeof(image->pixmap), name);
     free((void *)image);
     return (None);
   }
@@ -2741,35 +2741,38 @@ ParsePanelIndex (char *name)
     return atoi (name);
 
 #ifdef TILED_SCREEN
-  /*
-   * Check if panel index is alphanumeric name "Xinerama0", "Xinerama1", etc
-   * or Xrandr connector name "LVDS", "VGA", "TMDS-1", "TV", etc
-   */
-  if (Scr->tile_names != NULL) {
-    for (k = 0; k < Scr->ntiles; ++k)
-      if (Scr->tile_names[k] != NULL && strcmp(Scr->tile_names[k], name) == 0)
-	break;
-      if (k < Scr->ntiles)
-	return k+1; /* count from 1 */
-  }
+  if (Scr->use_tiles == TRUE)
+  {
+    /*
+     * Check if panel index is alphanumeric name "Xinerama0", "Xinerama1", etc
+     * or Xrandr connector name "LVDS", "VGA", "TMDS-1", "TV", etc
+     */
+    if (Scr->tile_names != NULL) {
+      for (k = 0; k < Scr->ntiles; ++k)
+	if (Scr->tile_names[k] != NULL && strcmp(Scr->tile_names[k], name) == 0)
+	  break;
+	if (k < Scr->ntiles)
+	  return k+1; /* count from 1 */
+    }
 
-  k = FindNearestTileToMouse();
+    k = FindNearestTileToMouse();
 
-  if (XmuCompareISOLatin1(name, "pointer") == 0)
-    return k+1; /* count from 1 */
+    if (XmuCompareISOLatin1(name, "pointer") == 0)
+      return k+1; /* count from 1 */
 
-  if (XmuCompareISOLatin1(name, "next") == 0) {
-    if (Scr->ntiles > 1)
-      return ((k+1)%Scr->ntiles) + 1;
-    else
-      return k+1;
-  }
+    if (XmuCompareISOLatin1(name, "next") == 0) {
+      if (Scr->ntiles > 1)
+	return ((k+1)%Scr->ntiles) + 1;
+      else
+	return k+1;
+    }
 
-  if (XmuCompareISOLatin1(name, "prev") == 0) {
-    if (Scr->ntiles > 1)
-      return ((k-1+Scr->ntiles)%Scr->ntiles) + 1;
-    else
-      return k+1;
+    if (XmuCompareISOLatin1(name, "prev") == 0) {
+      if (Scr->ntiles > 1)
+	return ((k-1+Scr->ntiles)%Scr->ntiles) + 1;
+      else
+	return k+1;
+    }
   }
 #endif
 
@@ -2807,7 +2810,7 @@ ParsePanelZoomType (char *name)
     /* special case geometry "+0+0" or "-0-0" (or "+0-0" or "-0+0"), no "WxH" part */
     if (((mask & XValue) != 0) && (JunkX == 0) && ((mask & WidthValue) == 0)
 	    && ((mask & YValue) != 0) && (JunkY == 0) && ((mask & HeightValue) == 0))
-      return F_PANELGEOMETRYMOVE;
+      return F_PANELGEOMETRYZOOM;
   }
 
   return F_PANELZOOM; /* fallback */

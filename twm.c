@@ -929,8 +929,8 @@ main(int argc, char **argv, char **environ)
     if (roundtrip > (long long)(5000))
       RecoverStolenFocusTimeout = 900; /* slowest */
     if (PrintErrorMessages)
-      fprintf(stderr, "%s: X11-server roundtrip calibration %Ld microseconds, focus recovery timeout := %d milliseconds (or %d attempts).\n",
-			ProgramName, roundtrip, RecoverStolenFocusTimeout, RecoverStolenFocusAttempts);
+      fprintf(stderr, "%s: X11-server roundtrip calibration %ld microseconds, focus recovery timeout := %d milliseconds (or %d attempts).\n",
+			ProgramName, (long)roundtrip, RecoverStolenFocusTimeout, RecoverStolenFocusAttempts);
   }
 
   RestartPreviousState = False;
@@ -1434,9 +1434,9 @@ Reborder(Time time)
     for (tmp = Scr->TwmRoot.next; tmp != NULL; tmp = tmp->next)
     {
       /* unzoom to preserve size only if 'ZoomState' statement is in .vtwmrc: */
-      if (Scr->ZoomFunc != ZOOM_NONE && Scr->ZoomFunc == tmp->zoomed)
+      if (Scr->ZoomFunc != ZOOM_NONE && tmp->zoomed != ZOOM_NONE)
       {
-	if (tmp->icon == FALSE) /* honour 'IconicState' */
+	if (Scr->ZoomFunc == tmp->zoomed && tmp->icon == FALSE) /* honour 'IconicState' */
 	{
 	  SetMapStateProp(tmp, ZoomState); /* record 'ZoomState' in _XA_WM_STATE */
 	}
