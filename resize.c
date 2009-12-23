@@ -2316,8 +2316,9 @@ fullzoom(int tile, TwmWindow * tmp_win, int flag)
 	    } else
 	      /* align to panel upper edge */
 	      dragy = basey;
-	    /* put horizontally centered */
-	    dragx = basex + (basew - dragWidth  - frame_bw_times_2) / 2;
+	    if (dx < 0 || basew < dx + dragWidth + frame_bw_times_2)
+	      /* fitting, but out of screen, put horizontally centered */
+	      dragx = basex + (basew - dragWidth  - frame_bw_times_2) / 2;
 	  }
 	} else {
 	  /* horizontally not fitting onto target panel */
@@ -2334,10 +2335,11 @@ fullzoom(int tile, TwmWindow * tmp_win, int flag)
 	    dragx = basex;
 
 	  /* check fitting vertically */
-	  if (dragHeight + frame_bw_times_2 < baseh)
-	    /* yes, put vertically centered */
-	    dragy = basey + (baseh - dragHeight - frame_bw_times_2) / 2;
-	  else {
+	  if (dragHeight + frame_bw_times_2 < baseh) {
+	    if (dy < 0 || baseh < dy + dragHeight + frame_bw_times_2)
+	      /* fitting, but out of screen, put vertically centered */
+	      dragy = basey + (baseh - dragHeight - frame_bw_times_2) / 2;
+	  } else {
 	    /* no, vertically not fitting onto target panel */
 	    if ((tmp_win->hints.flags & PWinGravity)
 		  && (tmp_win->hints.win_gravity == SouthWestGravity
