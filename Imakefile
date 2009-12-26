@@ -200,7 +200,8 @@ version.o: version.c
 
 releasetar: distclean
 	if [ ! -d .git ]; then echo Cannot create release tar without git information; exit 2; fi
-	sed -i "s/SUBST/`git describe --tags`/" version.c
+	sed "s/SUBST/`git describe --tags`/" version.c > version-tmp.c
+	mv version-tmp.c version.c
 	P=`pwd | sed 's:.*/::'`; (cd ..; tar --exclude .git -czf $$P.tar.gz  $$P)
 	git checkout version.c
 
