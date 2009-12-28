@@ -4,8 +4,48 @@ A COMPLETE LISTING OF CHANGES MADE TO VTWM SINCE VERSION 5.0
 IN CHRONOLOGICAL ORDER FROM MOST RECENT CHANGES TO EARLIEST.
 ============================================================
 
+    September 2009
+        Eeri Kask Sep09 Patchset #J - Don't try to find empty space
+	        with many windows around (too expensive)
+        Eeri Kask Sep09 Patchset #I - Once client is mapped, disable
+	        initial state flag
+        Eeri Kask Sep09 Patchset #H - Don't be overly clever about
+	        panel geometry moves if window is bigger than screen
+        Eeri Kask Sep09 Patchset #G - Reformat panel name parsing
+        Eeri Kask Sep09 Patchset #F - Do not install colormaps if
+	        f.focused on a window
+        Eeri Kask Sep09 Patchset #E - All non-opaque shadows, use
+	        fixed shadow width.
+        Eeri Kask Sep09 Patchset #D - protect against missing
+	        drawables or window variables, and current screen/display
+		mismatches
+        Eeri Kask Sep09 Patchset #C - Cleanup, warnings, delete unused code, etc
+        Eeri Kask Sep09 Patchset #B - Recover stolen focus keyword
+        Eeri Kask Sep09 Patchset #A - Recover stolen focus
+        Eeri Kask Sep09 Patchset #9 - Use and test InfoBevelWidth consistently
+        Eeri Kask Sep09 Patchset #8 - Try to avoid window creep on,
+	        say, vtwm restart.
+        Eeri Kask Sep09 Patchset #7 - zoomstate keyword to say what to
+	        do if client requests zoom in WM_STATE or _HINTS
+        Eeri Kask Sep09 Patchset #6 - Add doors to list of vtwm
+	        windows to ignore during empty space discovery, tighten up
+		panel geometry move and zoom code, magic coordinates for
+ 		unzoom and savesize
+        Eeri Kask Sep09 Patchset #5 - Unzoom on exit, not on XRandR change
+        Eeri Kask Sep09 Patchset #4 - Unzoom to (visible) screen
+	        (explicit) and zoom to visible (implicit)
+        Eeri Kask Sep09 Patchset #3 - Move vdesktop update to map
+	        request from addwindow to cover more cases
+        Eeri Kask Sep09 Patchset #2 - Allow virtualdesktop size to be
+	        specified as size of panner window
+        Eeri Kask Sep09 Patchset #1 - Disable GraphicsExpose events for vtwm
+        Eeri Kask Sep09 Patchset #0 - Do not save doors in saveset (X error)
+
     April 2009
         Move to SourceForge and git
+
+	Seth Robertson added AutoResizeKeepOnScreen so that programatic
+	(non-user) resizes don't cause on-screen windows to wander off.
 
     November 2008
         Callum Gibson and Eeri Kash have some patches.
