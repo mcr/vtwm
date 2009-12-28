@@ -1772,7 +1772,7 @@ DrawTitleHighlight(TwmWindow * t, int state)
     {
       if (state == off)
       {
-	XClearArea(dpy, t->title_w.win, t->highlightx, 0, 0, 0, False);
+	XClearArea(dpy, t->title_w.win, t->highlightx, Scr->FramePadding+scr->TitleBevelWidth, w, h-scr->TitleBevelWidth+1, False);
       }
       else if (scr == Scr)	/* draw only onto the 'event screen' */
       {
@@ -1783,7 +1783,7 @@ DrawTitleHighlight(TwmWindow * t, int state)
 	  XChangeGC(dpy, Scr->RootGC, GCForeground | GCBackground, &gcvalues);
 	}
 
-	(*pmtab[i].proc) (t->title_w.win, t->highlightx, Scr->FramePadding + 1, w, h, 0, cp, pmtab[i].state);
+	(*pmtab[i].proc) (t->title_w.win, t->highlightx, Scr->FramePadding+Scr->TitleBevelWidth, w, h-(Scr->TitleBevelWidth*2)+2, 0, cp, pmtab[i].state);
       }
 
       break;
