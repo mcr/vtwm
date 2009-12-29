@@ -253,10 +253,17 @@ main(int argc, char **argv, char **environ)
   usage:
     fprintf(stderr,
 #ifndef NO_M4_SUPPORT
-	    "usage:  %s [-d display] [-f [initfile]] [-m [options]] [-p] [-s] [-v]\n",
+	    "usage:  %s [-d display] [-f [initfile]] [-m [options]] [-p] [-s] [-v] [-V]\n\n"
+	    "\t-m <OPTION>      -- M4 conditional configuration defintion\n"
 #else
-	    "usage:  %s [-d display] [-f [initfile]] [-p] [-s] [-v]\n",
+	    "usage:  %s [-d display] [-f [initfile]] [-p] [-s] [-v] [-V]\n\n"
 #endif
+	    "\t-d <display>     -- Use in place of $DISPLAY\n"
+	    "\t-f <path>        -- Init file in place of ~/.vtwmrc\n"
+	    "\t-p               -- print vtwm PID\n"
+	    "\t-s               -- only run on one screen on DISPLAY\n"
+	    "\t-v               -- print error message\n"
+	    "\t-V               -- print version\n",
 	    ProgramName);
     exit(1);
   }
