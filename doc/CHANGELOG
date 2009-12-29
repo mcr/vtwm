@@ -6,6 +6,8 @@ IN CHRONOLOGICAL ORDER FROM MOST RECENT CHANGES TO EARLIEST.
 
     December 2009
 	Steve Rader - Pixmaps + highlights step on bevel lines
+	Steve Rader - Change default virtualdesktopfont for better compat.
+	Seth Robertson - yylineno support when using flex
 
     September 2009
         Eeri Kask Sep09 Patchset #J - Don't try to find empty space
