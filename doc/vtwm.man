@@ -540,14 +540,19 @@ Tells \fBvtwm\fP to use 3D-looking window buttons. It specifies the width
 in pixels of the bevel.  The default is \fI0\fP if \fBvtwm\fP is built with
 2D features, or \fI1\fP when \fBvtwm\fP is built with 3D features.
 .IP "\fBButtonIndent\fP \fIpixels\fP" 8
-This variable specifies the size of titlebar buttons, expressed as a difference
-from the titlebar font height, and normally means that titlebar buttons will
-shrink (built-in images) or be cropped (external images) accordingly.
-A negative value is accepted, however, indicating that titlebar buttons should
-be larger than the titlebar font. Setting this to a negated \fBFramePadding\fP
-value, with \fBTitleButtonBorderWidth\fP set to 0, makes titlebar buttons as
-tall and wide as possible. The default is \fI0\fP if \fBvtwm\fP is built with
-with 2D features, or \fI-2\fP when \fBvtwm\fP is built with 3D features.
+This variable specifies the size of titlebar buttons, expressed as a
+difference from the titlebar font height, and normally means that
+titlebar buttons will shrink (built-in images) or be cropped (external
+images) accordingly.  A negative value is accepted, however,
+indicating that titlebar buttons should be larger than the titlebar
+font. Setting this to a negated \fBFramePadding\fP value, with
+\fBTitleButtonBorderWidth\fP set to 0, makes titlebar buttons as tall
+and wide as possible. The default is \fI0\fP if \fBvtwm\fP is built
+with with 2D features, or \fI-2\fP when \fBvtwm\fP is built with 3D
+features.  (Note that there is an implicit 2 pixel adjustment when
+built when 3D features, meaning the -2 specified above would adjust to
+a zero pixel indention and a value of 2 would mean a four pixel
+indention).
 .IP "\fBButtonColorIsFrame\fP"
 This variable specifies that the titlebar buttons will be the same color
 as the window frame. It is set by default if \fBvtwm\fP is built with 3D

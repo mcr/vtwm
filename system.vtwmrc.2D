@@ -52,7 +52,7 @@ DoorFont		"-adobe-helvetica-bold-r-normal--*-100-*-*-*-*-*-*"
 IconFont		"-adobe-helvetica-bold-r-normal--*-100-*-*-*-*-*-*"
 InfoFont		"-adobe-helvetica-bold-r-normal--*-100-*-*-*-*-*-*"
 IconManagerFont		"-adobe-helvetica-bold-r-normal--*-100-*-*-*-*-*-*"
-VirtualDesktopFont	"-adobe-helvetica-medium-r-normal--*-75-*-*-*-*-*-*"
+VirtualDesktopFont	"-adobe-helvetica-medium-r-normal--*-80-*-*-*-*-*-*"
 
 #
 # Lists

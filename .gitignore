@@ -11,3 +11,7 @@ lex.c
 stamp-h1
 system.vtwmrc
 vtwm.man
+*.o
+vtwm
+nexpm
+vtwm._man
