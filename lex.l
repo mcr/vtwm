@@ -64,6 +64,7 @@ static int yylex_destroy  (void);
 #define YY_INPUT(b,r,s)		r = ((b[0] = (*twmInputFunc)()) != 0)
 #endif
 %}
+%option yylineno
 
 string				\"([^"]|\\.)*\"
 regexp				\/([^/]|\\.)*\/
