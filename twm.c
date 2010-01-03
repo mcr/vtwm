@@ -1039,6 +1039,7 @@ InitVariables(void)
   FreeList(&Scr->VirtualDesktopColorBL);
   FreeList(&Scr->VirtualDesktopColorBoL);
   FreeList(&Scr->DontShowInDisplay);
+  FreeList(&Scr->Immutable);
 
   FreeList(&Scr->DontShowInTWMWindows);
 

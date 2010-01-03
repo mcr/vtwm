@@ -842,6 +842,8 @@ static TwmKeyword keytable[] = {
 
   {"ignoremodifiers", IGNORE_MODS, 0},
 
+  {"immutable", IMMUTABLE, 0},
+
   {"infobevelwidth", NKEYWORD, kwn_InfoBevelWidth},
 
   {"infofont", SKEYWORD, kws_InfoFont},

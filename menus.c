@@ -2200,6 +2200,12 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 	int did_playsound = FALSE;
 #endif
 
+        /* immutables can't be resized - slr - 12252009 */
+        if (tmp_win->immutable == TRUE) { 
+          /* DoAudible(); */
+	  break;
+        } 
+
 	if (DeferExecution(context, func, Scr->ResizeCursor))
 	  return TRUE;
 
@@ -2503,6 +2509,12 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 #ifdef SOUND_SUPPORT
 	int did_playsound = FALSE;
 #endif
+
+        /* immutables can't be moved - slr - 12252009 */
+        if (tmp_win->immutable == TRUE) { 
+          /* DoAudible(); */
+          break;
+        } 
 
 	if (DeferExecution(context, func, Scr->MoveCursor))
 	  return TRUE;

@@ -249,7 +249,8 @@ typedef struct ScreenInfo
   name_list *NoWindowRingL;	/* windows not added to ring */
 
   name_list *WarpCursorL;	/* windows to warp cursor to on deiconify */
-  name_list *NailedDown;	/* windows that are nailed down */
+  name_list *NailedDown;	/* windows that are displayed in all desktops */
+  name_list *Immutable;		/* windows that can not be moved or resized */
   name_list *VirtualDesktopColorFL;	/* color of representations on the vd display */
   name_list *VirtualDesktopColorBL;	/* color of representations on the vd display */
   name_list *VirtualDesktopColorBoL;	/* color of representations on the vd display */

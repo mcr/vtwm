@@ -361,6 +361,7 @@ typedef struct TwmWindow
     unsigned int titlehighlight:1;
     unsigned int wShaped:1;
     unsigned int nailed:1;
+    unsigned int immutable:1;
     unsigned int showindesktopdisplay:1;
 
     /* djhjr - 4/6/98 */
@@ -380,6 +381,7 @@ typedef struct TwmWindow
 #define titlehighlight				twmflags.titlehighlight
 #define wShaped						twmflags.wShaped
 #define nailed						twmflags.nailed
+#define immutable					twmflags.immutable
 #define showindesktopdisplay		twmflags.showindesktopdisplay
 
 /* djhjr - 4/6/98 */
