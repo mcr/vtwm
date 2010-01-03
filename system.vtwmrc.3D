@@ -118,28 +118,29 @@ Pixmaps
 
 Color
 {
-	DefaultBackground		"maroon"
+	DefaultBackground		"#20305a"
 	DefaultForeground		"gray85"
 	BorderColor			"grey70"
 	BorderTileBackground		"gray60"
 	BorderTileForeground		"gray60"
-	DoorBackground			"maroon"
+	DoorBackground			"#20305a"
 	DoorForeground			"gray85"
-	TitleBackground			"maroon"
+	TitleBackground			"#20305a"
 	TitleForeground			"gray85"
-	MenuBackground			"maroon"
+	MenuBackground			"#20305a"
 	MenuForeground			"gray85"
 	MenuTitleBackground		"gray70"
-	MenuTitleForeground		"maroon"
-	IconBackground			"maroon"
+	MenuTitleForeground		"#20305a"
+	IconBackground			"#20305a"
 	IconForeground			"gray85"
 	IconBorderColor			"gray85"
-	IconManagerBackground		"maroon"
+	IconManagerBackground		"#20305a"
 	IconManagerForeground		"gray85"
-	VirtualBackground		"maroon"
+	VirtualBackground		"gray70"
 	VirtualForeground		"black"
-	DesktopDisplayBackground	"grey60"
-	DesktopDisplayForeground	"grey85"
+	DesktopDisplayBackground	"grey85"
+	DesktopDisplayForeground	"black"
+        RealScreenBackground            "gray60" 
 }
 
 Monochrome
@@ -162,10 +163,11 @@ Monochrome
 	IconBorderColor			"gray85"
 	IconManagerBackground		"gray50"
 	IconManagerForeground		"gray85"
-	VirtualBackground		"gray50"
+	VirtualBackground		"gray70"
 	VirtualForeground		"black"
-	DesktopDisplayBackground	"grey60"
-	DesktopDisplayForeground	"grey85"
+	DesktopDisplayBackground	"grey85"
+	DesktopDisplayForeground	"black"
+        RealScreenBackground            "gray60" 
 }
 
 #
@@ -173,6 +175,8 @@ Monochrome
 #
 
 Function "move-or-iconify" { f.move f.deltastop f.iconify }
+Function "move-or-raiselower" { f.move f.deltastop f.raiselower }
+Function "warpwindow"         { f.warpsnug f.warp f.warpsnug }
 
 LeftTitleButton ":xpm:darrow" = f.menu "arrange"
 RightTitleButton ":xpm:dot" = f.iconify
@@ -181,12 +185,12 @@ RightTitleButton ":xpm:resize" = f.resize
 Button1 = : root : f.version
 Button3 = : root : f.menu "main"
 
-Button1 = : title : f.move
+Button1 = : title : f.function "move-or-raiselower"
 Button2 = : title : f.resize
 Button3 = : title : f.raiselower
 
-Button1 = : frame : f.move
-Button2 = : frame : f.resize
+Button1 = : frame : f.resize
+Button2 = : frame : f.move
 Button3 = : frame : f.iconify
 
 Button1 = : door : f.enterdoor
@@ -199,7 +203,14 @@ Button3 = : icon : f.menu "arrange"
 Button1 = : iconmgr : f.iconify
 Button3 = : iconmgr : f.warp
 
-Button1 = : virtual | desktop : f.movescreen
+Button1 = : virtual : f.movescreen
+Button2 = : virtual : f.movescreen
+Button3 = : virtual : f.movescreen
+
+Button1 = : desktop : f.movescreen
+Button2 = : desktop : f.warp                  # morph desktop to window
+Button3 = : desktop : f.function "warpwindow" # morph window to desktop
+
 
 #
 # Menus
