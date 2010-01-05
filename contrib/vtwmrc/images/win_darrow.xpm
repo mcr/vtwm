@@ -1,0 +1,34 @@
+/* XPM */
+static char *win_darrow[] = {
+/* width height num_colors chars_per_pixel */
+"    21    21        6            1",
+/* colors */
+". c #cccccc", /* background: very light gray */
+"* c #000000", /* foreground: black */
+"a c #ebebeb", /* off white */
+"b c #acacac", /* light gray */
+"c c #5c5c5c", /* medium gray */
+"e c #2e2e2e", /* dark gray */
+/* pixels */
+"....................c",
+".bbbbbbbbbbbbbbbbbbbc",
+".baaaaaaaaaaaaaaaaebc",
+".ba...............ebc",
+".ba...............ebc",
+".ba...............ebc",
+".ba...............ebc",
+".ba...............ebc",
+".ba...............ebc",
+".ba....c*****c....ebc",
+".ba.....e***e.....ebc",
+".ba......e*e......ebc",
+".ba.......e.......ebc",
+".ba...............ebc",
+".ba...............ebc",
+".ba...............ebc",
+".ba...............ebc",
+".ba...............ebc",
+".beeeeeeeeeeeeeeeeebc",
+".bbbbbbbbbbbbbbbbbbbc",
+"ccccccccccccccccccccc"
+};
