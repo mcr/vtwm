@@ -603,17 +603,17 @@ extern int FirstScreen;
  */
 #define ClientIsOnScreen(win,scr)   ((win)->attr.root == (scr)->Root)
 
+#define Lft(t)		((t)[0])	/* See "int (*tiles)[4];" above and		*/
+#define Rht(t)		((t)[2])	/* initialisation of (x0,y0), (x1,y1) in twm.c */
+
+#define Bot(t)		((t)[1])	/* As a matter of notation: Reflect y-axis as	*/
+#define Top(t)		((t)[3])	/* "Text-Editor- to Cartesian Coordinates"	*/
+					/* transform: 'Top' must be >= 'Bot'.		*/
+
 #ifdef TILED_SCREEN
 
 #define AreaHeight(a)	    (Top(a) - Bot(a) + 1)
 #define AreaWidth(a)	    (Rht(a) - Lft(a) + 1)
-
-#define Lft(t)		    ((t)[0])	/* See "int (*tiles)[4];" above and            */
-#define Rht(t)		    ((t)[2])	/* initialisation of (x0,y0), (x1,y1) in twm.c */
-
-#define Bot(t)		    ((t)[1])	/* As a matter of notation: Reflect y-axis as  */
-#define Top(t)		    ((t)[3])	/* "Text-Editor- to Cartesian Coordinates"     */
-				     /* transform: 'Top' must be >= 'Bot'.          */
 
 #define xmin(a,b)	    ((a) < (b) ? (a) : (b))
 #define xmax(a,b)	    ((a) > (b) ? (a) : (b))
