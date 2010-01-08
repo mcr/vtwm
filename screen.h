@@ -615,11 +615,10 @@ extern int FirstScreen;
 #define AreaHeight(a)	    (Top(a) - Bot(a) + 1)
 #define AreaWidth(a)	    (Rht(a) - Lft(a) + 1)
 
-#define xmin(a,b)	    ((a) < (b) ? (a) : (b))
-#define xmax(a,b)	    ((a) > (b) ? (a) : (b))
-
 #endif /*TILED_SCREEN */
 
+#define xmin(a,b)	    ((a) < (b) ? (a) : (b))
+#define xmax(a,b)	    ((a) > (b) ? (a) : (b))
 
 /* if overlapping return intersection;  else return gapsize as negative value: */
 #define Distance1D(a,b,u,v) (xmin((b),(v)) - xmax((a),(u)))
