@@ -74,9 +74,6 @@ XCOMM    NO_M4_SUPPORT = -DNO_M4_SUPPORT
 XCOMM To omit platform and build info in the version window, uncomment this
 XCOMM    NO_BUILD_INFO = -DNO_BUILD_INFO
 
-XCOMM For lexers that don't track line numbers, uncomment this
-XCOMM  NEED_YYLINENO_V = -DNEED_YYLINENO_V
-
 XCOMM For those systems that don't have putenv(), uncomment this
 XCOMM    NEED_PUTENV_F = -DNEED_PUTENV_F
 

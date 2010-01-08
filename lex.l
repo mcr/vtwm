@@ -46,6 +46,9 @@
 extern char *ProgramName;
 extern int ParseError;
 
+int rclineno = 1;
+
+#ifdef FLEX_SCANNER
 static int yyget_lineno  (void);
 static FILE *yyget_in  (void);
 static FILE *yyget_out  (void);
@@ -58,13 +61,10 @@ static int yyget_debug  (void);
 static void yyset_debug (int  bdebug );
 static int yylex_destroy  (void);
 
-
-#ifdef FLEX_SCANNER
 #undef	YY_INPUT
 #define YY_INPUT(b,r,s)		r = ((b[0] = (*twmInputFunc)()) != 0)
 #endif
 %}
-%option yylineno
 
 string				\"([^"]|\\.)*\"
 regexp				\/([^/]|\\.)*\/
@@ -101,8 +101,9 @@ number				[0-9]+
 {number}			{ (void)sscanf((char *)&yytext[0], "%d", &yylval.num);
 				  return (NUMBER);
 				}
-\#[^\n]*\n			{;}
-[\n\t ]				{;}
+\#[^\n]*\n			{++rclineno;}
+\n				{++rclineno;}
+[\t ]				{;}
 .				{
 				  twmrc_error_prefix();
 				  fprintf (stderr,

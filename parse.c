@@ -110,9 +110,6 @@ doparse(int (*ifunc) (void), char *srctypename, char *srcname)
   mods = 0;
   ptr = 0;
   len = 0;
-#ifdef NEED_YYLINENO_V
-  yylineno = 1;
-#endif
   ParseError = FALSE;
   twmInputFunc = ifunc;
   overflowlen = 0;
@@ -309,10 +306,6 @@ twmFileInput(void)
   {
     if (fgets(buff, BUF_LEN, twmrc) == NULL)
       return 0;
-
-#ifdef NEED_YYLINENO_V
-    yylineno++;
-#endif
 
     ptr = 0;
     len = strlen(buff);

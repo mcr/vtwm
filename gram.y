@@ -91,11 +91,7 @@ static int ppos;
 static int warpc;
 
 
-/*
- * this used to be the definition - now making the assumption it's
- * defined in lex's skeleton file (submitted by Nelson H. F. Beebe)
- */
-extern int yylineno;
+extern int rclineno;
 
 %}
 
@@ -1204,7 +1200,7 @@ static Bool CheckColormapArg (char *s)
 
 void twmrc_error_prefix (void)
 {
-  fprintf (stderr, "%s:  line %d:  ", ProgramName, yylineno);
+  fprintf (stderr, "%s:  line %d:  ", ProgramName, rclineno);
 }
 
 
