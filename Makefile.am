@@ -80,7 +80,7 @@ DISTCLEANDIRS=autom4te.cache
 
 
 deftwmrc.c: system.vtwmrc
-	$(RM) $@
+	-$(RM) $@
 	echo '/* ' >>$@
 	echo ' * This file is generated automatically from the default' >>$@
 	echo ' * VTWM bindings file system.vtwmrc.'$(SYS_VTWMRC_LOOK)' by the VTWM Makefile.' >>$@
@@ -102,7 +102,7 @@ releasetar: maintainer-clean
 
 FORCE:
 lastmake.c: FORCE
-	$(RM) $@
+	-$(RM) $@
 	echo '/* ' >>$@
 	echo ' * This file is generated automatically by the VTWM Makefile.' >>$@
 	echo ' */' >>$@
@@ -118,12 +118,12 @@ gram.h: gram.c
 #	$(vtwm_LINK) -o $@ -Icontrib/nexpm $^ $(vtwm_LDADD) $(LIBS)
 
 system.vtwmrc:
-	$(RM) $@
+	-$(RM) $@
 	$(CP) $@.$(SYS_VTWMRC_LOOK) $@
 
 man1_MANS = vtwm.man
 EXRTA_DIST = $(man1_MANS)
 
 vtwm.man: doc/vtwm.man
-	$(RM) $@
+	-$(RM) $@
 	$(LN) doc/$@ $@
