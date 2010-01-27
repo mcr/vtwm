@@ -6,6 +6,7 @@ IN CHRONOLOGICAL ORDER FROM MOST RECENT CHANGES TO EARLIEST.
 
     January 2010
 	Steve Rader - Immutable--non-movable or resizable windows
+	K. Solowoniuk - Warp Visible bugfix
 
     December 2009
 	Steve Rader - Pixmaps + highlights step on bevel lines

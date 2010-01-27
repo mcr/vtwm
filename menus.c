@@ -5644,7 +5644,7 @@ WarpAlongRing(XButtonEvent * ev, Bool forward)
 
   while (r && r != head)
   {
-    if (r->mapped || warp_if_warpunmapped(r, F_WARPRING))
+    if (warp_if_warpunmapped(r, F_WARPRING))
       break;
 
     r = (forward) ? r->ring.next : r->ring.prev;
