@@ -368,8 +368,7 @@ UpdateDesktop(TwmWindow * tmp_win)
       tmp_win->VirtualDesktopDisplayWindow.xft = MyXftDrawCreate(tmp_win->VirtualDesktopDisplayWindow.win);
 #endif
 
-
-
+    XDefineCursor(dpy, tmp_win->VirtualDesktopDisplayWindow.win, Scr->DesktopCursor);
 
     /* listen for expose events to redraw the name */
     if (Scr->NamesInVirtualDesktop)
