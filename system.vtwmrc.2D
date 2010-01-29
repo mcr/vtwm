@@ -92,7 +92,7 @@ IconManagerDontShow
 
 Pixmaps
 {
-	"MenuIconPixmap"	":rarrow"
+	MenuIconPixmap			":rarrow"
 }
 
 Color
