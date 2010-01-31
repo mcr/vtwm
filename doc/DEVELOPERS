@@ -7,9 +7,13 @@ A FEW THOUGHTS TO FUTURE MAINTAINERS/DEVELOPERS/HACKERS
     make files. Also, add code as appropriate to menus.c:Identify() and
     parse.c:make_m4_cmdline().
 
-  - Likewise, please follow what few coding conventions are in place. Don't
-    use C++'s double-slash comments, keep up with the K&R style functions,
-    etc.
+  - All compile-time configuration changes must be supported in Imakefile and
+    configure.  For now.  Yes, it is suboptimal.
+
+  - Please follow the style currently used in the code even though it
+    may not be your preferred style.  Multiple styles are a mess.
+
+  - Ensure your compile is warning free.
 
   - Keep VTWM portable. There are only two "#ifdef __PLATFORM__"s in this
     code, yet it runs on platforms I've never seen. GNU isn't everywhere.
