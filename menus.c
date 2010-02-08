@@ -2646,8 +2646,7 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 	     * the XCheckMaskEvent inner loop down to one of the
 	     * MoveOutline's below.
 	     */
-	    MoveOutline(rootw,
-			origDragX - JunkBW, origDragY - JunkBW,
+	    MoveOutline(rootw, origDragX, origDragY,
 			DragWidth + 2 * JunkBW, DragHeight + 2 * JunkBW,
 			tmp_win->frame_bw, moving_icon ? 0 : tmp_win->title_height + tmp_win->frame_bw3D);
 
