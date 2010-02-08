@@ -2503,7 +2503,7 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 	int origX, origY;
 	long releaseEvent;
 	long movementMask;
-	int xl = 0, yt = 0, xr = 0, yb = 0;
+	int xl = 0, yt = 0, xr = 0, yb = 0, bw;
 	int movefromcenter = 0;
 
 #ifdef SOUND_SUPPORT
@@ -2595,7 +2595,7 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 	MoveFunction = func;	/* set for DispatchEvent() */
 
 	XGetGeometry(dpy, w, &JunkRoot, &origDragX, &origDragY,
-		     (unsigned int *)&DragWidth, (unsigned int *)&DragHeight, &JunkBW, &JunkDepth);
+		     (unsigned int *)&DragWidth, (unsigned int *)&DragHeight, &bw, &JunkDepth);
 
 	if (menuFromFrameOrWindowOrTitlebar || movefromcenter || (moving_icon && fromMenu))
 	{
@@ -2621,10 +2621,10 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 
 	  ConstMove = TRUE;
 	  constMoveDir = MOVE_NONE;
-	  constMoveX = eventp->xbutton.x_root - DragX - JunkBW;
-	  constMoveY = eventp->xbutton.y_root - DragY - JunkBW;
-	  width = DragWidth + 2 * JunkBW;
-	  height = DragHeight + 2 * JunkBW;
+	  constMoveX = eventp->xbutton.x_root - DragX - bw;
+	  constMoveY = eventp->xbutton.y_root - DragY - bw;
+	  width = DragWidth + 2 * bw;
+	  height = DragHeight + 2 * bw;
 	  constMoveXL = constMoveX + width / 3;
 	  constMoveXR = constMoveX + 2 * (width / 3);
 	  constMoveYT = constMoveY + height / 3;
@@ -2647,7 +2647,7 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 	     * MoveOutline's below.
 	     */
 	    MoveOutline(rootw, origDragX, origDragY,
-			DragWidth + 2 * JunkBW, DragHeight + 2 * JunkBW,
+			DragWidth + 2 * bw, DragHeight + 2 * bw,
 			tmp_win->frame_bw, moving_icon ? 0 : tmp_win->title_height + tmp_win->frame_bw3D);
 
 	  }
@@ -2823,10 +2823,10 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 		XQueryPointer(dpy, DragWindow, &JunkRoot, &JunkChild, &JunkX, &JunkY, &DragX, &DragY, &JunkMask);
 		break;
 	      case MOVE_VERT:
-		constMoveY = eventp->xmotion.y_root - DragY - JunkBW;
+		constMoveY = eventp->xmotion.y_root - DragY - bw;
 		break;
 	      case MOVE_HORIZ:
-		constMoveX = eventp->xmotion.x_root - DragX - JunkBW;
+		constMoveX = eventp->xmotion.x_root - DragX - bw;
 		break;
 	    }
 
@@ -2837,8 +2837,8 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 	  {
 	    if (!menuFromFrameOrWindowOrTitlebar && !movefromcenter && !(moving_icon && fromMenu))
 	    {
-	      xl = eventp->xmotion.x_root - DragX - JunkBW;
-	      yt = eventp->xmotion.y_root - DragY - JunkBW;
+	      xl = eventp->xmotion.x_root - DragX - bw;
+	      yt = eventp->xmotion.y_root - DragY - bw;
 	    }
 	    else
 	    {
@@ -2849,8 +2849,8 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 
 	  if ((ConstMove && constMoveDir != MOVE_NONE) || DragWindow != None)
 	  {
-	    int width = DragWidth + 2 * JunkBW;
-	    int height = DragHeight + 2 * JunkBW;
+	    int width = DragWidth + 2 * bw;
+	    int height = DragHeight + 2 * bw;
 
 	    if (Scr->DontMoveOff && MoveFunction != F_FORCEMOVE)
 	    {
