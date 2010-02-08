@@ -68,6 +68,9 @@ AC_SUBST(xft_CFLAGS)
 AC_SUBST(xft_AUX_CFLAGS)
 AC_SUBST(xft_LIBS)
 
+dnl nsl library checks
+AC_SEARCH_LIBS(gethostbyname,nsl)
+
 dnl xrandr library checks
 PKG_CHECK_EXISTS(xrandr,[PKG_CHECK_MODULES(xrandr, xrandr);xrandr_AUX_CFLAGS=-DTWM_USE_XRANDR])
 AC_SUBST(xrandr_CFLAGS)
