@@ -564,15 +564,13 @@ StartMoveWindowInDesktop(XMotionEvent ev)
     moving_bw = 0;
   }
 
-
   XMapRaised(dpy, Scr->SizeWindow.win);
   InstallRootColormap();
+
   if (moving_window == Scr->VirtualDesktopDScreen)
     JunkX = JunkY = 0;
   else
   {
-    XGetGeometry(dpy, moving_twindow->frame, &JunkChild, &JunkX, &JunkY, &JunkWidth, &JunkHeight, &JunkBW, &JunkMask);
-
     {
       int hilite = moving_twindow->highlight;
 
@@ -584,11 +582,13 @@ StartMoveWindowInDesktop(XMotionEvent ev)
       EventHandler[LeaveNotify] = HandleUnknown;
     }
 
+    XGetGeometry(dpy, moving_twindow->frame, &JunkChild, &JunkX, &JunkY, &JunkWidth, &JunkHeight, &JunkBW, &JunkMask);
+
     if (Scr->VirtualSendsMotionEvents && (moving_window != Scr->VirtualDesktopDScreen && !moving_twindow->opaque_move))
       MoveOutline(Scr->Root,
 		  JunkX, JunkY,
-		  moving_twindow->frame_width,
-		  moving_twindow->frame_height,
+		  moving_twindow->frame_width  + 2*moving_twindow->frame_bw,
+		  moving_twindow->frame_height + 2*moving_twindow->frame_bw,
 		  moving_twindow->frame_bw, moving_twindow->title_height + moving_twindow->frame_bw3D);
 
   }
@@ -596,9 +596,6 @@ StartMoveWindowInDesktop(XMotionEvent ev)
   original_x = JunkX + Scr->VirtualDesktopX;
   original_y = JunkY + Scr->VirtualDesktopY;
   DisplayPosition(original_x, original_y);
-
-  /* get things going */
-  DoMoveWindowOnDesktop(ev.x, ev.y);
 }
 
 void
@@ -624,7 +621,7 @@ DoMoveWindowOnDesktop(int x, int y)
     x = 0;
   else
   {
-    int np = (Scr->VirtualDesktopWidth / Scr->VirtualDesktopDScale) - moving_w - Scr->RealScreenBorderWidth * 2;
+    int np = (Scr->VirtualDesktopWidth / Scr->VirtualDesktopDScale) - moving_w;
 
     if (x > np)
       x = np;
@@ -633,8 +630,7 @@ DoMoveWindowOnDesktop(int x, int y)
     y = 0;
   else
   {
-
-    int np = (Scr->VirtualDesktopHeight / Scr->VirtualDesktopDScale) - moving_h - Scr->RealScreenBorderWidth * 2;
+    int np = (Scr->VirtualDesktopHeight / Scr->VirtualDesktopDScale) - moving_h;
 
     if (y > np)
       y = np;
@@ -645,19 +641,20 @@ DoMoveWindowOnDesktop(int x, int y)
 
   XMoveWindow(dpy, moving_window, x, y);
 
-  DisplayPosition(SCALE_U(x), SCALE_U(y));
+  x = SCALE_U(x);
+  y = SCALE_U(y);
+
+  DisplayPosition(x, y);
 
   if (Scr->VirtualSendsMotionEvents)
     if (moving_window != Scr->VirtualDesktopDScreen)
     {
       if (moving_twindow->opaque_move)
-	XMoveWindow(dpy, moving_twindow->frame, SCALE_U(x) - Scr->VirtualDesktopX, SCALE_U(y) - Scr->VirtualDesktopY);
+	XMoveWindow(dpy, moving_twindow->frame, x - Scr->VirtualDesktopX, y - Scr->VirtualDesktopY);
       else
-	MoveOutline(Scr->Root,
-		    SCALE_U(x) - Scr->VirtualDesktopX,
-		    SCALE_U(y) - Scr->VirtualDesktopY,
-		    moving_twindow->frame_width,
-		    moving_twindow->frame_height,
+	MoveOutline(Scr->Root, x - Scr->VirtualDesktopX, y - Scr->VirtualDesktopY,
+		    moving_twindow->frame_width  + 2*moving_twindow->frame_bw,
+		    moving_twindow->frame_height + 2*moving_twindow->frame_bw,
 		    moving_twindow->frame_bw, moving_twindow->title_height + moving_twindow->frame_bw3D);
     }
 }
