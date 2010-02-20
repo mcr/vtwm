@@ -410,7 +410,7 @@ NailDesktop(TwmWindow * tmp_win)
  * state during the move
  */
 static unsigned int moving_x, moving_y, moving_w, moving_h, moving_bw;
-static unsigned int moving_off_x, moving_off_y, moving_window_bw2;
+static unsigned int moving_off_x, moving_off_y;
 Window moving_window;
 TwmWindow *moving_twindow;
 
@@ -593,7 +593,6 @@ StartMoveWindowInDesktop(XMotionEvent ev)
 
   }
 
-  moving_window_bw2 = 2 * moving_twindow->frame_bw;
   original_x = JunkX + Scr->VirtualDesktopX;
   original_y = JunkY + Scr->VirtualDesktopY;
   DisplayPosition(original_x, original_y);
@@ -645,10 +644,13 @@ DoMoveWindowOnDesktop(int x, int y)
   x = SCALE_U(x);
   y = SCALE_U(y);
 
-  if (x + moving_twindow->frame_width + moving_window_bw2 > Scr->VirtualDesktopWidth)
-    x = Scr->VirtualDesktopWidth - moving_twindow->frame_width - moving_window_bw2;
-  if (y + moving_twindow->frame_height + moving_window_bw2 > Scr->VirtualDesktopHeight)
-    y = Scr->VirtualDesktopHeight - moving_twindow->frame_height - moving_window_bw2;
+  if (moving_window != Scr->VirtualDesktopDScreen)
+  {
+    if (x + (moving_twindow->frame_width + 2*moving_twindow->frame_bw) > Scr->VirtualDesktopWidth)
+      x = Scr->VirtualDesktopWidth - (moving_twindow->frame_width + 2*moving_twindow->frame_bw);
+    if (y + (moving_twindow->frame_height + 2*moving_twindow->frame_bw) > Scr->VirtualDesktopHeight)
+      y = Scr->VirtualDesktopHeight - (moving_twindow->frame_height + 2*moving_twindow->frame_bw);
+  }
 
   DisplayPosition(x, y);
 
@@ -691,10 +693,10 @@ EndMoveWindowOnDesktop(void)
       moving_twindow->virtual_frame_x = (Cancel) ? original_x : SCALE_U(moving_x);
       moving_twindow->virtual_frame_y = (Cancel) ? original_y : SCALE_U(moving_y);
 
-      if (moving_twindow->virtual_frame_x + moving_twindow->frame_width + moving_window_bw2 > Scr->VirtualDesktopWidth)
-	moving_twindow->virtual_frame_x = Scr->VirtualDesktopWidth - moving_twindow->frame_width - moving_window_bw2;
-      if (moving_twindow->virtual_frame_y + moving_twindow->frame_height + moving_window_bw2 > Scr->VirtualDesktopHeight)
-	moving_twindow->virtual_frame_y = Scr->VirtualDesktopHeight - moving_twindow->frame_height - moving_window_bw2;
+      if (moving_twindow->virtual_frame_x + (moving_twindow->frame_width + 2*moving_twindow->frame_bw) > Scr->VirtualDesktopWidth)
+	moving_twindow->virtual_frame_x = Scr->VirtualDesktopWidth - (moving_twindow->frame_width + 2*moving_twindow->frame_bw);
+      if (moving_twindow->virtual_frame_y + (moving_twindow->frame_height + 2*moving_twindow->frame_bw) > Scr->VirtualDesktopHeight)
+	moving_twindow->virtual_frame_y = Scr->VirtualDesktopHeight - (moving_twindow->frame_height + 2*moving_twindow->frame_bw);
 
       /* move it in real space */
       moving_twindow->frame_x = V_TO_R_X(moving_twindow->virtual_frame_x);
