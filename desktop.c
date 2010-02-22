@@ -553,6 +553,9 @@ StartMoveWindowInDesktop(XMotionEvent ev)
 
   XGetGeometry(dpy, moving_window, &JunkChild, &xoff, &yoff, &moving_w, &moving_h, &moving_bw, &JunkMask);
 
+  moving_w += 2*moving_bw;
+  moving_h += 2*moving_bw;
+
   moving_off_x = moving_off_y = 0;
   if (xoff <= moving_x && moving_x <= (xoff + moving_w) && yoff <= moving_y && moving_y <= (yoff + moving_h))
   {				/* The pointer is IN the window.
