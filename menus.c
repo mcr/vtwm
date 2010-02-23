@@ -2201,7 +2201,7 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 #endif
 
         /* immutables can't be resized - slr - 12252009 */
-        if (tmp_win->immutable == TRUE) { 
+        if (tmp_win && tmp_win->immutable == TRUE) { 
           /* DoAudible(); */
 	  break;
         } 
@@ -2511,7 +2511,7 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 #endif
 
         /* immutables can't be moved - slr - 12252009 */
-        if (tmp_win->immutable == TRUE) { 
+        if (tmp_win && tmp_win->immutable == TRUE) { 
           /* DoAudible(); */
           break;
         } 
