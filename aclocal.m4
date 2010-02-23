@@ -1,7 +1,7 @@
-# generated automatically by aclocal 1.10.2 -*- Autoconf -*-
+# generated automatically by aclocal 1.10.3 -*- Autoconf -*-
 
 # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
-# 2005, 2006, 2007, 2008  Free Software Foundation, Inc.
+# 2005, 2006, 2007, 2008, 2009  Free Software Foundation, Inc.
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -13,8 +13,8 @@
 
 m4_ifndef([AC_AUTOCONF_VERSION],
   [m4_copy([m4_PACKAGE_VERSION], [AC_AUTOCONF_VERSION])])dnl
-m4_if(m4_defn([AC_AUTOCONF_VERSION]), [2.63],,
-[m4_warning([this file was generated for autoconf 2.63.
+m4_if(m4_defn([AC_AUTOCONF_VERSION]), [2.65],,
+[m4_warning([this file was generated for autoconf 2.65.
 You have another version of autoconf.  It may work, but is not guaranteed to.
 If you have problems, you may need to regenerate the build system entirely.
 To do so, use the procedure documented by the package, typically `autoreconf'.])])
@@ -214,7 +214,7 @@ dnl DEALINGS IN THE SOFTWARE.
 # See the "minimum version" comment for each macro you use to see what 
 # version you require.
 m4_defun([XORG_MACROS_VERSION],[
-m4_define([vers_have], [1.5.0])
+m4_define([vers_have], [1.6.0])
 m4_define([maj_have], m4_substr(vers_have, 0, m4_index(vers_have, [.])))
 m4_define([maj_needed], m4_substr([$1], 0, m4_index([$1], [.])))
 m4_if(m4_cmp(maj_have, maj_needed), 0,,
@@ -634,6 +634,295 @@ fi
 AM_CONDITIONAL([HAVE_DOXYGEN], [test "$have_doxygen" = yes])
 ]) # XORG_CHECK_DOXYGEN
 
+# XORG_WITH_GROFF
+# ----------------
+# Minimum version: 1.6.0
+#
+# Documentation tools are not always available on all platforms and sometimes
+# not at the appropriate level. This macro enables a module to test for the
+# presence of the tool and obtain it's path in separate variables. Coupled with
+# the --with-groff option, it allows maximum flexibilty in making decisions
+# as whether or not to use the groff package.
+#
+# Interface to module:
+# HAVE_GROFF:	 used in makefiles to conditionally generate documentation
+# HAVE_GROFF_MM: the memorandum macros (-mm) package
+# HAVE_GROFF_MS: the -ms macros package
+# GROFF:	 returns the path of the groff program found
+#		 returns the path set by the user in the environment
+# --with-groff:	 'yes' user instructs the module to use groff
+#		 'no' user instructs the module not to use groff
+#
+# If the user sets the value of GROFF, AC_PATH_PROG skips testing the path.
+#
+# OS and distros often splits groff in a basic and full package, the former
+# having the groff program and the later having devices, fonts and macros
+# Checking for the groff executable is not enough.
+#
+# If macros are missing, we cannot assume that groff is useless, so we don't
+# unset HAVE_GROFF or GROFF env variables.
+# HAVE_GROFF_?? can never be true while HAVE_GROFF is false.
+#
+AC_DEFUN([XORG_WITH_GROFF],[
+AC_ARG_VAR([GROFF], [Path to groff command])
+AC_ARG_WITH(groff,
+	AS_HELP_STRING([--with-groff],
+	   [Use groff to regenerate documentation (default: yes, if installed)]),
+	   [use_groff=$withval], [use_groff=auto])
+
+if test "x$use_groff" = x"auto"; then
+   AC_PATH_PROG([GROFF], [groff])
+   if test "x$GROFF" = "x"; then
+        AC_MSG_WARN([groff not found - documentation targets will be skipped])
+	have_groff=no
+   else
+        have_groff=yes
+   fi
+elif test "x$use_groff" = x"yes" ; then
+   AC_PATH_PROG([GROFF], [groff])
+   if test "x$GROFF" = "x"; then
+        AC_MSG_ERROR([--with-groff=yes specified but groff not found in PATH])
+   fi
+   have_groff=yes
+elif test "x$use_groff" = x"no" ; then
+   if test "x$GROFF" != "x"; then
+      AC_MSG_WARN([ignoring GROFF environment variable since --with-groff=no was specified])
+   fi
+   have_groff=no
+else
+   AC_MSG_ERROR([--with-groff expects 'yes' or 'no'])
+fi
+# We have groff, test for the presence of the macro packages
+if test "x$have_groff" = x"yes"; then
+    AC_MSG_CHECKING([for ${GROFF} -ms macros])
+    if ${GROFF} -ms -I. /dev/null >/dev/null 2>&1 ; then
+        groff_ms_works=yes
+    else
+        groff_ms_works=no
+    fi
+    AC_MSG_RESULT([$groff_ms_works])
+    AC_MSG_CHECKING([for ${GROFF} -mm macros])
+    if ${GROFF} -mm -I. /dev/null >/dev/null 2>&1 ; then
+        groff_mm_works=yes
+    else
+        groff_mm_works=no
+    fi
+    AC_MSG_RESULT([$groff_mm_works])
+fi
+AM_CONDITIONAL([HAVE_GROFF], [test "$have_groff" = yes])
+AM_CONDITIONAL([HAVE_GROFF_MS], [test "$groff_ms_works" = yes])
+AM_CONDITIONAL([HAVE_GROFF_MM], [test "$groff_mm_works" = yes])
+]) # XORG_WITH_GROFF
+
+# XORG_WITH_FOP
+# ----------------
+# Minimum version: 1.6.0
+#
+# Documentation tools are not always available on all platforms and sometimes
+# not at the appropriate level. This macro enables a module to test for the
+# presence of the tool and obtain it's path in separate variables. Coupled with
+# the --with-fop option, it allows maximum flexibilty in making decisions
+# as whether or not to use the fop package.
+#
+# Interface to module:
+# HAVE_FOP: 	used in makefiles to conditionally generate documentation
+# FOP:	 	returns the path of the fop program found
+#		returns the path set by the user in the environment
+# --with-fop: 	'yes' user instructs the module to use fop
+#		'no' user instructs the module not to use fop
+#
+# If the user sets the value of FOP, AC_PATH_PROG skips testing the path.
+#
+AC_DEFUN([XORG_WITH_FOP],[
+AC_ARG_VAR([FOP], [Path to fop command])
+AC_ARG_WITH(fop,
+	AS_HELP_STRING([--with-fop],
+	   [Use fop to regenerate documentation (default: yes, if installed)]),
+	   [use_fop=$withval], [use_fop=auto])
+
+if test "x$use_fop" = x"auto"; then
+   AC_PATH_PROG([FOP], [fop])
+   if test "x$FOP" = "x"; then
+        AC_MSG_WARN([fop not found - documentation targets will be skipped])
+	have_fop=no
+   else
+        have_fop=yes
+   fi
+elif test "x$use_fop" = x"yes" ; then
+   AC_PATH_PROG([FOP], [fop])
+   if test "x$FOP" = "x"; then
+        AC_MSG_ERROR([--with-fop=yes specified but fop not found in PATH])
+   fi
+   have_fop=yes
+elif test "x$use_fop" = x"no" ; then
+   if test "x$FOP" != "x"; then
+      AC_MSG_WARN([ignoring FOP environment variable since --with-fop=no was specified])
+   fi
+   have_fop=no
+else
+   AC_MSG_ERROR([--with-fop expects 'yes' or 'no'])
+fi
+AM_CONDITIONAL([HAVE_FOP], [test "$have_fop" = yes])
+]) # XORG_WITH_FOP
+
+# XORG_WITH_PS2PDF
+# ----------------
+# Minimum version: 1.6.0
+#
+# Documentation tools are not always available on all platforms and sometimes
+# not at the appropriate level. This macro enables a module to test for the
+# presence of the tool and obtain it's path in separate variables. Coupled with
+# the --with-ps2pdf option, it allows maximum flexibilty in making decisions
+# as whether or not to use the ps2pdf package.
+#
+# Interface to module:
+# HAVE_PS2PDF: 	used in makefiles to conditionally generate documentation
+# PS2PDF:	returns the path of the ps2pdf program found
+#		returns the path set by the user in the environment
+# --with-ps2pdf: 'yes' user instructs the module to use ps2pdf
+#		 'no' user instructs the module not to use ps2pdf
+#
+# If the user sets the value of PS2PDF, AC_PATH_PROG skips testing the path.
+#
+AC_DEFUN([XORG_WITH_PS2PDF],[
+AC_ARG_VAR([PS2PDF], [Path to ps2pdf command])
+AC_ARG_WITH(ps2pdf,
+	AS_HELP_STRING([--with-ps2pdf],
+	   [Use ps2pdf to regenerate documentation (default: yes, if installed)]),
+	   [use_ps2pdf=$withval], [use_ps2pdf=auto])
+
+if test "x$use_ps2pdf" = x"auto"; then
+   AC_PATH_PROG([PS2PDF], [ps2pdf])
+   if test "x$PS2PDF" = "x"; then
+        AC_MSG_WARN([ps2pdf not found - documentation targets will be skipped])
+	have_ps2pdf=no
+   else
+        have_ps2pdf=yes
+   fi
+elif test "x$use_ps2pdf" = x"yes" ; then
+   AC_PATH_PROG([PS2PDF], [ps2pdf])
+   if test "x$PS2PDF" = "x"; then
+        AC_MSG_ERROR([--with-ps2pdf=yes specified but ps2pdf not found in PATH])
+   fi
+   have_ps2pdf=yes
+elif test "x$use_ps2pdf" = x"no" ; then
+   if test "x$PS2PDF" != "x"; then
+      AC_MSG_WARN([ignoring PS2PDF environment variable since --with-ps2pdf=no was specified])
+   fi
+   have_ps2pdf=no
+else
+   AC_MSG_ERROR([--with-ps2pdf expects 'yes' or 'no'])
+fi
+AM_CONDITIONAL([HAVE_PS2PDF], [test "$have_ps2pdf" = yes])
+]) # XORG_WITH_PS2PDF
+
+# XORG_ENABLE_DOCS (enable_docs=yes)
+# ----------------
+# Minimum version: 1.6.0
+#
+# Documentation tools are not always available on all platforms and sometimes
+# not at the appropriate level. This macro enables a builder to skip all
+# documentation targets except traditional man pages.
+# Combined with the specific tool checking macros XORG_WITH_*, it provides
+# maximum flexibilty in controlling documentation building.
+# Refer to:
+# XORG_WITH_XMLTO         --with-xmlto
+# XORG_WITH_ASCIIDOC      --with-asciidoc
+# XORG_WITH_DOXYGEN       --with-doxygen
+# XORG_WITH_FOP           --with-fop
+# XORG_WITH_GROFF         --with-groff
+# XORG_WITH_PS2PDF        --with-ps2pdf
+#
+# Interface to module:
+# ENABLE_DOCS: 	  used in makefiles to conditionally generate documentation
+# --enable-docs: 'yes' user instructs the module to generate docs
+#		 'no' user instructs the module not to generate docs
+# parm1:	specify the default value, yes or no.
+#
+AC_DEFUN([XORG_ENABLE_DOCS],[
+default=$1
+if test "x$default" = x ; then
+  default="yes"
+fi
+AC_ARG_ENABLE(docs,
+	AS_HELP_STRING([--enable-docs],
+	   [Enable building the documentation (default: yes)]),
+	   [build_docs=$enableval], [build_docs=$default])
+AM_CONDITIONAL(ENABLE_DOCS, [test x$build_docs = xyes])
+AC_MSG_CHECKING([whether to build documentation])
+AC_MSG_RESULT([$build_docs])
+]) # XORG_ENABLE_DOCS
+
+# XORG_ENABLE_DEVEL_DOCS (enable_devel_docs=yes)
+# ----------------
+# Minimum version: 1.6.0
+#
+# This macro enables a builder to skip all developer documentation.
+# Combined with the specific tool checking macros XORG_WITH_*, it provides
+# maximum flexibilty in controlling documentation building.
+# Refer to:
+# XORG_WITH_XMLTO         --with-xmlto
+# XORG_WITH_ASCIIDOC      --with-asciidoc
+# XORG_WITH_DOXYGEN       --with-doxygen
+# XORG_WITH_FOP           --with-fop
+# XORG_WITH_GROFF         --with-groff
+# XORG_WITH_PS2PDF        --with-ps2pdf
+#
+# Interface to module:
+# ENABLE_DEVEL_DOCS:	used in makefiles to conditionally generate developer docs
+# --enable-devel-docs:	'yes' user instructs the module to generate developer docs
+#			'no' user instructs the module not to generate developer docs
+# parm1:		specify the default value, yes or no.
+#
+AC_DEFUN([XORG_ENABLE_DEVEL_DOCS],[
+devel_default=$1
+if test "x$devel_default" = x ; then
+  devel_default="yes"
+fi
+AC_ARG_ENABLE(devel-docs,
+	AS_HELP_STRING([--enable-devel-docs],
+	   [Enable building the developer documentation (default: yes)]),
+	   [build_devel_docs=$enableval], [build_devel_docs=$devel_default])
+AM_CONDITIONAL(ENABLE_DEVEL_DOCS, [test x$build_devel_docs = xyes])
+AC_MSG_CHECKING([whether to build developer documentation])
+AC_MSG_RESULT([$build_devel_docs])
+]) # XORG_ENABLE_DEVEL_DOCS
+
+# XORG_ENABLE_SPECS (enable_specs=yes)
+# ----------------
+# Minimum version: 1.6.0
+#
+# This macro enables a builder to skip all functional specification targets.
+# Combined with the specific tool checking macros XORG_WITH_*, it provides
+# maximum flexibilty in controlling documentation building.
+# Refer to:
+# XORG_WITH_XMLTO         --with-xmlto
+# XORG_WITH_ASCIIDOC      --with-asciidoc
+# XORG_WITH_DOXYGEN       --with-doxygen
+# XORG_WITH_FOP           --with-fop
+# XORG_WITH_GROFF         --with-groff
+# XORG_WITH_PS2PDF        --with-ps2pdf
+#
+# Interface to module:
+# ENABLE_SPECS:		used in makefiles to conditionally generate specs
+# --enable-specs:	'yes' user instructs the module to generate specs
+#			'no' user instructs the module not to generate specs
+# parm1:		specify the default value, yes or no.
+#
+AC_DEFUN([XORG_ENABLE_SPECS],[
+spec_default=$1
+if test "x$spec_default" = x ; then
+  spec_default="yes"
+fi
+AC_ARG_ENABLE(specs,
+	AS_HELP_STRING([--enable-specs],
+	   [Enable building the specs (default: yes)]),
+	   [build_specs=$enableval], [build_specs=$spec_default])
+AM_CONDITIONAL(ENABLE_SPECS, [test x$build_specs = xyes])
+AC_MSG_CHECKING([whether to build functional specifications])
+AC_MSG_RESULT([$build_specs])
+]) # XORG_ENABLE_SPECS
+
 # XORG_CHECK_MALLOC_ZERO
 # ----------------------
 # Minimum version: 1.0.0
@@ -766,7 +1055,7 @@ AC_REQUIRE([AC_PROG_CC])
 if  test "x$GCC" = xyes ; then
     CWARNFLAGS="-Wall -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes \
 -Wmissing-declarations -Wnested-externs -fno-strict-aliasing \
--Wbad-function-cast"
+-Wbad-function-cast -Wformat=2"
     case `$CC -dumpversion` in
     3.4.* | 4.*)
 	CWARNFLAGS="$CWARNFLAGS -Wold-style-definition -Wdeclaration-after-statement"
@@ -935,7 +1224,7 @@ AC_DEFUN([AM_AUTOMAKE_VERSION],
 [am__api_version='1.10'
 dnl Some users find AM_AUTOMAKE_VERSION and mistake it for a way to
 dnl require some minimum version.  Point them to the right macro.
-m4_if([$1], [1.10.2], [],
+m4_if([$1], [1.10.3], [],
       [AC_FATAL([Do not call $0, use AM_INIT_AUTOMAKE([$1]).])])dnl
 ])
 
@@ -951,7 +1240,7 @@ m4_define([_AM_AUTOCONF_VERSION], [])
 # Call AM_AUTOMAKE_VERSION and AM_AUTOMAKE_VERSION so they can be traced.
 # This function is AC_REQUIREd by AM_INIT_AUTOMAKE.
 AC_DEFUN([AM_SET_CURRENT_AUTOMAKE_VERSION],
-[AM_AUTOMAKE_VERSION([1.10.2])dnl
+[AM_AUTOMAKE_VERSION([1.10.3])dnl
 m4_ifndef([AC_AUTOCONF_VERSION],
   [m4_copy([m4_PACKAGE_VERSION], [AC_AUTOCONF_VERSION])])dnl
 _AM_AUTOCONF_VERSION(m4_defn([AC_AUTOCONF_VERSION]))])
@@ -1044,14 +1333,14 @@ AC_CONFIG_COMMANDS_PRE(
 Usually this means the macro was only invoked conditionally.]])
 fi])])
 
-# Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006
+# Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2009
 # Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
 
-# serial 9
+# serial 10
 
 # There are a few dirty hacks below to avoid letting `AC_PROG_CC' be
 # written in clear, in which case automake, when reading aclocal.m4,
@@ -1108,6 +1397,16 @@ AC_CACHE_CHECK([dependency style of $depcc],
   if test "$am_compiler_list" = ""; then
      am_compiler_list=`sed -n ['s/^#*\([a-zA-Z0-9]*\))$/\1/p'] < ./depcomp`
   fi
+  am__universal=false
+  m4_case([$1], [CC],
+    [case " $depcc " in #(
+     *\ -arch\ *\ -arch\ *) am__universal=true ;;
+     esac],
+    [CXX],
+    [case " $depcc " in #(
+     *\ -arch\ *\ -arch\ *) am__universal=true ;;
+     esac])
+
   for depmode in $am_compiler_list; do
     # Setup a source with many dependencies, because some compilers
     # like to wrap large dependency lists on column 80 (with \), and
@@ -1125,7 +1424,17 @@ AC_CACHE_CHECK([dependency style of $depcc],
     done
     echo "${am__include} ${am__quote}sub/conftest.Po${am__quote}" > confmf
 
+    # We check with `-c' and `-o' for the sake of the "dashmstdout"
+    # mode.  It turns out that the SunPro C++ compiler does not properly
+    # handle `-M -o', and we need to detect this.  Also, some Intel
+    # versions had trouble with output in subdirs
+    am__obj=sub/conftest.${OBJEXT-o}
+    am__minus_obj="-o $am__obj"
     case $depmode in
+    gcc)
+      # This depmode causes a compiler race in universal mode.
+      test "$am__universal" = false || continue
+      ;;
     nosideeffect)
       # after this tag, mechanisms are not by side-effect, so they'll
       # only be used when explicitly requested
@@ -1135,19 +1444,23 @@ AC_CACHE_CHECK([dependency style of $depcc],
 	break
       fi
       ;;
+    msvisualcpp | msvcmsys)
+      # This compiler won't grok `-c -o', but also, the minuso test has
+      # not run yet.  These depmodes are late enough in the game, and
+      # so weak that their functioning should not be impacted.
+      am__obj=conftest.${OBJEXT-o}
+      am__minus_obj=
+      ;;
     none) break ;;
     esac
-    # We check with `-c' and `-o' for the sake of the "dashmstdout"
-    # mode.  It turns out that the SunPro C++ compiler does not properly
-    # handle `-M -o', and we need to detect this.
     if depmode=$depmode \
-       source=sub/conftest.c object=sub/conftest.${OBJEXT-o} \
+       source=sub/conftest.c object=$am__obj \
        depfile=sub/conftest.Po tmpdepfile=sub/conftest.TPo \
-       $SHELL ./depcomp $depcc -c -o sub/conftest.${OBJEXT-o} sub/conftest.c \
+       $SHELL ./depcomp $depcc -c $am__minus_obj sub/conftest.c \
          >/dev/null 2>conftest.err &&
        grep sub/conftst1.h sub/conftest.Po > /dev/null 2>&1 &&
        grep sub/conftst6.h sub/conftest.Po > /dev/null 2>&1 &&
-       grep sub/conftest.${OBJEXT-o} sub/conftest.Po > /dev/null 2>&1 &&
+       grep $am__obj sub/conftest.Po > /dev/null 2>&1 &&
        ${MAKE-make} -s -f confmf > /dev/null 2>&1; then
       # icc doesn't choke on unknown options, it will just issue warnings
       # or remarks (even with -Werror).  So we grep stderr for any message
@@ -1211,59 +1524,61 @@ _AM_SUBST_NOTMAKE([AMDEPBACKSLASH])dnl
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
 
-#serial 4
+#serial 5
 
 # _AM_OUTPUT_DEPENDENCY_COMMANDS
 # ------------------------------
 AC_DEFUN([_AM_OUTPUT_DEPENDENCY_COMMANDS],
-[# Autoconf 2.62 quotes --file arguments for eval, but not when files
-# are listed without --file.  Let's play safe and only enable the eval
-# if we detect the quoting.
-case $CONFIG_FILES in
-*\'*) eval set x "$CONFIG_FILES" ;;
-*)   set x $CONFIG_FILES ;;
-esac
-shift
-for mf
-do
-  # Strip MF so we end up with the name of the file.
-  mf=`echo "$mf" | sed -e 's/:.*$//'`
-  # Check whether this is an Automake generated Makefile or not.
-  # We used to match only the files named `Makefile.in', but
-  # some people rename them; so instead we look at the file content.
-  # Grep'ing the first line is not enough: some people post-process
-  # each Makefile.in and add a new line on top of each file to say so.
-  # Grep'ing the whole file is not good either: AIX grep has a line
-  # limit of 2048, but all sed's we know have understand at least 4000.
-  if sed -n 's,^#.*generated by automake.*,X,p' "$mf" | grep X >/dev/null 2>&1; then
-    dirpart=`AS_DIRNAME("$mf")`
-  else
-    continue
-  fi
-  # Extract the definition of DEPDIR, am__include, and am__quote
-  # from the Makefile without running `make'.
-  DEPDIR=`sed -n 's/^DEPDIR = //p' < "$mf"`
-  test -z "$DEPDIR" && continue
-  am__include=`sed -n 's/^am__include = //p' < "$mf"`
-  test -z "am__include" && continue
-  am__quote=`sed -n 's/^am__quote = //p' < "$mf"`
-  # When using ansi2knr, U may be empty or an underscore; expand it
-  U=`sed -n 's/^U = //p' < "$mf"`
-  # Find all dependency output files, they are included files with
-  # $(DEPDIR) in their names.  We invoke sed twice because it is the
-  # simplest approach to changing $(DEPDIR) to its actual value in the
-  # expansion.
-  for file in `sed -n "
-    s/^$am__include $am__quote\(.*(DEPDIR).*\)$am__quote"'$/\1/p' <"$mf" | \
-       sed -e 's/\$(DEPDIR)/'"$DEPDIR"'/g' -e 's/\$U/'"$U"'/g'`; do
-    # Make sure the directory exists.
-    test -f "$dirpart/$file" && continue
-    fdir=`AS_DIRNAME(["$file"])`
-    AS_MKDIR_P([$dirpart/$fdir])
-    # echo "creating $dirpart/$file"
-    echo '# dummy' > "$dirpart/$file"
+[{
+  # Autoconf 2.62 quotes --file arguments for eval, but not when files
+  # are listed without --file.  Let's play safe and only enable the eval
+  # if we detect the quoting.
+  case $CONFIG_FILES in
+  *\'*) eval set x "$CONFIG_FILES" ;;
+  *)   set x $CONFIG_FILES ;;
+  esac
+  shift
+  for mf
+  do
+    # Strip MF so we end up with the name of the file.
+    mf=`echo "$mf" | sed -e 's/:.*$//'`
+    # Check whether this is an Automake generated Makefile or not.
+    # We used to match only the files named `Makefile.in', but
+    # some people rename them; so instead we look at the file content.
+    # Grep'ing the first line is not enough: some people post-process
+    # each Makefile.in and add a new line on top of each file to say so.
+    # Grep'ing the whole file is not good either: AIX grep has a line
+    # limit of 2048, but all sed's we know have understand at least 4000.
+    if sed -n 's,^#.*generated by automake.*,X,p' "$mf" | grep X >/dev/null 2>&1; then
+      dirpart=`AS_DIRNAME("$mf")`
+    else
+      continue
+    fi
+    # Extract the definition of DEPDIR, am__include, and am__quote
+    # from the Makefile without running `make'.
+    DEPDIR=`sed -n 's/^DEPDIR = //p' < "$mf"`
+    test -z "$DEPDIR" && continue
+    am__include=`sed -n 's/^am__include = //p' < "$mf"`
+    test -z "am__include" && continue
+    am__quote=`sed -n 's/^am__quote = //p' < "$mf"`
+    # When using ansi2knr, U may be empty or an underscore; expand it
+    U=`sed -n 's/^U = //p' < "$mf"`
+    # Find all dependency output files, they are included files with
+    # $(DEPDIR) in their names.  We invoke sed twice because it is the
+    # simplest approach to changing $(DEPDIR) to its actual value in the
+    # expansion.
+    for file in `sed -n "
+      s/^$am__include $am__quote\(.*(DEPDIR).*\)$am__quote"'$/\1/p' <"$mf" | \
+	 sed -e 's/\$(DEPDIR)/'"$DEPDIR"'/g' -e 's/\$U/'"$U"'/g'`; do
+      # Make sure the directory exists.
+      test -f "$dirpart/$file" && continue
+      fdir=`AS_DIRNAME(["$file"])`
+      AS_MKDIR_P([$dirpart/$fdir])
+      # echo "creating $dirpart/$file"
+      echo '# dummy' > "$dirpart/$file"
+    done
   done
-done
+}
 ])# _AM_OUTPUT_DEPENDENCY_COMMANDS
 
 
@@ -1295,7 +1610,7 @@ AU_DEFUN([AM_CONFIG_HEADER], [AC_CONFIG_HEADERS($@)])
 # Do all the work for Automake.                             -*- Autoconf -*-
 
 # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
-# 2005, 2006, 2008 Free Software Foundation, Inc.
+# 2005, 2006, 2008, 2009 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -1369,8 +1684,8 @@ AM_MISSING_PROG(AUTOCONF, autoconf)
 AM_MISSING_PROG(AUTOMAKE, automake-${am__api_version})
 AM_MISSING_PROG(AUTOHEADER, autoheader)
 AM_MISSING_PROG(MAKEINFO, makeinfo)
-AM_PROG_INSTALL_SH
-AM_PROG_INSTALL_STRIP
+AC_REQUIRE([AM_PROG_INSTALL_SH])dnl
+AC_REQUIRE([AM_PROG_INSTALL_STRIP])dnl
 AC_REQUIRE([AM_PROG_MKDIR_P])dnl
 # We need awk for the "check" target.  The system "awk" is bad on
 # some platforms.

@@ -73,6 +73,7 @@ vtwm_SOURCES =   \
 nexpm_SOURCES = contrib/nexpm/nexpm.c
 
 BUILT_SOURCES = gram.h gram.c lex.c deftwmrc.c lastmake.c version-tmp.c
+CLEANFILES = gram.h gram.c lex.c deftwmrc.c lastmake.c version-tmp.c
 MAINTAINERCLEANFILES =
 DISTCLEANFILES=$(BUILT_SOURCES) system.vtwmrc vtwm.man vtwm.1 nexpm
 DISTCLEANDIRS=autom4te.cache
