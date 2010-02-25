@@ -4381,7 +4381,7 @@ void
 FocusOnClient(TwmWindow * tmp_win)
 {
   /* assign focus if 'Passive'/'Locally Active' ICCCM model: */
-  if (!tmp_win->wmhints || tmp_win->wmhints->input)
+  if (!tmp_win->wmhints || ((tmp_win->wmhints->flags & InputHint) && tmp_win->wmhints->input))
   {
     SetFocus(tmp_win, LastTimestamp());
     FocusedOnClient(tmp_win);
@@ -4807,7 +4807,7 @@ Identify(TwmWindow * t)
 
       if (t->wmhints != NULL)
       {
-	i  = (t->wmhints->input == True) ? 2 : 0;
+	i  = ((t->wmhints->flags & InputHint) && t->wmhints->input == True) ? 2 : 0;
 	i |= (t->protocols & DoesWmTakeFocus) ? 1 : 0;
       }
       else

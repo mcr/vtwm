@@ -2849,7 +2849,7 @@ HandleEnterNotify(void)
 	    if (!scanArgs.leaves && !scanArgs.enters)	/* 1 */
 	      InstallWindowColormaps(EnterNotify, &Scr->TwmRoot);
 
-	    if (!Tmp_win->wmhints || Tmp_win->wmhints->input || (Tmp_win->protocols & DoesWmTakeFocus))
+	    if (!Tmp_win->wmhints || ((Tmp_win->wmhints->flags & InputHint) && Tmp_win->wmhints->input) || (Tmp_win->protocols & DoesWmTakeFocus))
 	    {
 	      /* highlight only if client is going to accept focus: */
 	      PaintTitleHighlight(Tmp_win, on);	/* 2 */
@@ -2863,7 +2863,7 @@ HandleEnterNotify(void)
 		(Tmp_win->list && Tmp_win->list->w.win && Tmp_win->list->w.win != ewp->window) || Tmp_win->transient)
 	    {
 	      if ((((Tmp_win->title_w.win || Scr->NoTitlebar) &&	/* 4, 4a */
-		    Scr->TitleFocus) || Tmp_win->transient) && Tmp_win->wmhints && Tmp_win->wmhints->input)
+		    Scr->TitleFocus) || Tmp_win->transient) && Tmp_win->wmhints && ((Tmp_win->wmhints->flags & InputHint) && Tmp_win->wmhints->input))
 		SetFocus(Tmp_win, ewp->time);
 
 	      if (Tmp_win->protocols & DoesWmTakeFocus)	/* 5 */
@@ -3244,10 +3244,10 @@ HandleFocusChange(void)
 		if (PrintErrorMessages == True)
 		{
 		  if (stamp1 != stamp0)
-		    fprintf(stderr, "HandleFocusChange(1,s=%lu,F=%x,C=%lx{%d,%d}): From '%s' (w=0x0%lx,f=%x) to '%s' (w=0x0%lx,f=%x), %d. attempt to return (%ld milliseconds later).\n", Event.xfocus.serial, ((Scr->TitleFocus==TRUE?512:256)|(SloppyFocus==TRUE?32:16)|(FocusRoot==TRUE?2:1)), (long)JunkChild, HotX, HotY, (Focus?Focus->name:"NULL"), (long)(Focus?Focus->w:None), (Focus?(((Focus->protocols&DoesWmTakeFocus)?32:16)|((!Focus->wmhints||Focus->wmhints->input)?2:1)):0), Tmp_win->name, (long)(Tmp_win->w), (Tmp_win?(((Tmp_win->protocols&DoesWmTakeFocus)?32:16)|((!Tmp_win->wmhints||Tmp_win->wmhints->input)?2:1)):0), attempts, (stamp1-stamp0));
+		    fprintf(stderr, "HandleFocusChange(1,s=%lu,F=%x,C=%lx{%d,%d}): From '%s' (w=0x0%lx,f=%x) to '%s' (w=0x0%lx,f=%x), %d. attempt to return (%ld milliseconds later).\n", Event.xfocus.serial, ((Scr->TitleFocus==TRUE?512:256)|(SloppyFocus==TRUE?32:16)|(FocusRoot==TRUE?2:1)), (long)JunkChild, HotX, HotY, (Focus?Focus->name:"NULL"), (long)(Focus?Focus->w:None), (Focus?(((Focus->protocols&DoesWmTakeFocus)?32:16)|((!Focus->wmhints||((Focus->wmhints->flags&InputHint)&&Focus->wmhints->input))?2:1)):0), Tmp_win->name, (long)(Tmp_win->w), (Tmp_win?(((Tmp_win->protocols&DoesWmTakeFocus)?32:16)|((!Tmp_win->wmhints||((Tmp_win->wmhints->flags&InputHint)&&Tmp_win->wmhints->input))?2:1)):0), attempts, (stamp1-stamp0));
 #if 0
 		  else
-		    fprintf(stderr, "HandleFocusChange(0,s=%lu,F=%x,C=%lx{%d,%d}): From '%s' (w=0x0%lx,f=%x) to '%s' (w=0x0%lx,f=%x), attempting to return.\n", Event.xfocus.serial, ((Scr->TitleFocus==TRUE?512:256)|(SloppyFocus==TRUE?32:16)|(FocusRoot==TRUE?2:1)), (long)JunkChild, HotX, HotY, (Focus?Focus->name:"NULL"), (long)(Focus?Focus->w:None), (Focus?(((Focus->protocols&DoesWmTakeFocus)?32:16)|((!Focus->wmhints||Focus->wmhints->input)?2:1)):0), Tmp_win->name, (long)(Tmp_win->w), (Tmp_win?(((Tmp_win->protocols&DoesWmTakeFocus)?32:16)|((!Tmp_win->wmhints||Tmp_win->wmhints->input)?2:1)):0));
+		    fprintf(stderr, "HandleFocusChange(0,s=%lu,F=%x,C=%lx{%d,%d}): From '%s' (w=0x0%lx,f=%x) to '%s' (w=0x0%lx,f=%x), attempting to return.\n", Event.xfocus.serial, ((Scr->TitleFocus==TRUE?512:256)|(SloppyFocus==TRUE?32:16)|(FocusRoot==TRUE?2:1)), (long)JunkChild, HotX, HotY, (Focus?Focus->name:"NULL"), (long)(Focus?Focus->w:None), (Focus?(((Focus->protocols&DoesWmTakeFocus)?32:16)|((!Focus->wmhints||((Focus->wmhints->flags&InputHint)&&Focus->wmhints->input))?2:1)):0), Tmp_win->name, (long)(Tmp_win->w), (Tmp_win?(((Tmp_win->protocols&DoesWmTakeFocus)?32:16)|((!Tmp_win->wmhints||((Tmp_win->wmhints->flags&InputHint)&&Tmp_win->wmhints->input))?2:1)):0));
 #endif
 		}
 #endif
@@ -3256,7 +3256,7 @@ HandleFocusChange(void)
 	      /* focus recovery interval is over; give up, let focus go: */
 #if defined DEBUG_STOLENFOCUS
 	      if (PrintErrorMessages == True)
-		fprintf(stderr, "HandleFocusChange(2,s=%lu,F=%x): From '%s' (w=0x0%lx,f=%x) to '%s' (w=0x0%lx,f=%x), giving away (%ld milliseconds later).\n", Event.xfocus.serial, ((Scr->TitleFocus==TRUE?512:256)|(SloppyFocus==TRUE?32:16)|(FocusRoot==TRUE?2:1)), (Focus?Focus->name:"NULL"), (long)(Focus?Focus->w:None), (Focus?(((Focus->protocols&DoesWmTakeFocus)?32:16)|((!Focus->wmhints||Focus->wmhints->input)?2:1)):0), Tmp_win->name, (long)(Tmp_win->w), (Tmp_win?(((Tmp_win->protocols&DoesWmTakeFocus)?32:16)|((!Tmp_win->wmhints||Tmp_win->wmhints->input)?2:1)):0), (stamp1-stamp0));
+		fprintf(stderr, "HandleFocusChange(2,s=%lu,F=%x): From '%s' (w=0x0%lx,f=%x) to '%s' (w=0x0%lx,f=%x), giving away (%ld milliseconds later).\n", Event.xfocus.serial, ((Scr->TitleFocus==TRUE?512:256)|(SloppyFocus==TRUE?32:16)|(FocusRoot==TRUE?2:1)), (Focus?Focus->name:"NULL"), (long)(Focus?Focus->w:None), (Focus?(((Focus->protocols&DoesWmTakeFocus)?32:16)|((!Focus->wmhints||((Focus->wmhints->flags&InputHint)&&Focus->wmhints->input))?2:1)):0), Tmp_win->name, (long)(Tmp_win->w), (Tmp_win?(((Tmp_win->protocols&DoesWmTakeFocus)?32:16)|((!Tmp_win->wmhints||((Tmp_win->wmhints->flags&InputHint)&&Tmp_win->wmhints->input))?2:1)):0), (stamp1-stamp0));
 #endif
 	    }
 	  }
