@@ -396,6 +396,58 @@ AddWindow(Window w, int iconm, IconMgr * iconp)
   GetWindowSizeHints(tmp_win);
   GetGravityOffsets(tmp_win, &gravx, &gravy);
 
+
+  /*
+   * Bug 3065630 -- If we have a recent window from the same group and we don't have anyplace to put it
+   * pick the same place as the last window
+   */
+#ifdef DEBUG
+  fprintf(stderr,"Spawning window %x in group %x with hints %x(%d)\n",tmp_win->w,tmp_win->group,tmp_win->hints.flags,(tmp_win->hints.flags & USPosition));
+#endif
+  if (!(tmp_win->hints.flags & USPosition) && (tmp_win->group != tmp_win->w))
+  {
+    static lastwingroup = 0;
+    static lastwin = 0;
+    static lasttime = 0;
+    int curtime = time(NULL);
+    Window junk;
+
+    if ((lastwingroup == tmp_win->group) && ((curtime-15) < lasttime) &&
+	(XTranslateCoordinates(dpy, lastwin, Scr->Root, 0, 0, &JunkX, &JunkY, &junk) == True) &&
+	JunkX >= 0 && JunkY >= 0)
+    {
+      tmp_win->attr.x = JunkX;
+      tmp_win->attr.y = JunkY;
+
+      if (Scr->GeometriesAreVirtual ||
+	  (!Scr->GeometriesAreVirtual &&
+	   (tmp_win->nailed ||
+	    (((Scr->FixManagedVirtualGeometries &&
+	       !tmp_win->transient) ||
+	      (Scr->FixTransientVirtualGeometries && tmp_win->transient)) && (tmp_win->hints.flags & PPosition)))) &&
+	  tmp_win->attr.x < Scr->MyDisplayWidth && tmp_win->attr.y < Scr->MyDisplayHeight)
+      {
+	tmp_win->attr.x = R_TO_V_X(tmp_win->attr.x);
+	tmp_win->attr.y = R_TO_V_Y(tmp_win->attr.y);
+      }
+
+      /*
+       * Note that apparently we have to adjust this by 2x the boarder for true overlap.
+       * But...I like the subtle visual notice that we have multiple windows stacked and
+       * the adjustment is minor enough that you generally will not need to move the mouse
+       * when you are dismissing the windows.
+       */
+      tmp_win->attr.x -= tmp_win->frame_bw + tmp_win->frame_bw3D;
+      tmp_win->attr.y -= tmp_win->title_height + tmp_win->frame_bw + tmp_win->frame_bw3D;
+
+      tmp_win->hints.flags |= USPosition;
+      tmp_win->hints.flags &= !PPosition;
+    }
+    lastwingroup = tmp_win->group;
+    lastwin = tmp_win->w;
+    lasttime = curtime;
+  }
+
   /*
    * Don't bother user if:
    *
