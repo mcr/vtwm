@@ -404,7 +404,8 @@ AddWindow(Window w, int iconm, IconMgr * iconp)
 #ifdef DEBUG
   fprintf(stderr,"Spawning window %x in group %x with hints %x(%d)\n",tmp_win->w,tmp_win->group,tmp_win->hints.flags,(tmp_win->hints.flags & USPosition));
 #endif
-  if (!(tmp_win->hints.flags & USPosition) && (tmp_win->group != tmp_win->w))
+  if (HandlingEvents == TRUE &&
+      !(tmp_win->hints.flags & USPosition) && (tmp_win->group != tmp_win->w))
   {
     static lastwingroup = 0;
     static lastwin = 0;
