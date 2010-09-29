@@ -13,6 +13,13 @@ IN CHRONOLOGICAL ORDER FROM MOST RECENT CHANGES TO EARLIEST.
         Eeri Kask + Steve Rader - Allow TitleOffset to fine tune
 	     titlebar text placement.
 
+    February 2010
+        Various fixes when moving windows from the VD panner.
+        Fix DontMoveOff.
+        Fix rubber-banding when moving non-opaque windows.
+        Fix misdirected focus bug.
+        Fix crash in immutable window code when posting menu on root.
+
     January 2010
 	Steve Rader - Immutable--non-movable or resizable windows
 	K. Solowoniuk - Warp Visible bugfix
