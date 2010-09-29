@@ -1012,6 +1012,8 @@ static TwmKeyword keytable[] = {
 
   {"t", TITLE, 0},
 
+  {"textoffsets", TEXTOFFSETS, 0},
+
   {"title", TITLE, 0},
   {"titlebackground", CLKEYWORD, kwcl_TitleBackground},
 
@@ -2077,6 +2079,65 @@ do_squeeze_entry(name_list ** list,	/* squeeze or dont-squeeze list */
     sinfo->denom = absdenom;
     AddToList(list, name, type, (char *)sinfo);
   }
+}
+
+/* fine grain control over text placement - slr - 01092010 */
+int SetFontOffset(int keyword, char *geom)
+{
+  int x, y, width, height, mask;
+  mask = XParseGeometry(geom, &x, &y, (unsigned *)&width, (unsigned *)&height);
+  if (!(mask & (XValue | YValue)))
+    return 0;
+  if (!(mask & XValue))
+    x = 0;
+  if (!(mask & YValue))
+    y = 0;
+  switch (keyword)
+  {
+    default:
+      return 0;
+    case kws_TitleFont:
+      Scr->TitleBarFont.offset_x = x;
+      Scr->TitleBarFont.offset_y = y;
+      break;
+    case kws_MenuFont:
+      Scr->MenuFont.offset_x = x;
+      Scr->MenuFont.offset_y = y;
+      break;
+    case kws_MenuTitleFont:
+      Scr->MenuTitleFont.offset_x = x;
+      Scr->MenuTitleFont.offset_y = y;
+      break;
+    case kws_IconFont:
+      Scr->IconFont.offset_x = x;
+      Scr->IconFont.offset_y = y;
+      break;
+    case kws_ResizeFont:
+      Scr->SizeFont.offset_x = x;
+      Scr->SizeFont.offset_y = y;
+      break;
+    case kws_InfoFont:
+      Scr->InfoFont.offset_x = x;
+      Scr->InfoFont.offset_y = y;
+      break;
+    case kws_IconManagerFont:
+      Scr->IconManagerFont.offset_x = x;
+      Scr->IconManagerFont.offset_y = y;
+      break;
+    case kws_VirtualFont:
+      Scr->VirtualFont.offset_x = x;
+      Scr->VirtualFont.offset_y = y;
+      break;
+    case kws_DoorFont:
+      Scr->DoorFont.offset_x = x;
+      Scr->DoorFont.offset_y = y;
+      break;
+    case kws_DefaultFont:
+      Scr->DefaultFont.offset_x = x;
+      Scr->DefaultFont.offset_y = y;
+      break;
+  }
+  return 1;
 }
 
 #ifndef NO_M4_SUPPORT

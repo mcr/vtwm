@@ -125,6 +125,7 @@ extern int rclineno;
 %token <num> SNKEYWORD SKEYWORD DKEYWORD JKEYWORD WINDOW_RING NO_WINDOW_RING WARP_CURSOR
 %token <num> ERRORTOKEN NO_STACKMODE NAILEDDOWN IMMUTABLE VIRTUALDESKTOP NO_SHOW_IN_DISPLAY
 %token <num> NO_SHOW_IN_TWMWINDOWS
+%token <num> TEXTOFFSETS
 %token DOORS DOOR
 %token <num> VIRTUALMAP
 %token <num> REALSCREENMAP
@@ -370,6 +371,7 @@ stmt		: error
 		  win_list
 		| NO_SHOW_IN_TWMWINDOWS	{ list = &Scr->DontShowInTWMWindows; }
 		  win_list
+		| TEXTOFFSETS LB text_offset_entries RB
 		;
 
 
@@ -479,6 +481,19 @@ contextkey	: WINDOW		{ cont |= C_WINDOW_BIT; }
 		| string		{ Name = $1; cont |= C_NAME_BIT; }
 		;
 
+text_offset_entries: /* Empty */
+		| text_offset_entries text_offset_entry
+		;
+
+text_offset_entry: SKEYWORD string	{ if (!SetFontOffset ($1, $2)) {
+					    twmrc_error_prefix();
+					    fprintf (stderr,
+				"unknown string keyword %d (value \"%s\")\n",
+						     $1, $2);
+					    ParseError = 1;
+					  }
+					}
+		;
 
 pixmap_list	: LB pixmap_entries RB
 		;

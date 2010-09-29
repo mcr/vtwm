@@ -192,6 +192,8 @@ typedef struct MyFont
   int y;			/* Y coordinate to draw characters */
   int ascent;
   int descent;
+  int offset_x;
+  int offset_y;
 } MyFont;
 
 typedef struct MyWindow		/* MyFont/ColorPair text rendering */

@@ -274,6 +274,7 @@ extern void do_string_savecolor(int colormode, char *s);
 extern void do_var_savecolor(int key);
 extern void assign_var_savecolor(void);
 extern void do_squeeze_entry(name_list ** list, char *name, int type, int justify, int num, int denom);
+extern int SetFontOffset(int keyword, char *geom);
 extern void splitRegionEntry(RegionEntry * re, int grav1, int grav2, int w, int h);
 extern int roundEntryUp(int v, int multiple);
 extern RegionEntry *prevRegionEntry(RegionEntry * re, RootRegion * rr);

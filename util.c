@@ -943,6 +943,9 @@ MyFont_TextWidth(MyFont * font, char *string, int len)
 void
 MyFont_DrawImageString(Display * dpy, MyWindow * win, MyFont * font, ColorPair * col, int x, int y, char *string, int len)
 {
+  x += font->offset_x;
+  y += font->offset_y;
+
 #ifdef TWM_USE_XFT
   if (Scr->use_xft > 0)
   {
@@ -978,6 +981,9 @@ MyFont_DrawImageString(Display * dpy, MyWindow * win, MyFont * font, ColorPair *
 void
 MyFont_DrawString(Display * dpy, MyWindow * win, MyFont * font, ColorPair * col, int x, int y, char *string, int len)
 {
+  x += font->offset_x;
+  y += font->offset_y;
+
 #ifdef TWM_USE_XFT
   if (Scr->use_xft > 0)
   {

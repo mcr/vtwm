@@ -1219,26 +1219,46 @@ InitVariables(void)
 
   Scr->TitleBarFont.font = NULL;
   Scr->TitleBarFont.name = DEFAULT_NICE_FONT;
+  Scr->TitleBarFont.offset_x = 0;
+  Scr->TitleBarFont.offset_y = 0;
   Scr->MenuFont.font = NULL;
   Scr->MenuFont.name = DEFAULT_NICE_FONT;
+  Scr->MenuFont.offset_x = 0;
+  Scr->MenuFont.offset_y = 0;
   Scr->MenuTitleFont.font = NULL;
   Scr->MenuTitleFont.name = NULL;	/* uses MenuFont unless set -- DSE */
+  Scr->MenuTitleFont.offset_x = 0;
+  Scr->MenuTitleFont.offset_y = 0;
   Scr->IconFont.font = NULL;
   Scr->IconFont.name = DEFAULT_NICE_FONT;
+  Scr->IconFont.offset_x = 0;
+  Scr->IconFont.offset_y = 0;
   Scr->SizeFont.font = NULL;
   Scr->SizeFont.name = DEFAULT_FAST_FONT;
+  Scr->SizeFont.offset_x = 0;
+  Scr->SizeFont.offset_y = 0;
 
   Scr->InfoFont.font = NULL;
   Scr->InfoFont.name = DEFAULT_FAST_FONT;
+  Scr->InfoFont.offset_x = 0;
+  Scr->InfoFont.offset_y = 0;
 
   Scr->IconManagerFont.font = NULL;
   Scr->IconManagerFont.name = DEFAULT_NICE_FONT;
+  Scr->IconManagerFont.offset_x = 0;
+  Scr->IconManagerFont.offset_y = 0;
   Scr->VirtualFont.font = NULL;
   Scr->VirtualFont.name = DEFAULT_SMALL_FONT;
+  Scr->VirtualFont.offset_x = 0;
+  Scr->VirtualFont.offset_y = 0;
   Scr->DoorFont.font = NULL;
   Scr->DoorFont.name = DEFAULT_NICE_FONT;
+  Scr->DoorFont.offset_x = 0;
+  Scr->DoorFont.offset_y = 0;
   Scr->DefaultFont.font = NULL;
   Scr->DefaultFont.name = DEFAULT_FAST_FONT;
+  Scr->DefaultFont.offset_x = 0;
+  Scr->DefaultFont.offset_y = 0;
 
 #ifdef TWM_USE_XFT
   Scr->TitleBarFont.xft = NULL;

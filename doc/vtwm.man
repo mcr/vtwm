@@ -1687,6 +1687,26 @@ A synonym for \fBNailedAbove\fP.
 .IP "\fBStrictIconManager\fP" 8
 This variable causes icon managers to list only those windows that are in
 an iconified state.
+.IP "\fBTextOffsets\fP { \fIoffset-list\fP }" 8
+This list provides fine grain control over the placement of fonts.
+Each entry is a keyword indicating a font followed by a string
+indicating an offset in the standard X11 geometry \fI"+X+Y"\fP
+(i.e. without the height and width parts).
+For example:
+.RS 12
+.nf
+\&\fBTextOffsets\fP
+{
+    TitleFont           "+1-1"
+    MenuTitleFont       "+0+1"
+    MenuFont            "+0-1"
+    IconManagerFont     "+0-2"
+    VirtualDesktopFont  "-1-4"
+}
+.fi
+.RE
+.IP
+Default offsets are \fI"+0+0"\fP.
 .IP "\fBTitleBackground\fP \fIstring\fP [{ \fIwin-list\fP }]" 8
 This variable specifies the background color used in titlebars, and may only
 be specified inside of a \fBColor\fP or \fBMonochrome\fP list.  The optional
@@ -1810,7 +1830,7 @@ This variable causes \fIfont\fP to be used when displaying the names
 of windows in the virtual desktop display.  If this variable is not
 set, then names will not be displayed.  The \fBDesktopDisplayForeground\fP
 should also be set for this feature to be useful.
-The default is \fI"-adobe-helvetica-medium-r-normal--*-75-*-*-*-*-*-*"\fP.
+The default is \fI"-adobe-helvetica-medium-r-normal--*-80-*-*-*-*-*-*"\fP.
 .IP "\fBVirtualReceivesMotionEvents\fP" 8
 .IP "\fBVirtualSendsMotionEvents\fP" 8
 These variables indicate that changes to the position and dimension of
