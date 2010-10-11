@@ -286,7 +286,7 @@ AddWindow(Window w, int iconm, IconMgr * iconp)
   else
     tmp_win->showindesktopdisplay = TRUE;
 
-  if (LookInList(Scr->Immutable, tmp_win->full_name, &tmp_win->class)) { 
+  if (LookInList(Scr->Immutable, tmp_win->full_name, &tmp_win->class)) {
     tmp_win->immutable = TRUE;
   } else {
     tmp_win->immutable = FALSE;
