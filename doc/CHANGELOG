@@ -8,6 +8,7 @@ IN CHRONOLOGICAL ORDER FROM MOST RECENT CHANGES TO EARLIEST.
         Seth Robertson - Put in code to cause spammed popup
 	     windows with same parent to be autoplaced in same
 	     location (e.g. Firefox restart password prompts)
+	     Add NoStormPositioning to allow disable.
 
     March 2010
         Eeri Kask + Steve Rader - Allow TitleOffset to fine tune
