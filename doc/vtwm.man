@@ -1332,6 +1332,12 @@ This variable indicates that client window requests to change stacking order
 should be ignored.  If the optional \fIwin-list\fP is given, only requests on
 those windows will be ignored.  This is typically used to prevent applications
 from relentlessly popping themselves to the front of the window stack.
+.IP "\fBNoStormPositioning\fP" 8
+This variable indicates that during a "storm" of window creation by a
+single application which uses window groups, instead of overriding the
+default window positioning code (e.g. random, user selected, pointer
+placement, etc) and placing newer windows on top of older windows, let
+the normal window positioning methods run.
 .IP "\fBNoTitle\fP [{ \fIwin-list\fP }] " 8
 This variable indicates that windows should not have titlebars.  If the
 optional \fIwin-list\fP is given, only those windows will not have titlebars.

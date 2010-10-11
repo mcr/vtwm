@@ -1361,6 +1361,7 @@ InitVariables(void)
   Scr->PauseOnQuit = 0;
 
   Scr->RaiseOnStart = FALSE;
+  Scr->StormPositioning = TRUE;
 }
 
 

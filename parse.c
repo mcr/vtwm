@@ -476,6 +476,7 @@ typedef struct _TwmKeyword
 
 #define kw0_UnzoomToScreen		73
 #define kw0_AutoResizeKeepOnScreen	74
+#define kw0_NoStormPositioning		75
 
 #define kws_IconFont			2
 #define kws_ResizeFont			3
@@ -916,6 +917,7 @@ static TwmKeyword keytable[] = {
   {"north", DKEYWORD, D_NORTH},
   {"nosaveunders", KEYWORD, kw0_NoSaveUnders},
   {"nostackmode", NO_STACKMODE, 0},
+  {"nostormpositioning", KEYWORD, kw0_NoStormPositioning},
   {"notitle", NO_TITLE, 0},
   {"notitlefocus", KEYWORD, kw0_NoTitleFocus},
   {"notitlehighlight", NO_TITLE_HILITE, 0},
@@ -1387,6 +1389,10 @@ do_single_keyword(int keyword)
       Scr->RRScreenSizeChangeRestart = TRUE;
       return 1;
 #endif
+
+    case kw0_NoStormPositioning:
+      Scr->StormPositioning = FALSE;
+      return 1;
   }
 
   return 0;

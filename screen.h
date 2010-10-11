@@ -462,6 +462,7 @@ typedef struct ScreenInfo
     unsigned int NoBorderDecorations:1;
 
     unsigned int RaiseOnStart:1;
+    unsigned int StormPositioning:1;
   } userflags;
 #define NoDefaultMouseOrKeyboardBindings	userflags.NoDefaultMouseOrKeyboardBindings
 #define NoDefaultTitleButtons				userflags.NoDefaultTitleButtons
@@ -500,6 +501,7 @@ typedef struct ScreenInfo
 #define NoIconifyIconManagers				userflags.NoIconifyIconManagers
 #define BackingStore						userflags.BackingStore
 #define SaveUnder							userflags.SaveUnder
+#define StormPositioning						userflags.StormPositioning
 #define RandomPlacement						userflags.RandomPlacement
 #define PointerPlacement						userflags.PointerPlacement
 #define OpaqueMove							userflags.OpaqueMove
