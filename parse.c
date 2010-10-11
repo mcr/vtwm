@@ -392,190 +392,174 @@ typedef struct _TwmKeyword
   int subnum;
 } TwmKeyword;
 
-#define kw0_NoDefaults			1
-#define kw0_AutoRelativeResize		2
-#define kw0_ForceIcons			3
-#define kw0_NoIconManagers		4
-#define kw0_OpaqueMove			5
-#define kw0_InterpolateMenuColors	6
-#define kw0_NoVersion			7
-#define kw0_SortIconManager		8
-#define kw0_NoGrabServer		9
-#define kw0_NoMenuShadows		10
-#define kw0_NoRaiseOnMove		11
-#define kw0_NoRaiseOnResize		12
-#define kw0_NoRaiseOnDeiconify		13
-#define kw0_DontMoveOff			14
-#define kw0_NoBackingStore		15
-#define kw0_NoSaveUnders		16
-#define kw0_RestartPreviousState	17
-#define kw0_ClientBorderWidth		18
-#define kw0_NoTitleFocus		19
-#define kw0_RandomPlacement		20
-#define kw0_DecorateTransients		21
-#define kw0_ShowIconManager		22
-#define kw0_NoCaseSensitive		23
-#define kw0_NoRaiseOnWarp		24
-#define kw0_WarpUnmapped		25
-#define kw0_DeIconifyToScreen           26
-#define kw0_WarpWindows                 27
-#define kw0_SnapRealScreen		28
-#define kw0_NotVirtualGeometries	29
-#define kw0_OldFashionedTwmWindowsMenu 30
-#define kw0_StayUpMenus                32
-#define kw0_NaturalAutopanBehavior     33
-#define kw0_EnhancedExecResources      34
-#define kw0_RightHandSidePulldownMenus 35
-#define kw0_LessRandomZoomZoom         36
-#define kw0_PrettyZoom                 37
-
-#define kw0_NoDefaultTitleButtons            38
-#define kw0_NoDefaultMouseOrKeyboardBindings 39
-
-#define kw0_StickyAbove                      40
-#define kw0_DontInterpolateTitles            41
-#define kw0_FixTransientVirtualGeometries    42
-
-#define kw0_WarpToTransients                 43
-#define kw0_NoIconifyIconManagers            44
-#define kw0_StayUpOptionalMenus              45
-
-#define kw0_WarpSnug                         46
-
-#define kw0_PointerPlacement		47
+#define kw0_NoDefaults				1
+#define kw0_AutoRelativeResize			2
+#define kw0_ForceIcons				3
+#define kw0_NoIconManagers			4
+#define kw0_OpaqueMove				5
+#define kw0_InterpolateMenuColors		6
+#define kw0_NoVersion				7
+#define kw0_SortIconManager			8
+#define kw0_NoGrabServer			9
+#define kw0_NoMenuShadows			10
+#define kw0_NoRaiseOnMove			11
+#define kw0_NoRaiseOnResize			12
+#define kw0_NoRaiseOnDeiconify			13
+#define kw0_DontMoveOff				14
+#define kw0_NoBackingStore			15
+#define kw0_NoSaveUnders			16
+#define kw0_RestartPreviousState		17
+#define kw0_ClientBorderWidth			18
+#define kw0_NoTitleFocus			19
+#define kw0_RandomPlacement			20
+#define kw0_DecorateTransients			21
+#define kw0_ShowIconManager			22
+#define kw0_NoCaseSensitive			23
+#define kw0_NoRaiseOnWarp			24
+#define kw0_WarpUnmapped			25
+#define kw0_DeIconifyToScreen			26
+#define kw0_WarpWindows				27
+#define kw0_SnapRealScreen			28
+#define kw0_NotVirtualGeometries		29
+#define kw0_OldFashionedTwmWindowsMenu		30
+#define kw0_StayUpMenus				32
+#define kw0_NaturalAutopanBehavior		33
+#define kw0_EnhancedExecResources		34
+#define kw0_RightHandSidePulldownMenus		35
+#define kw0_LessRandomZoomZoom			36
+#define kw0_PrettyZoom				37
+#define kw0_NoDefaultTitleButtons		38
+#define kw0_NoDefaultMouseOrKeyboardBindings	39
+#define kw0_StickyAbove				40
+#define kw0_DontInterpolateTitles		41
+#define kw0_FixTransientVirtualGeometries	42
+#define kw0_WarpToTransients			43
+#define kw0_NoIconifyIconManagers		44
+#define kw0_StayUpOptionalMenus			45
+#define kw0_WarpSnug				46
+#define kw0_PointerPlacement			47
 #define kw0_ShallowReliefWindowButton		52
-#define kw0_ButtonColorIsFrame				53
+#define kw0_ButtonColorIsFrame			53
 #define kw0_FixManagedVirtualGeometries		54
-#define kw0_BeNiceToColormap				55
+#define kw0_BeNiceToColormap			55
 #define kw0_VirtualReceivesMotionEvents		56
 #define kw0_VirtualSendsMotionEvents		57
 #define kw0_NoIconManagerFocus			59
 #define kw0_StaticIconPositions			60
-#define kw0_NoPrettyTitles				61
+#define kw0_NoPrettyTitles			61
 #define kw0_DontDeiconifyTransients		62
-#define kw0_WarpVisible			63
-#define kw0_StrictIconManager		64
-#define kw0_ZoomZoom			65
-#define kw0_NoBorderDecorations		66
-#define kw0_RaiseOnStart		67
-
+#define kw0_WarpVisible				63
+#define kw0_StrictIconManager			64
+#define kw0_ZoomZoom				65
+#define kw0_NoBorderDecorations			66
+#define kw0_RaiseOnStart			67
 #ifdef TWM_USE_XFT
-#define kw0_EnableXftFontRenderer	68
+#define kw0_EnableXftFontRenderer		68
 #endif
-
 #ifdef TWM_USE_SLOPPYFOCUS
-#define kw0_SloppyFocus			69
+#define kw0_SloppyFocus				69
 #endif
-
-#define kw0_WarpToLocalTransients	70
-
+#define kw0_WarpToLocalTransients		70
 #ifdef TWM_USE_XRANDR
-#define kw0_RestartOnScreenChangeNotify	71
+#define kw0_RestartOnScreenChangeNotify		71
 #define kw0_RestartOnScreenSizeChangeNotify	72
 #endif
+#define kw0_UnzoomToScreen			73
+#define kw0_AutoResizeKeepOnScreen		74
+#define kw0_NoStormPositioning			75
 
-#define kw0_UnzoomToScreen		73
-#define kw0_AutoResizeKeepOnScreen	74
-#define kw0_NoStormPositioning		75
-
-#define kws_IconFont			2
-#define kws_ResizeFont			3
-#define kws_MenuFont			4
-#define kws_TitleFont			5
-#define kws_IconManagerFont		6
-#define kws_UnknownIcon			7
-#define kws_IconDirectory		8
-#define kws_MaxWindowSize		9
-#define kws_VirtualFont			10
-#define kws_DoorFont			11
-#define kws_MenuTitleFont       12
-
-#define kws_InfoFont			13
-
-#define kws_ResizeRegion		14
-
+#define kws_IconFont				2
+#define kws_ResizeFont				3
+#define kws_MenuFont				4
+#define kws_TitleFont				5
+#define kws_IconManagerFont			6
+#define kws_UnknownIcon				7
+#define kws_IconDirectory			8
+#define kws_MaxWindowSize			9
+#define kws_VirtualFont				10
+#define kws_DoorFont				11
+#define kws_MenuTitleFont			12
+#define kws_InfoFont				13
+#define kws_ResizeRegion			14
 #ifdef SOUND_SUPPORT
-#define kws_SoundHost			15
+#define kws_SoundHost				15
 #endif
+#define kws_DefaultFont				16
 
-#define kws_DefaultFont			16
-
-#define kwn_ConstrainedMoveTime     1
-#define kwn_MoveDelta               2
-#define kwn_XorValue                3
-#define kwn_FramePadding            4
-#define kwn_TitlePadding            5
-#define kwn_ButtonIndent            6
-#define kwn_BorderWidth             7
-#define kwn_IconBorderWidth         8
-#define kwn_TitleButtonBorderWidth  9
-#define kwn_PanDistanceX           10
-#define kwn_PanDistanceY           11
-#define kwn_AutoPan                12
-#define kwn_RaiseDelay             13
-#define kwn_AutoPanBorderWidth     14
-#define kwn_AutoPanExtraWarp       15
-#define kwn_RealScreenBorderWidth  16
-#define kwn_AutoPanWarpWithRespectToRealScreen 17
-#define kwn_ClearBevelContrast		19
-#define kwn_DarkBevelContrast		20
-#define kwn_BorderBevelWidth		21
-#define kwn_IconManagerBevelWidth	22
+#define kwn_ConstrainedMoveTime			1
+#define kwn_MoveDelta				2
+#define kwn_XorValue				3
+#define kwn_FramePadding			4
+#define kwn_TitlePadding			5
+#define kwn_ButtonIndent			6
+#define kwn_BorderWidth				7
+#define kwn_IconBorderWidth			8
+#define kwn_TitleButtonBorderWidth		9
+#define kwn_PanDistanceX			10
+#define kwn_PanDistanceY			11
+#define kwn_AutoPan				12
+#define kwn_RaiseDelay				13
+#define kwn_AutoPanBorderWidth			14
+#define kwn_AutoPanExtraWarp			15
+#define kwn_RealScreenBorderWidth		16
+#define kwn_AutoPanWarpWithRespectToRealScreen	17
+#define kwn_ClearBevelContrast			19
+#define kwn_DarkBevelContrast			20
+#define kwn_BorderBevelWidth			21
+#define kwn_IconManagerBevelWidth		22
 #define kwn_InfoBevelWidth			23
 #define kwn_MenuBevelWidth			24
-#define kwn_TitleBevelWidth		25
+#define kwn_TitleBevelWidth			25
 #define kwn_IconBevelWidth			26
-#define kwn_ButtonBevelWidth		27
-#define kwn_DoorBevelWidth				28
-#define kwn_VirtualDesktopBevelWidth	29
-#define kwn_PanResistance		30
-#define kwn_MenuScrollBorderWidth	31
+#define kwn_ButtonBevelWidth			27
+#define kwn_DoorBevelWidth			28
+#define kwn_VirtualDesktopBevelWidth		29
+#define kwn_PanResistance			30
+#define kwn_MenuScrollBorderWidth		31
 #define kwn_MenuScrollJump			32
 #ifdef SOUND_SUPPORT
-#define kwn_SoundVolume			33
+#define kwn_SoundVolume				33
 #endif
-#define kwn_PauseOnExit			34
-#define kwn_PauseOnQuit			35
-
+#define kwn_PauseOnExit				34
+#define kwn_PauseOnQuit				35
 #ifdef TWM_USE_OPACITY
-#define kwn_MenuOpacity			36
-#define kwn_IconOpacity			37
+#define kwn_MenuOpacity				36
+#define kwn_IconOpacity				37
 #endif
+#define kwn_RecoverStolenFocus			38
 
-#define kwn_RecoverStolenFocus		38
+#define kwcl_BorderColor			1
+#define kwcl_IconManagerHighlight		2
+#define kwcl_BorderTileForeground		3
+#define kwcl_BorderTileBackground		4
+#define kwcl_TitleForeground			5
+#define kwcl_TitleBackground			6
+#define kwcl_IconForeground			7
+#define kwcl_IconBackground			8
+#define kwcl_IconBorderColor			9
+#define kwcl_IconManagerForeground		10
+#define kwcl_IconManagerBackground		11
+#define kwcl_VirtualDesktopBackground		12
+#define kwcl_VirtualDesktopForeground		13
+#define kwcl_VirtualDesktopBorder		14
+#define kwcl_DoorForeground			15
+#define kwcl_DoorBackground			16
 
-#define kwcl_BorderColor		1
-#define kwcl_IconManagerHighlight	2
-#define kwcl_BorderTileForeground	3
-#define kwcl_BorderTileBackground	4
-#define kwcl_TitleForeground		5
-#define kwcl_TitleBackground		6
-#define kwcl_IconForeground		7
-#define kwcl_IconBackground		8
-#define kwcl_IconBorderColor		9
-#define kwcl_IconManagerForeground	10
-#define kwcl_IconManagerBackground	11
-#define kwcl_VirtualDesktopBackground   12
-#define kwcl_VirtualDesktopForeground   13
-#define kwcl_VirtualDesktopBorder	14
-#define kwcl_DoorForeground		15
-#define kwcl_DoorBackground		16
-
-#define kwc_DefaultForeground		1
-#define kwc_DefaultBackground		2
-#define kwc_MenuForeground		3
-#define kwc_MenuBackground		4
-#define kwc_MenuTitleForeground		5
-#define kwc_MenuTitleBackground		6
-#define kwc_MenuShadowColor		7
-#define kwc_VirtualForeground	8
-#define kwc_VirtualBackground	9
+#define kwc_DefaultForeground			1
+#define kwc_DefaultBackground			2
+#define kwc_MenuForeground			3
+#define kwc_MenuBackground			4
+#define kwc_MenuTitleForeground			5
+#define kwc_MenuTitleBackground			6
+#define kwc_MenuShadowColor			7
+#define kwc_VirtualForeground			8
+#define kwc_VirtualBackground			9
 #define kwc_RealScreenBackground		10
 #define kwc_RealScreenForeground		11
 
-#define kwm_Name			LTYPE_NAME
-#define kwm_ResName			LTYPE_RES_NAME
-#define kwm_ResClass			LTYPE_RES_CLASS
+#define kwm_Name				LTYPE_NAME
+#define kwm_ResName				LTYPE_RES_NAME
+#define kwm_ResClass				LTYPE_RES_CLASS
 
 /*
  * The following is sorted alphabetically according to name (which must be
@@ -584,22 +568,17 @@ typedef struct _TwmKeyword
  */
 static TwmKeyword keytable[] = {
   {"all", ALL, 0},
-
-  /* djhjr - 4/26/99 */
   {"appletregion", APPLET_REGION, 0},
-
   {"autopan", NKEYWORD, kwn_AutoPan},
   {"autopanborderwidth", NKEYWORD, kwn_AutoPanBorderWidth},
   {"autopanextrawarp", NKEYWORD, kwn_AutoPanExtraWarp},
-  {"autopanwarpwithrespecttorealscreen", NKEYWORD,
-   kwn_AutoPanWarpWithRespectToRealScreen},
+  {"autopanwarpwithrespecttorealscreen", NKEYWORD, kwn_AutoPanWarpWithRespectToRealScreen},
   {"autoraise", AUTO_RAISE, 0},
   {"autoraisedelay", NKEYWORD, kwn_RaiseDelay},
   {"autorelativeresize", KEYWORD, kw0_AutoRelativeResize},
   {"autoresizekeeponscreen", KEYWORD, kw0_AutoResizeKeepOnScreen},
   {"benicetocolormap", KEYWORD, kw0_BeNiceToColormap},
   {"borderbevelwidth", NKEYWORD, kwn_BorderBevelWidth},
-
   {"bordercolor", CLKEYWORD, kwcl_BorderColor},
   {"bordertilebackground", CLKEYWORD, kwcl_BorderTileBackground},
   {"bordertileforeground", CLKEYWORD, kwcl_BorderTileForeground},
@@ -625,36 +604,27 @@ static TwmKeyword keytable[] = {
   {"defaultfunction", DEFAULT_FUNCTION, 0},
   {"deiconifytoscreen", KEYWORD, kw0_DeIconifyToScreen},
   {"desktop", VIRTUAL_WIN, 0},
-  {"desktopdisplaybackground",
-   CLKEYWORD, kwcl_VirtualDesktopBackground},
-  {"desktopdisplayborder",
-   CLKEYWORD, kwcl_VirtualDesktopBorder},
-  {"desktopdisplayforeground",
-   CLKEYWORD, kwcl_VirtualDesktopForeground},
+  {"desktopdisplaybackground", CLKEYWORD, kwcl_VirtualDesktopBackground},
+  {"desktopdisplayborder", CLKEYWORD, kwcl_VirtualDesktopBorder},
+  {"desktopdisplayforeground", CLKEYWORD, kwcl_VirtualDesktopForeground},
   {"destroy", KILL, 0},
-
   {"dontdeiconifytransients", KEYWORD, kw0_DontDeiconifyTransients},
-
   {"donticonifybyunmapping", DONT_ICONIFY_BY_UNMAPPING, 0},
   {"dontinterpolatetitles", KEYWORD, kw0_DontInterpolateTitles},
   {"dontmoveoff", KEYWORD, kw0_DontMoveOff},
   {"dontshowindisplay", NO_SHOW_IN_DISPLAY, 0},
-
   {"dontshowintwmwindows", NO_SHOW_IN_TWMWINDOWS, 0},
   {"dontshowinvtwmwindows", NO_SHOW_IN_TWMWINDOWS, 0},
-
   {"dontsqueezetitle", DONT_SQUEEZE_TITLE, 0},
   {"door", DOOR, 0},
   {"doorbackground", CLKEYWORD, kwcl_DoorBackground},
-
   {"doorbevelwidth", NKEYWORD, kwn_DoorBevelWidth},
-
   {"doorfont", SKEYWORD, kws_DoorFont},
   {"doorforeground", CLKEYWORD, kwcl_DoorForeground},
   {"doors", DOORS, 0},
   {"east", DKEYWORD, D_EAST},
 #ifdef TWM_USE_XFT
-  {"enablexftfontrenderer", KEYWORD, kw0_EnableXftFontRenderer},
+  {"enablexftfontrenderer", KEYWORD, kw0_EnableXftFontRenderer}, //#ifdef TWM_USE_XFT
 #endif
   {"enhancedexecresources", KEYWORD, kw0_EnhancedExecResources},
   {"f", FRAME, 0},
@@ -664,7 +634,6 @@ static TwmKeyword keytable[] = {
   {"f.beep", FKEYWORD, F_BEEP},
   {"f.bindbuttons", FKEYWORD, F_BINDBUTTONS},
   {"f.bindkeys", FKEYWORD, F_BINDKEYS},
-
   {"f.bottomzoom", FKEYWORD, F_BOTTOMZOOM},
   {"f.circledown", FKEYWORD, F_CIRCLEDOWN},
   {"f.circleup", FKEYWORD, F_CIRCLEUP},
@@ -702,9 +671,7 @@ static TwmKeyword keytable[] = {
   {"f.movescreen", FKEYWORD, F_MOVESCREEN},
   {"f.nail", FKEYWORD, F_NAIL},
   {"f.nailedabove", FKEYWORD, F_STICKYABOVE},
-
   {"f.namedoor", FKEYWORD, F_NAMEDOOR},
-
   {"f.newdoor", FKEYWORD, F_NEWDOOR},
   {"f.nexticonmgr", FKEYWORD, F_NEXTICONMGR},
   {"f.nop", FKEYWORD, F_NOP},
@@ -714,9 +681,7 @@ static TwmKeyword keytable[] = {
   {"f.panleft", FSKEYWORD, F_PANLEFT},
   {"f.panright", FSKEYWORD, F_PANRIGHT},
   {"f.panup", FSKEYWORD, F_PANUP},
-
   {"f.playsound", FSKEYWORD, F_PLAYSOUND},
-
   {"f.previconmgr", FKEYWORD, F_PREVICONMGR},
   {"f.quit", FKEYWORD, F_QUIT},
   {"f.raise", FKEYWORD, F_RAISE},
@@ -729,46 +694,35 @@ static TwmKeyword keytable[] = {
   {"f.rightzoom", FKEYWORD, F_RIGHTZOOM},
   {"f.ring", FKEYWORD, F_RING},
   {"f.saveyourself", FKEYWORD, F_SAVEYOURSELF},
-
   {"f.separator", FKEYWORD, F_SEPARATOR},
-
   {"f.setrealscreen", FSKEYWORD, F_SETREALSCREEN},
   {"f.showdesktopdisplay", FKEYWORD, F_SHOWDESKTOP},
   {"f.showiconmgr", FKEYWORD, F_SHOWLIST},
 #ifdef TWM_USE_SLOPPYFOCUS
-  {"f.sloppyfocus", FKEYWORD, F_SLOPPYFOCUS},
+  {"f.sloppyfocus", FKEYWORD, F_SLOPPYFOCUS}, //#ifdef TWM_USE_SLOPPYFOCUS
 #endif
   {"f.snap", FKEYWORD, F_SNAP},
   {"f.snaprealscreen", FKEYWORD, F_SNAPREALSCREEN},
   {"f.snugdesktop", FKEYWORD, F_SNUGDESKTOP},
   {"f.snugwindow", FKEYWORD, F_SNUGWINDOW},
   {"f.sorticonmgr", FKEYWORD, F_SORTICONMGR},
-
 #ifdef SOUND_SUPPORT
-  {"f.sounds", FKEYWORD, F_SOUNDS},
+  {"f.sounds", FKEYWORD, F_SOUNDS}, //#ifdef SOUND_SUPPORT
 #endif
-
   {"f.source", FSKEYWORD, F_BEEP},	/* XXX - don't work */
   {"f.squeezecenter", FKEYWORD, F_SQUEEZECENTER},
   {"f.squeezeleft", FKEYWORD, F_SQUEEZELEFT},
   {"f.squeezeright", FKEYWORD, F_SQUEEZERIGHT},
-
   {"f.startwm", FSKEYWORD, F_STARTWM},
-
   {"f.staticiconpositions", FKEYWORD, F_STATICICONPOSITIONS},
-
   {"f.stick", FKEYWORD, F_NAIL},
   {"f.stickyabove", FKEYWORD, F_STICKYABOVE},
-
   {"f.stricticonmgr", FKEYWORD, F_STRICTICONMGR},
-
   {"f.title", FKEYWORD, F_TITLE},
   {"f.topzoom", FKEYWORD, F_TOPZOOM},
   {"f.twmrc", FKEYWORD, F_RESTART},
-
   {"f.unbindbuttons", FKEYWORD, F_UNBINDBUTTONS},
   {"f.unbindkeys", FKEYWORD, F_UNBINDKEYS},
-
   {"f.unfocus", FKEYWORD, F_UNFOCUS},
   {"f.upiconmgr", FKEYWORD, F_UPICONMGR},
   {"f.version", FKEYWORD, F_VERSION},
@@ -779,24 +733,17 @@ static TwmKeyword keytable[] = {
   {"f.warpclassnext", FSKEYWORD, F_WARPCLASSNEXT},
   {"f.warpclassprev", FSKEYWORD, F_WARPCLASSPREV},
   {"f.warpring", FSKEYWORD, F_WARPRING},
-
   {"f.warpsnug", FKEYWORD, F_WARPSNUG},
-
   {"f.warpto", FSKEYWORD, F_WARPTO},
   {"f.warptoiconmgr", FSKEYWORD, F_WARPTOICONMGR},
   {"f.warptonewest", FKEYWORD, F_WARPTONEWEST},
   {"f.warptoscreen", FSKEYWORD, F_WARPTOSCREEN},
-
   {"f.warpvisible", FKEYWORD, F_WARPVISIBLE},
-
   {"f.winrefresh", FKEYWORD, F_WINREFRESH},
   {"f.zoom", FKEYWORD, F_ZOOM},
   {"f.zoomzoom", FKEYWORD, F_ZOOMZOOM},
-
   {"fixmanagedvirtualgeometries", KEYWORD, kw0_FixManagedVirtualGeometries},
-
-  {"fixtransientvirtualgeometries", KEYWORD,
-   kw0_FixTransientVirtualGeometries},
+  {"fixtransientvirtualgeometries", KEYWORD, kw0_FixTransientVirtualGeometries},
   {"forceicons", KEYWORD, kw0_ForceIcons},
   {"frame", FRAME, 0},
   {"framepadding", NKEYWORD, kwn_FramePadding},
@@ -804,9 +751,7 @@ static TwmKeyword keytable[] = {
   {"i", ICON, 0},
   {"icon", ICON, 0},
   {"iconbackground", CLKEYWORD, kwcl_IconBackground},
-
   {"iconbevelwidth", NKEYWORD, kwn_IconBevelWidth},
-
   {"iconbordercolor", CLKEYWORD, kwcl_IconBorderColor},
   {"iconborderwidth", NKEYWORD, kwn_IconBorderWidth},
   {"icondirectory", SKEYWORD, kws_IconDirectory},
@@ -814,34 +759,25 @@ static TwmKeyword keytable[] = {
   {"iconforeground", CLKEYWORD, kwcl_IconForeground},
   {"iconifybyunmapping", ICONIFY_BY_UNMAPPING, 0},
   {"iconmanagerbackground", CLKEYWORD, kwcl_IconManagerBackground},
-
   {"iconmanagerbevelwidth", NKEYWORD, kwn_IconManagerBevelWidth},
-
   {"iconmanagerdontshow", ICONMGR_NOSHOW, 0},
   {"iconmanagerfont", SKEYWORD, kws_IconManagerFont},
   {"iconmanagerforeground", CLKEYWORD, kwcl_IconManagerForeground},
   {"iconmanagergeometry", ICONMGR_GEOMETRY, 0},
   {"iconmanagerhighlight", CLKEYWORD, kwcl_IconManagerHighlight},
-
   {"iconmanagerpixmap", ICONMGRICONMAP, 0},
-
   {"iconmanagers", ICONMGRS, 0},
   {"iconmanagershow", ICONMGR_SHOW, 0},
   {"iconmgr", ICONMGR, 0},
 #ifdef TWM_USE_OPACITY
-  {"iconopacity", NKEYWORD, kwn_IconOpacity},
+  {"iconopacity", NKEYWORD, kwn_IconOpacity}, //#ifdef TWM_USE_OPACITY
 #endif
   {"iconregion", ICON_REGION, 0},
   {"icons", ICONS, 0},
-
   {"ignoremodifiers", IGNORE_MODS, 0},
-
   {"immutable", IMMUTABLE, 0},
-
   {"infobevelwidth", NKEYWORD, kwn_InfoBevelWidth},
-
   {"infofont", SKEYWORD, kws_InfoFont},
-
   {"interpolatemenucolors", KEYWORD, kw0_InterpolateMenuColors},
   {"l", LOCK, 0},
   {"left", JKEYWORD, J_LEFT},
@@ -853,20 +789,15 @@ static TwmKeyword keytable[] = {
   {"maxwindowsize", SKEYWORD, kws_MaxWindowSize},
   {"menu", MENU, 0},
   {"menubackground", CKEYWORD, kwc_MenuBackground},
-
   {"menubevelwidth", NKEYWORD, kwn_MenuBevelWidth},
-
   {"menufont", SKEYWORD, kws_MenuFont},
   {"menuforeground", CKEYWORD, kwc_MenuForeground},
-
   {"menuiconpixmap", MENUICONMAP, 0},
-
 #ifdef TWM_USE_OPACITY
-  {"menuopacity", NKEYWORD, kwn_MenuOpacity},
+  {"menuopacity", NKEYWORD, kwn_MenuOpacity}, //#ifdef TWM_USE_OPACITY
 #endif
   {"menuscrollborderwidth", NKEYWORD, kwn_MenuScrollBorderWidth},
   {"menuscrolljump", NKEYWORD, kwn_MenuScrollJump},
-
   {"menushadowcolor", CKEYWORD, kwc_MenuShadowColor},
   {"menutitlebackground", CKEYWORD, kwc_MenuTitleBackground},
   {"menutitlefont", SKEYWORD, kws_MenuTitleFont},
@@ -878,38 +809,25 @@ static TwmKeyword keytable[] = {
   {"movedelta", NKEYWORD, kwn_MoveDelta},
   {"nailedabove", KEYWORD, kw0_StickyAbove},
   {"naileddown", NAILEDDOWN, 0},
-
   {"name", MKEYWORD, kwm_Name},
-
-  {"naturalautopanbehavior", KEYWORD,
-   kw0_NaturalAutopanBehavior},
+  {"naturalautopanbehavior", KEYWORD, kw0_NaturalAutopanBehavior},
   {"nobackingstore", KEYWORD, kw0_NoBackingStore},
-
   {"noborder", NO_BORDER, 0},
-
   {"noborderdecorations", KEYWORD, kw0_NoBorderDecorations},
-
   {"nocasesensitive", KEYWORD, kw0_NoCaseSensitive},
-  {"nodefaultmouseorkeyboardbindings", KEYWORD,
-   kw0_NoDefaultMouseOrKeyboardBindings},
+  {"nodefaultmouseorkeyboardbindings", KEYWORD, kw0_NoDefaultMouseOrKeyboardBindings},
   {"nodefaults", KEYWORD, kw0_NoDefaults},
   {"nodefaulttitlebuttons", KEYWORD, kw0_NoDefaultTitleButtons},
   {"nograbserver", KEYWORD, kw0_NoGrabServer},
   {"nohighlight", NO_HILITE, 0},
   {"noiconifyiconmanagers", KEYWORD, kw0_NoIconifyIconManagers},
-
   {"noiconmanagerfocus", KEYWORD, kw0_NoIconManagerFocus},
-
   {"noiconmanagerhighlight", NO_ICONMGR_HILITE, 0},
-
   {"noiconmanagers", KEYWORD, kw0_NoIconManagers},
   {"nomenushadows", KEYWORD, kw0_NoMenuShadows},
-
   {"noopaquemove", NO_OPAQUE_MOVE, 0},
   {"noopaqueresize", NO_OPAQUE_RESIZE, 0},
-
   {"noprettytitles", KEYWORD, kw0_NoPrettyTitles},
-
   {"noraiseondeiconify", KEYWORD, kw0_NoRaiseOnDeiconify},
   {"noraiseonmove", KEYWORD, kw0_NoRaiseOnMove},
   {"noraiseonresize", KEYWORD, kw0_NoRaiseOnResize},
@@ -923,55 +841,36 @@ static TwmKeyword keytable[] = {
   {"notitlehighlight", NO_TITLE_HILITE, 0},
   {"notvirtualgeometries", KEYWORD, kw0_NotVirtualGeometries},
   {"noversion", KEYWORD, kw0_NoVersion},
-
   {"nowindowring", NO_WINDOW_RING, 0},
-
-  {"oldfashionedtwmwindowsmenu", KEYWORD,
-   kw0_OldFashionedTwmWindowsMenu},
-
-  {"oldfashionedvtwmwindowsmenu", KEYWORD,
-   kw0_OldFashionedTwmWindowsMenu},
-
+  {"oldfashionedtwmwindowsmenu", KEYWORD, kw0_OldFashionedTwmWindowsMenu},
+  {"oldfashionedvtwmwindowsmenu", KEYWORD, kw0_OldFashionedTwmWindowsMenu},
   {"opaquemove", OPAQUE_MOVE, 0},
-
   {"opaqueresize", OPAQUE_RESIZE, 0},
-
   {"pandistancex", NKEYWORD, kwn_PanDistanceX},
   {"pandistancey", NKEYWORD, kwn_PanDistanceY},
-
   {"panresistance", NKEYWORD, kwn_PanResistance},
-
   {"pauseonexit", NKEYWORD, kwn_PauseOnExit},
   {"pauseonquit", NKEYWORD, kwn_PauseOnQuit},
-
   {"pixmaps", PIXMAPS, 0},
   {"pointerplacement", KEYWORD, kw0_PointerPlacement},
   {"prettyzoom", KEYWORD, kw0_PrettyZoom},
   {"r", ROOT, 0},
   {"raisedelay", NKEYWORD, kwn_RaiseDelay},
-
   {"raiseonstart", KEYWORD, kw0_RaiseOnStart},
-
   {"randomplacement", KEYWORD, kw0_RandomPlacement},
   {"realscreenbackground", CKEYWORD, kwc_RealScreenBackground},
   {"realscreenborderwidth", NKEYWORD, kwn_RealScreenBorderWidth},
   {"realscreenforeground", CKEYWORD, kwc_RealScreenForeground},
   {"realscreenpixmap", REALSCREENMAP, 0},
-
   {"recoverstolenfocus", NKEYWORD, kwn_RecoverStolenFocus},
-
   {"resclass", MKEYWORD, kwm_ResClass},
-
   {"resize", RESIZE, 0},
   {"resizefont", SKEYWORD, kws_ResizeFont},
-
   {"resizeregion", SKEYWORD, kws_ResizeRegion},
-
   {"resname", MKEYWORD, kwm_ResName},
-
 #ifdef TWM_USE_XRANDR
-  {"restartonscreenchangenotify", KEYWORD, kw0_RestartOnScreenChangeNotify},
-  {"restartonscreensizechangenotify", KEYWORD, kw0_RestartOnScreenSizeChangeNotify},
+  {"restartonscreenchangenotify", KEYWORD, kw0_RestartOnScreenChangeNotify}, //#ifdef TWM_USE_XRANDR
+  {"restartonscreensizechangenotify", KEYWORD, kw0_RestartOnScreenSizeChangeNotify}, //#ifdef TWM_USE_XRANDR
 #endif
   {"restartpreviousstate", KEYWORD, kw0_RestartPreviousState},
   {"rhspulldownmenus", KEYWORD, kw0_RightHandSidePulldownMenus},
@@ -982,45 +881,33 @@ static TwmKeyword keytable[] = {
   {"s", SHIFT, 0},
   {"savecolor", SAVECOLOR, 0},
   {"select", SELECT, 0},
-
   {"shallowreliefwindowbutton", KEYWORD, kw0_ShallowReliefWindowButton},
-
   {"shift", SHIFT, 0},
   {"showiconmanager", KEYWORD, kw0_ShowIconManager},
 #ifdef TWM_USE_SLOPPYFOCUS
-  {"sloppyfocus", KEYWORD, kw0_SloppyFocus},
+  {"sloppyfocus", KEYWORD, kw0_SloppyFocus}, //#ifdef TWM_USE_SLOPPYFOCUS
 #endif
   {"snaprealscreen", KEYWORD, kw0_SnapRealScreen},
   {"sorticonmanager", KEYWORD, kw0_SortIconManager},
-
 #ifdef SOUND_SUPPORT
-  {"soundhost", SKEYWORD, kws_SoundHost},
-  {"sounds", SOUNDS, 0},
-  {"soundvolume", NKEYWORD, kwn_SoundVolume},
+  {"soundhost", SKEYWORD, kws_SoundHost}, //#ifdef SOUND_SUPPORT
+  {"sounds", SOUNDS, 0}, //#ifdef SOUND_SUPPORT
+  {"soundvolume", NKEYWORD, kwn_SoundVolume}, //#ifdef SOUND_SUPPORT
 #endif
-
   {"south", DKEYWORD, D_SOUTH},
   {"squeezetitle", SQUEEZE_TITLE, 0},
   {"starticonified", START_ICONIFIED, 0},
-
   {"staticiconpositions", KEYWORD, kw0_StaticIconPositions},
-
   {"stayupmenus", KEYWORD, kw0_StayUpMenus},
   {"stayupoptionalmenus", KEYWORD, kw0_StayUpOptionalMenus},
   {"sticky", NAILEDDOWN, 0},
   {"stickyabove", KEYWORD, kw0_StickyAbove},
-
   {"stricticonmanager", KEYWORD, kw0_StrictIconManager},
-
   {"t", TITLE, 0},
-
   {"textoffsets", TEXTOFFSETS, 0},
-
   {"title", TITLE, 0},
   {"titlebackground", CLKEYWORD, kwcl_TitleBackground},
-
   {"titlebevelwidth", NKEYWORD, kwn_TitleBevelWidth},
-
   {"titlebuttonborderwidth", NKEYWORD, kwn_TitleButtonBorderWidth},
   {"titlefont", SKEYWORD, kws_TitleFont},
   {"titleforeground", CLKEYWORD, kwcl_TitleForeground},
@@ -1034,30 +921,20 @@ static TwmKeyword keytable[] = {
   {"virtualbackground", CKEYWORD, kwc_VirtualBackground},
   {"virtualbackgroundpixmap", VIRTUALMAP, 0},
   {"virtualdesktop", VIRTUALDESKTOP, 0},
-
   {"virtualdesktopbevelwidth", NKEYWORD, kwn_VirtualDesktopBevelWidth},
-
   {"virtualdesktopfont", SKEYWORD, kws_VirtualFont},
   {"virtualforeground", CKEYWORD, kwc_VirtualForeground},
-
-  {"virtualreceivesmotionevents", KEYWORD,
-   kw0_VirtualReceivesMotionEvents},
-  {"virtualsendsmotionevents", KEYWORD,
-   kw0_VirtualSendsMotionEvents},
-
+  {"virtualreceivesmotionevents", KEYWORD, kw0_VirtualReceivesMotionEvents},
+  {"virtualsendsmotionevents", KEYWORD, kw0_VirtualSendsMotionEvents},
   {"w", WINDOW, 0},
   {"wait", WAIT, 0},
-
   {"warpcentered", WARP_CENTERED, 0},
-
   {"warpcursor", WARP_CURSOR, 0},
   {"warpsnug", KEYWORD, kw0_WarpSnug},
   {"warptolocaltransients", KEYWORD, kw0_WarpToLocalTransients},
   {"warptotransients", KEYWORD, kw0_WarpToTransients},
   {"warpunmapped", KEYWORD, kw0_WarpUnmapped},
-
   {"warpvisible", KEYWORD, kw0_WarpVisible},
-
   {"warpwindows", KEYWORD, kw0_WarpWindows},
   {"west", DKEYWORD, D_WEST},
   {"window", WINDOW, 0},
@@ -1065,9 +942,7 @@ static TwmKeyword keytable[] = {
   {"windowring", WINDOW_RING, 0},
   {"xorvalue", NKEYWORD, kwn_XorValue},
   {"zoom", ZOOM, 0},
-
   {"zoomstate", ZOOMSTATE, 0},
-
   {"zoomzoom", KEYWORD, kw0_ZoomZoom},
 };
 

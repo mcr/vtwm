@@ -359,215 +359,165 @@ typedef struct ScreenInfo
 
   struct
   {
+    unsigned int AutoRaiseDefault:1;
+    unsigned int AutoRelativeResize:1;
+    unsigned int BackingStore:1;
+    unsigned int BeNiceToColormap:1;
+    unsigned int ButtonColorIsFrame:1;
+    unsigned int CaseSensitive:1;
+    unsigned int ClientBorderWidth:1;
+    unsigned int DeIconifyToScreen:1;
+    unsigned int DecorateTransients:1;
+    unsigned int DoZoom:1;
+    unsigned int DontDeiconifyTransients:1;
+    unsigned int DontInterpolateTitles:1;
+    unsigned int DontMoveOff:1;
+    unsigned int EnhancedExecResources:1;
+    unsigned int FirstTime:1;
+    unsigned int FixManagedVirtualGeometries:1;
+    unsigned int FixTransientVirtualGeometries:1;
+    unsigned int ForceIcon:1;
+    unsigned int GeometriesAreVirtual:1;
+    unsigned int HaveFonts:1;
+    unsigned int Highlight:1;
+    unsigned int IconManagerDontShow:1;
+    unsigned int IconManagerFocus:1;
+    unsigned int IconMgrHighlight:1;
+    unsigned int IconifyByUnmapping:1;
+    unsigned int InterpolateMenuColors:1;
+    unsigned int LessRandomZoomZoom:1;
+    unsigned int NamesInVirtualDesktop:1;
+    unsigned int NoBorderDecorations:1;
+    unsigned int NoBorders:1;
     unsigned int NoDefaultMouseOrKeyboardBindings:1;
     unsigned int NoDefaultTitleButtons:1;
-    unsigned int UsePPosition:2;
-    unsigned int OldFashionedTwmWindowsMenu:1;
-    unsigned int AutoRelativeResize:1;
-
-    unsigned int WarpCentered:2;
-
-    unsigned int WarpCursor:1;
-    unsigned int ForceIcon:1;
     unsigned int NoGrabServer:1;
+    unsigned int NoIconManagers:1;
+    unsigned int NoIconifyIconManagers:1;
+    unsigned int NoPrettyTitles:1;
+    unsigned int NoRaiseDeicon:1;
     unsigned int NoRaiseMove:1;
     unsigned int NoRaiseResize:1;
-    unsigned int NoRaiseDeicon:1;
     unsigned int NoRaiseWarp:1;
-    unsigned int DontMoveOff:1;
-    unsigned int DoZoom:1;
-    unsigned int TitleFocus:1;
-
-    unsigned int IconManagerFocus:1;
-
-    unsigned int StaticIconPositions:1;
-
-    unsigned int StrictIconManager:1;
-
-    unsigned int NoBorders:1;
-
     unsigned int NoTitlebar:1;
-    unsigned int DecorateTransients:1;
-    unsigned int IconifyByUnmapping:1;
-    unsigned int ShowIconManager:1;
-    unsigned int IconManagerDontShow:1;
-    unsigned int NoIconifyIconManagers:1;
-    unsigned int BackingStore:1;
-    unsigned int SaveUnder:1;
-    unsigned int RandomPlacement:1;
-    unsigned int PointerPlacement:1;
+    unsigned int OldFashionedTwmWindowsMenu:1;
     unsigned int OpaqueMove:1;
-
     unsigned int OpaqueResize:1;
-
-    unsigned int Highlight:1;
-
-    unsigned int IconMgrHighlight:1;
-
-    unsigned int StackMode:1;
-    unsigned int TitleHighlight:1;
-    unsigned int SortIconMgr:1;
+    unsigned int PointerPlacement:1;
+    unsigned int PrettyZoom:1;
+    unsigned int RaiseOnStart:1;
+    unsigned int RandomPlacement:1;
+    unsigned int RightHandSidePulldownMenus:1;
+    unsigned int SaveUnder:1;
     unsigned int Shadow:1;
-    unsigned int InterpolateMenuColors:1;
-    unsigned int NoIconManagers:1;
-    unsigned int ClientBorderWidth:1;
-    unsigned int HaveFonts:1;
-    unsigned int FirstTime:1;
-    unsigned int CaseSensitive:1;
-    unsigned int WarpUnmapped:1;
-    unsigned int DeIconifyToScreen:1;
-    unsigned int UnzoomToScreen:1;
-    unsigned int WarpWindows:1;
-    unsigned int snapRealScreen:1;
-    unsigned int GeometriesAreVirtual:1;
-    unsigned int Virtual:1;
-    unsigned int NamesInVirtualDesktop:1;
-    unsigned int AutoRaiseDefault:1;
-    unsigned int UseWindowRing:1;
+    unsigned int ShallowReliefWindowButton:2;
+    unsigned int ShowIconManager:1;
+    unsigned int SortIconMgr:1;
+    unsigned int StackMode:1;
+    unsigned int StaticIconPositions:1;
     unsigned int StayUpMenus:1;
     unsigned int StayUpOptionalMenus:1;
-    unsigned int WarpToTransients:1;
-    unsigned int WarpToLocalTransients:1;
-    unsigned int EnhancedExecResources:1;
-    unsigned int RightHandSidePulldownMenus:1;
-    unsigned int LessRandomZoomZoom:1;
-    unsigned int PrettyZoom:1;
     unsigned int StickyAbove:1;
-    unsigned int DontInterpolateTitles:1;
-
-    /* djhjr - 1/6/98 */
-    unsigned int FixManagedVirtualGeometries:1;
-
-    unsigned int FixTransientVirtualGeometries:1;
-    unsigned int WarpSnug:1;
-    unsigned int ShallowReliefWindowButton:2;
-
-
-    unsigned int BeNiceToColormap:1;
-
-    /* for rader - djhjr - 2/9/99 */
-    unsigned int NoPrettyTitles:1;
-
-    unsigned int ButtonColorIsFrame:1;
-
+    unsigned int StormPositioning:1;
+    unsigned int StrictIconManager:1;
+    unsigned int TitleFocus:1;
+    unsigned int TitleHighlight:1;
+    unsigned int UnzoomToScreen:1;
+    unsigned int UsePPosition:2;
+    unsigned int UseWindowRing:1;
+    unsigned int Virtual:1;
     unsigned int VirtualReceivesMotionEvents:1;
     unsigned int VirtualSendsMotionEvents:1;
-
-    unsigned int DontDeiconifyTransients:1;
-
+    unsigned int WarpCentered:2;
+    unsigned int WarpCursor:1;
+    unsigned int WarpSnug:1;
+    unsigned int WarpToLocalTransients:1;
+    unsigned int WarpToTransients:1;
+    unsigned int WarpUnmapped:1;
     unsigned int WarpVisible:1;
-
+    unsigned int WarpWindows:1;
     unsigned int ZoomZoom:1;
-
-    unsigned int NoBorderDecorations:1;
-
-    unsigned int RaiseOnStart:1;
-    unsigned int StormPositioning:1;
+    unsigned int snapRealScreen:1;
   } userflags;
-#define NoDefaultMouseOrKeyboardBindings	userflags.NoDefaultMouseOrKeyboardBindings
-#define NoDefaultTitleButtons				userflags.NoDefaultTitleButtons
-#define UsePPosition						userflags.UsePPosition
-#define OldFashionedTwmWindowsMenu			userflags.OldFashionedTwmWindowsMenu
-
-
-#define AutoRelativeResize					userflags.AutoRelativeResize
-
-#define WarpCentered							userflags.WarpCentered
-
-#define WarpCursor							userflags.WarpCursor
-#define ForceIcon							userflags.ForceIcon
-#define NoGrabServer						userflags.NoGrabServer
-#define NoRaiseMove							userflags.NoRaiseMove
-#define NoRaiseResize						userflags.NoRaiseResize
-#define NoRaiseDeicon						userflags.NoRaiseDeicon
-#define NoRaiseWarp							userflags.NoRaiseWarp
-#define DontMoveOff							userflags.DontMoveOff
-#define DoZoom								userflags.DoZoom
-#define TitleFocus							userflags.TitleFocus
-
-#define IconManagerFocus					userflags.IconManagerFocus
-
-#define StaticIconPositions					userflags.StaticIconPositions
-
-#define StrictIconManager					userflags.StrictIconManager
-
-#define NoBorders						userflags.NoBorders
-
-#define NoTitlebar							userflags.NoTitlebar
-#define DecorateTransients					userflags.DecorateTransients
-#define IconifyByUnmapping					userflags.IconifyByUnmapping
-#define ShowIconManager						userflags.ShowIconManager
-#define IconManagerDontShow					userflags.IconManagerDontShow
-#define NoIconifyIconManagers				userflags.NoIconifyIconManagers
-#define BackingStore						userflags.BackingStore
-#define SaveUnder							userflags.SaveUnder
-#define StormPositioning						userflags.StormPositioning
-#define RandomPlacement						userflags.RandomPlacement
-#define PointerPlacement						userflags.PointerPlacement
-#define OpaqueMove							userflags.OpaqueMove
-
-#define OpaqueResize						userflags.OpaqueResize
-
-#define Highlight							userflags.Highlight
-
-#define IconMgrHighlight					userflags.IconMgrHighlight
-
-#define StackMode							userflags.StackMode
-#define TitleHighlight						userflags.TitleHighlight
-#define SortIconMgr							userflags.SortIconMgr
-#define Shadow								userflags.Shadow
-#define InterpolateMenuColors				userflags.InterpolateMenuColors
-#define NoIconManagers						userflags.NoIconManagers
-#define ClientBorderWidth					userflags.ClientBorderWidth
-#define HaveFonts							userflags.HaveFonts
-#define FirstTime							userflags.FirstTime
-#define CaseSensitive						userflags.CaseSensitive
-#define WarpUnmapped						userflags.WarpUnmapped
-#define DeIconifyToScreen					userflags.DeIconifyToScreen
-#define UnzoomToScreen						userflags.UnzoomToScreen
-#define WarpWindows							userflags.WarpWindows
-#define snapRealScreen						userflags.snapRealScreen
-#define GeometriesAreVirtual				userflags.GeometriesAreVirtual
-#define Virtual								userflags.Virtual
-#define NamesInVirtualDesktop				userflags.NamesInVirtualDesktop
-#define AutoRaiseDefault					userflags.AutoRaiseDefault
-#define UseWindowRing						userflags.UseWindowRing
-#define StayUpMenus							userflags.StayUpMenus
-#define StayUpOptionalMenus					userflags.StayUpOptionalMenus
-#define WarpToTransients					userflags.WarpToTransients
-#define WarpToLocalTransients					userflags.WarpToLocalTransients
-#define EnhancedExecResources				userflags.EnhancedExecResources
-#define RightHandSidePulldownMenus			userflags.RightHandSidePulldownMenus
-#define LessRandomZoomZoom					userflags.LessRandomZoomZoom
-#define PrettyZoom							userflags.PrettyZoom
-#define StickyAbove							userflags.StickyAbove
-#define DontInterpolateTitles				userflags.DontInterpolateTitles
-
-#define FixManagedVirtualGeometries			userflags.FixManagedVirtualGeometries
-
+#define AutoRaiseDefault			userflags.AutoRaiseDefault
+#define AutoRelativeResize			userflags.AutoRelativeResize
+#define BackingStore				userflags.BackingStore
+#define BeNiceToColormap			userflags.BeNiceToColormap
+#define ButtonColorIsFrame			userflags.ButtonColorIsFrame
+#define CaseSensitive				userflags.CaseSensitive
+#define ClientBorderWidth			userflags.ClientBorderWidth
+#define DeIconifyToScreen			userflags.DeIconifyToScreen
+#define DecorateTransients			userflags.DecorateTransients
+#define DoZoom					userflags.DoZoom
+#define DontDeiconifyTransients			userflags.DontDeiconifyTransients
+#define DontInterpolateTitles			userflags.DontInterpolateTitles
+#define DontMoveOff				userflags.DontMoveOff
+#define EnhancedExecResources			userflags.EnhancedExecResources
+#define FirstTime				userflags.FirstTime
+#define FixManagedVirtualGeometries		userflags.FixManagedVirtualGeometries
 #define FixTransientVirtualGeometries		userflags.FixTransientVirtualGeometries
-#define WarpSnug							userflags.WarpSnug
-#define ShallowReliefWindowButton			userflags.ShallowReliefWindowButton
-
-
-#define BeNiceToColormap					userflags.BeNiceToColormap
-
-#define NoPrettyTitles						userflags.NoPrettyTitles
-
-#define ButtonColorIsFrame					userflags.ButtonColorIsFrame
-
-#define VirtualReceivesMotionEvents			userflags.VirtualReceivesMotionEvents
-#define VirtualSendsMotionEvents			userflags.VirtualSendsMotionEvents
-
-#define DontDeiconifyTransients				userflags.DontDeiconifyTransients
-
-#define WarpVisible							userflags.WarpVisible
-
-#define ZoomZoom					userflags.ZoomZoom
-
-#define NoBorderDecorations				userflags.NoBorderDecorations
-
-#define RaiseOnStart					userflags.RaiseOnStart
+#define ForceIcon				userflags.ForceIcon
+#define GeometriesAreVirtual			userflags.GeometriesAreVirtual
+#define HaveFonts				userflags.HaveFonts
+#define Highlight				userflags.Highlight
+#define IconManagerDontShow			userflags.IconManagerDontShow
+#define IconManagerFocus			userflags.IconManagerFocus
+#define IconMgrHighlight			userflags.IconMgrHighlight
+#define IconifyByUnmapping			userflags.IconifyByUnmapping
+#define InterpolateMenuColors			userflags.InterpolateMenuColors
+#define LessRandomZoomZoom			userflags.LessRandomZoomZoom
+#define NamesInVirtualDesktop			userflags.NamesInVirtualDesktop
+#define NoBorderDecorations			userflags.NoBorderDecorations
+#define NoBorders				userflags.NoBorders
+#define NoDefaultMouseOrKeyboardBindings	userflags.NoDefaultMouseOrKeyboardBindings
+#define NoDefaultTitleButtons			userflags.NoDefaultTitleButtons
+#define NoGrabServer				userflags.NoGrabServer
+#define NoIconManagers				userflags.NoIconManagers
+#define NoIconifyIconManagers			userflags.NoIconifyIconManagers
+#define NoPrettyTitles				userflags.NoPrettyTitles
+#define NoRaiseDeicon				userflags.NoRaiseDeicon
+#define NoRaiseMove				userflags.NoRaiseMove
+#define NoRaiseResize				userflags.NoRaiseResize
+#define NoRaiseWarp				userflags.NoRaiseWarp
+#define NoTitlebar				userflags.NoTitlebar
+#define OldFashionedTwmWindowsMenu		userflags.OldFashionedTwmWindowsMenu
+#define OpaqueMove				userflags.OpaqueMove
+#define OpaqueResize				userflags.OpaqueResize
+#define PointerPlacement			userflags.PointerPlacement
+#define PrettyZoom				userflags.PrettyZoom
+#define RaiseOnStart				userflags.RaiseOnStart
+#define RandomPlacement				userflags.RandomPlacement
+#define RightHandSidePulldownMenus		userflags.RightHandSidePulldownMenus
+#define SaveUnder				userflags.SaveUnder
+#define Shadow					userflags.Shadow
+#define ShallowReliefWindowButton		userflags.ShallowReliefWindowButton
+#define ShowIconManager				userflags.ShowIconManager
+#define SortIconMgr				userflags.SortIconMgr
+#define StackMode				userflags.StackMode
+#define StaticIconPositions			userflags.StaticIconPositions
+#define StayUpMenus				userflags.StayUpMenus
+#define StayUpOptionalMenus			userflags.StayUpOptionalMenus
+#define StickyAbove				userflags.StickyAbove
+#define StormPositioning			userflags.StormPositioning
+#define StrictIconManager			userflags.StrictIconManager
+#define TitleFocus				userflags.TitleFocus
+#define TitleHighlight				userflags.TitleHighlight
+#define UnzoomToScreen				userflags.UnzoomToScreen
+#define UsePPosition				userflags.UsePPosition
+#define UseWindowRing				userflags.UseWindowRing
+#define Virtual					userflags.Virtual
+#define VirtualReceivesMotionEvents		userflags.VirtualReceivesMotionEvents
+#define VirtualSendsMotionEvents		userflags.VirtualSendsMotionEvents
+#define WarpCentered				userflags.WarpCentered
+#define WarpCursor				userflags.WarpCursor
+#define WarpSnug				userflags.WarpSnug
+#define WarpToLocalTransients			userflags.WarpToLocalTransients
+#define WarpToTransients			userflags.WarpToTransients
+#define WarpUnmapped				userflags.WarpUnmapped
+#define WarpVisible				userflags.WarpVisible
+#define WarpWindows				userflags.WarpWindows
+#define ZoomZoom				userflags.ZoomZoom
+#define snapRealScreen				userflags.snapRealScreen
 
   int IgnoreModifiers;		/* binding modifiers to ignore */
 
