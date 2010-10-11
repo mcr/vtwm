@@ -796,7 +796,9 @@ ConstrainSize(TwmWindow * tmp_win, int *widthp, int *heightp)
     minHeight = tmp_win->hints.base_height;
   }
   else
+  {
     minWidth = minHeight = 1;
+  }
 
   if (resize_context == C_VIRTUAL_WIN)
   {
@@ -815,7 +817,9 @@ ConstrainSize(TwmWindow * tmp_win, int *widthp, int *heightp)
     baseHeight = tmp_win->hints.min_height;
   }
   else
+  {
     baseWidth = baseHeight = 0;
+  }
 
   if (resize_context == C_VIRTUAL_WIN)
   {
@@ -846,7 +850,9 @@ ConstrainSize(TwmWindow * tmp_win, int *widthp, int *heightp)
     yinc = tmp_win->hints.height_inc;
   }
   else
+  {
     xinc = yinc = 1;
+  }
 
   if (resize_context == C_VIRTUAL_WIN)
   {
@@ -867,13 +873,11 @@ ConstrainSize(TwmWindow * tmp_win, int *widthp, int *heightp)
   if (dheight > maxHeight)
     dheight = maxHeight;
 
-
   /*
    * Second, fit to base + N * inc
    */
   dwidth = ((dwidth - baseWidth) / xinc * xinc) + baseWidth;
   dheight = ((dheight - baseHeight) / yinc * yinc) + baseHeight;
-
 
   /*
    * Third, adjust for aspect ratio
@@ -932,7 +936,6 @@ ConstrainSize(TwmWindow * tmp_win, int *widthp, int *heightp)
    */
   *widthp = dwidth + 2 * tmp_win->frame_bw3D;
   *heightp = dheight + tmp_win->title_height + 2 * tmp_win->frame_bw3D;
-
 }
 
 
@@ -979,7 +982,7 @@ SetupFrame(TwmWindow * tmp_win, int x, int y, int w, int h, int bw, Bool sendEve
   int reShape;
 
 #ifdef DEBUG
-  fprintf(stderr, "SetupWindow: x=%d, y=%d, w=%d, h=%d, bw=%d\n", x, y, w, h, bw);
+  fprintf(stderr, "SetupWindow: x=%d, y=%d, w=%d, h=%d, bw=%d icon(%d)\n", x, y, w, h, bw, tmp_win->iconmgr);
 #endif
 
   if ((tmp_win->virtual_frame_x + tmp_win->frame_width) < 0)
@@ -998,7 +1001,6 @@ SetupFrame(TwmWindow * tmp_win, int x, int y, int w, int h, int bw, Bool sendEve
   {
     tmp_win->iconmgrp->width = w - (2 * tmp_win->frame_bw3D);
     h = tmp_win->iconmgrp->height + tmp_win->title_height + (2 * tmp_win->frame_bw3D);
-
   }
 
   /*
@@ -1074,7 +1076,6 @@ SetupFrame(TwmWindow * tmp_win, int x, int y, int w, int h, int bw, Bool sendEve
   XConfigureWindow(dpy, tmp_win->frame, frame_mask, &frame_wc);
   tmp_win->virtual_frame_x = R_TO_V_X(tmp_win->frame_x);
   tmp_win->virtual_frame_y = R_TO_V_Y(tmp_win->frame_y);
-
   XMoveResizeWindow(dpy, tmp_win->w, tmp_win->frame_bw3D,
 		    tmp_win->title_height + tmp_win->frame_bw3D, tmp_win->attr.width, tmp_win->attr.height);
 
@@ -2387,7 +2388,7 @@ fullzoom(int tile, TwmWindow * tmp_win, int flag)
 	    /* keep window right edge fixed */
 	    JunkWidth = dragWidth;
 	    JunkHeight = dragHeight;
-	    ConstrainSize (tmp_win, &JunkWidth, &JunkHeight);
+	    ConstrainSize(tmp_win, &JunkWidth, &JunkHeight);
 	    if (dragWidth != JunkWidth)
 	      dragx += dragWidth - JunkWidth;
 	  } else { /* geometry is "WxH-0+Y", or */
@@ -2412,7 +2413,7 @@ fullzoom(int tile, TwmWindow * tmp_win, int flag)
 	    /* fix window right edge at panel edge */
 	    JunkWidth = dragWidth;
 	    JunkHeight = dragHeight;
-	    ConstrainSize (tmp_win, &JunkWidth, &JunkHeight);
+	    ConstrainSize(tmp_win, &JunkWidth, &JunkHeight);
 	    if (dragWidth != JunkWidth)
 	      dragx += dragWidth - JunkWidth;
 	  }
@@ -2435,7 +2436,7 @@ fullzoom(int tile, TwmWindow * tmp_win, int flag)
 	    /* keep window bottom edge fixed */
 	    JunkWidth = dragWidth;
 	    JunkHeight = dragHeight;
-	    ConstrainSize (tmp_win, &JunkWidth, &JunkHeight);
+	    ConstrainSize(tmp_win, &JunkWidth, &JunkHeight);
 	    if (dragHeight != JunkHeight)
 	      dragy += dragHeight - JunkHeight;
 	  } else {
@@ -2457,7 +2458,7 @@ fullzoom(int tile, TwmWindow * tmp_win, int flag)
 	    /* fix window bottom edge at panel edge */
 	    JunkWidth = dragWidth;
 	    JunkHeight = dragHeight;
-	    ConstrainSize (tmp_win, &JunkWidth, &JunkHeight);
+	    ConstrainSize(tmp_win, &JunkWidth, &JunkHeight);
 	    if (dragHeight != JunkHeight)
 	      dragy += dragHeight - JunkHeight;
 	  }

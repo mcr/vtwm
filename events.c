@@ -162,7 +162,6 @@ SetRaiseWindow(TwmWindow * tmp)
  *
  ***********************************************************************
  */
-
 void
 InitEvents(void)
 {

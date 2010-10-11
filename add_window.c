@@ -728,7 +728,6 @@ AddWindow(Window w, int iconm, IconMgr * iconp)
     XMoveWindow(dpy, tmp_win->title_w.win, tmp_win->title_x, tmp_win->title_y);
     XDefineCursor(dpy, tmp_win->title_w.win, Scr->TitleCursor);
   }
-
   else
   {
     tmp_win->title_x = tmp_win->frame_bw3D - tmp_win->frame_bw;
