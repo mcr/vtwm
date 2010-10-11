@@ -3,11 +3,16 @@ A COMPLETE LISTING OF CHANGES MADE TO VTWM SINCE VERSION 5.0
 IN CHRONOLOGICAL ORDER FROM MOST RECENT CHANGES TO EARLIEST.
 ============================================================
 
+    October 2010
+	Seth Robertson - Do not honor insane (zero) maximum Width and
+	     Height hints.  Prevent window storm insanity when
+	     NotVirtualGeometry. Add NoStormPositioning to allow
+	     disable.  5.5.0-rc3
+
     September 2010
 	Seth Robertson - Put in code to cause spammed popup
 	     windows with same parent to be autoplaced in same
 	     location (e.g. Firefox restart password prompts)
-	     Add NoStormPositioning to allow disable.
 
     March 2010
 	Eeri Kask + Steve Rader - Allow TitleOffset to fine tune
