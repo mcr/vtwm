@@ -868,9 +868,9 @@ ConstrainSize(TwmWindow * tmp_win, int *widthp, int *heightp)
   if (dheight < minHeight)
     dheight = minHeight;
 
-  if (dwidth > maxWidth)
+  if (maxWidth && dwidth > maxWidth)
     dwidth = maxWidth;
-  if (dheight > maxHeight)
+  if (maxHeight && dheight > maxHeight)
     dheight = maxHeight;
 
   /*
