@@ -52,7 +52,6 @@ int rclineno = 1;
 static int yyget_lineno  (void);
 static FILE *yyget_in  (void);
 static FILE *yyget_out  (void);
-static int yyget_leng  (void);
 static char *yyget_text  (void);
 static void yyset_lineno (int  line_number );
 static void yyset_in (FILE *  in_str );
