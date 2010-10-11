@@ -864,10 +864,11 @@ workspace implementation of \fBmwm\fP(1).
 .IP "\fBFixManagedVirtualGeometries\fP" 8
 .IP "\fBFixTransientVirtualGeometries\fP" 8
 These are bug workarounds that *should* fix the way most windows'
-virtual geometries are handled, i.e., they should be on the real screen if
-the parent windows are on the real screen, no matter where the virtual
-desktop is (\fBxv\fP(1) is one example of how these \fIdon't\fP work).
-They are both set by default.
+virtual geometries are handled i.e., they should be on the real screen
+if the parent windows are on the real screen, no matter where the
+virtual desktop is (\fBxv\fP(1) is one example of how these
+\fIdon't\fP work).  This only take affect (and thus may be needed) if
+and only if you have \fBNotVirtualGeometries\fP set.
 .IP "\fBForceIcons\fP" 8
 This variable indicates that icon image files specified in the \fBIcons\fP
 variable should override any client-supplied images.
@@ -1370,11 +1371,13 @@ will not have highlight areas.  This and the \fBSqueezeTitle\fP options
 can be set to substantially reduce the amount of screen space required by
 titlebars.
 .IP "\fBNotVirtualGeometries\fP" 8
-This variable indicates that \fBvtwm\fP should assume that user geometries
-should be relative to the current virtual window, as opposed to absolute.
-If you set this, then "xterm -geometry +20+20" specifies a position in the
-current view; otherwise, it would specify a position in the top-left view.
-It is set by default.
+This variable indicates that \fBvtwm\fP should assume that user
+geometries should be relative to the current virtual window, as
+opposed to absolute.  If you set this, then "xterm -geometry +20+20"
+specifies a position in the current view; otherwise, it would specify
+a position in the top-left view.  By default +20+20 specifies a
+position in the top-left view.  See \fBFixManagedVirtualGeometries\fP
+and \fBFixTransientVirtualGeometries\fP.
 .IP "\fBNoWindowRing\fP { \fIwin-list\fP }" 8
 This variable specifies a list of windows that will not be added to the
 list along which the \fBf.warpring\fP function cycles.
