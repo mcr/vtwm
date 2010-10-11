@@ -398,8 +398,9 @@ AddWindow(Window w, int iconm, IconMgr * iconp)
 
 
   /*
-   * Bug 3065630 -- If we have a recent window from the same group and we don't have anyplace to put it
-   * pick the same place as the last window
+   * Bug 3065630 -- If we have a recent window from the same group and
+   * we don't have anyplace to put it pick the same place as the last
+   * window (e.g. storm positioning)
    */
 #ifdef DEBUG
   fprintf(stderr,"Spawning window %x in group %x with hints %x(%d)\n",tmp_win->w,tmp_win->group,tmp_win->hints.flags,(tmp_win->hints.flags & USPosition));
@@ -420,12 +421,7 @@ AddWindow(Window w, int iconm, IconMgr * iconp)
       tmp_win->attr.x = JunkX;
       tmp_win->attr.y = JunkY;
 
-      if (Scr->GeometriesAreVirtual ||
-	  (!Scr->GeometriesAreVirtual &&
-	   (tmp_win->nailed ||
-	    (((Scr->FixManagedVirtualGeometries &&
-	       !tmp_win->transient) ||
-	      (Scr->FixTransientVirtualGeometries && tmp_win->transient)) && (tmp_win->hints.flags & PPosition)))) &&
+      if (Scr->GeometriesAreVirtual &&
 	  tmp_win->attr.x < Scr->MyDisplayWidth && tmp_win->attr.y < Scr->MyDisplayHeight)
       {
 	tmp_win->attr.x = R_TO_V_X(tmp_win->attr.x);
