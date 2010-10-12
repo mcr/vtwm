@@ -1,0 +1,22 @@
+This is release 5.5.0 of VTWM, the Virtual Tab Window Manager for the X
+Window System. This release brings many bug fixes and new features over
+the previous 5.4.7 release, whilst remaining true to the vtwm tradition
+of providing a lightweight, but powerful and customisable user experience.
+
+Some of the highlights include:
+
+    * support for "modern" X Window System features such as RandR and
+	multi-panel displays, Xft for nicer font support, opacity and
+	compositing;
+    * support for additional sound libraries and image formats;
+    * modernised the system defaults;
+    * support build with either configure or imake.
+    * too many bug fixes to mention!
+
+See the CHANGELOG in the doc subdirectory of the distribution
+for full details of changes or see the git repo.
+
+See http://www.vtwm.org for more information on vtwm.
+
+Seth Robertson & Callum Gibson
+October 2010.

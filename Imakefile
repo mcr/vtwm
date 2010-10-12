@@ -87,7 +87,7 @@ XCOMM Installation path for the binary
        VTWMBINDIR = $(BINDIR)
 
 XCOMM Installation path for the system resource file
-       VTWMLIBDIR = $(LIBDIR)/twm
+       VTWMLIBDIR = $(SHAREDIR)/vtwm
 
 XCOMM Installation path for the man page
        VTWMMANDIR = $(MANDIR)
