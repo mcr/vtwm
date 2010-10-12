@@ -8,7 +8,7 @@ inherit xorg-2
 
 DESCRIPTION="Last TWM descendant standing.  Implements a Virtual Desktop"
 HOMEPAGE="http://www.vtwm.org/"
-SRC_URI="mirror://sourceforge/vtwm/files/${P}.tar.gz"
+SRC_URI="http://sourceforge.net/projects/vtwm/files/${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
