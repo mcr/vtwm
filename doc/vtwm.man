@@ -1372,12 +1372,14 @@ can be set to substantially reduce the amount of screen space required by
 titlebars.
 .IP "\fBNotVirtualGeometries\fP" 8
 This variable indicates that \fBvtwm\fP should assume that user
-geometries should be relative to the current virtual window, as
-opposed to absolute.  If you set this, then "xterm -geometry +20+20"
-specifies a position in the current view; otherwise, it would specify
-a position in the top-left view.  By default +20+20 specifies a
-position in the top-left view.  See \fBFixManagedVirtualGeometries\fP
-and \fBFixTransientVirtualGeometries\fP.
+geometries should be relative to the current screen-view into the
+virtual space, as opposed to the default of absolute use of the user
+geometries in the virtual space.  If you set this, then "xterm
+-geometry +20+20" specifies a position in the current view; otherwise,
+it would specify a position in the top-left view.  By default, +20+20
+specifies a position in the top-left view.  See
+\fBFixManagedVirtualGeometries\fP,
+\fBFixTransientVirtualGeometries\fP, and \fBUsePPosition\fP.
 .IP "\fBNoWindowRing\fP { \fIwin-list\fP }" 8
 This variable specifies a list of windows that will not be added to the
 list along which the \fBf.warpring\fP function cycles.
