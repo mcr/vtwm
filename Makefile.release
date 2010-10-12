@@ -32,15 +32,19 @@ install-actual: clean release
 	@VERSION=`git describe --exact-match --match '[0-9]*' 2>/dev/null`;							\
 	  if [ $$? -ne 0 -o "$$VERSION" = "" ]; then echo "Not a tagged version, you may not install release"; exit 3; fi;	\
 	  if [ "$$SFUSER" = "" ]; then echo "Must set SFUSER environmental variable to install "; exit 4; fi;			\
-	  mkdir -p $(RSYNCDIR);													\
-	  cp $(RELEASEDIR)/$(PRODUCT)-$$VERSION.tar.gz $(RSYNCDIR);								\
-	  cp doc/CHANGELOG $(RSYNCDIR)/CHANGELOG-$$VERSION;									\
+	  mkdir -p $(RSYNCDIR)/ReleaseNotes;											\
+	  cp doc/CHANGELOG $(RSYNCDIR)/ReleaseNotes/CHANGELOG-$$VERSION;							\
 	  echo "cd /home/frs/project/v/vt/vtwm" > $(SFTPBATCH);									\
 	  echo "rm $(PRODUCT)-$(NAME).tar.gz" >> $(SFTPBATCH);									\
+	  echo "rm ReleaseNotes/CHANGELOG-$(NAME)" >> $(SFTPBATCH);								\
+	  ln -s CHANGELOG-$$VERSION $(RSYNCDIR)/ReleaseNotes/CHANGELOG-$(NAME);							\
 	  ln -s $(PRODUCT)-$$VERSION.tar.gz $(RSYNCDIR)/$(PRODUCT)-$(NAME).tar.gz;						\
-	  chmod 664 $(RSYNCDIR)/*;												\
 	  if [ "$(ALTNAME)" != "" ]; then ln -s $(PRODUCT)-$$VERSION.tar.gz $(RSYNCDIR)/$(PRODUCT)-$(ALTNAME).tar.gz; fi;	\
 	  if [ "$(ALTNAME)" != "" ]; then echo "rm $(PRODUCT)-$(ALTNAME).tar.gz" >> $(SFTPBATCH); fi;				\
+	  if [ "$(ALTNAME)" != "" ]; then ln -s CHANGELOG-$$VERSION $(RSYNCDIR)/ReleaseNotes/CHANGELOG-$(ALTNAME); fi;		\
+	  if [ "$(ALTNAME)" != "" ]; then echo "rm ReleaseNotes/CHANGELOG-$(ALTNAME)" >> $(SFTPBATCH); fi;			\
+	  cp $(RELEASEDIR)/$(PRODUCT)-$$VERSION.tar.gz $(RSYNCDIR);								\
+	  chmod -R u+rwX,g+rwX,o+rX $(RSYNCDIR);										\
 	  sftp -b $(SFTPBATCH) $$SFUSER,vtwm@frs.sourceforge.net;								\
 	  rsync -vPr --links -e ssh $(RSYNCDIR)/. $$SFUSER,vtwm@frs.sourceforge.net:/home/frs/project/v/vt/vtwm
 	make  -f Makefile.release clean
