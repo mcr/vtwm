@@ -6,9 +6,9 @@ EAPI="3"
 
 inherit xorg-2
 
-DESCRIPTION="One of many TWM descendants and implements a Virtual Desktop"
+DESCRIPTION="Last TWM descendant standing.  Implements a Virtual Desktop"
 HOMEPAGE="http://www.vtwm.org/"
-SRC_URI="http://www.vtwm.org/downloads/${P}.tar.gz"
+SRC_URI="mirror://sourceforge/vtwm/files/${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"

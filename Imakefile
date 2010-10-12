@@ -173,6 +173,7 @@ install::
 clean::
 	$(RM) y.tab.h y.tab.c lex.yy.c gram.h gram.c lex.c deftwmrc.c version-tmp.c \
 	lastmake.c system.vtwmrc vtwm.dw vtwm.ser vtwm.html vtwm.ps vtwm.man
+	$(RM) -rf .release
 
 gram.h gram.c: gram.y
 	$(YACC) $(YFLAGS) gram.y

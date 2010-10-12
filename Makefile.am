@@ -10,11 +10,11 @@ else
 bin_PROGRAMS = vtwm
 endif
 
-rcdir = ${datadir}/X11/twm
+rcdir = ${datadir}/X11/vtwm
 dist_rc_DATA = system.vtwmrc
 
 vtwm_CFLAGS = $(VWM_CFLAGS) -D_BSD_SOURCE -fno-strict-aliasing
-vtwm_CFLAGS += -DSYSTEM_VTWMRC=\"${datadir}/X11/twm/system.vtwmrc\" -DSYSTEM_TWMRC=\"${datadir}/X11/twm/system.twmrc\"
+vtwm_CFLAGS += -DSYSTEM_VTWMRC=\"${rcdir}/system.vtwmrc\" -DSYSTEM_TWMRC=\"${rcdir}/system.twmrc\"
 vtwm_CFLAGS += @SOUND_SUPPORT@ @xpm_CFLAGS@ @regex_CFLAGS@ @xft_CFLAGS@ @xft_AUX_CFLAGS@ @xrandr_CFLAGS@ @xrandr_AUX_CFLAGS@
 vtwm_CFLAGS += @TWM_USE_SPACING@ @TWM_USE_OPACITY@ @TWM_USE_SLOPPYFOCUS@ @xinerama_CFLAGS@ @xinerama_AUX_CFLAGS@
 vtwm_CFLAGS += @NO_BUILD_INFO@ @NEED_SELECT_H@ @NEED_PROCESS_H@ @NEED_PUTENV_F@ @NO_M4_SUPPORT@ @png_CFLAGS@
@@ -95,10 +95,7 @@ version-tmp.c: version.c
 	if [ -d .git ]; then sed "s/SUBST/`git describe --tags`/" < version.c > version-tmp.c; else cp version.c version-tmp.c; fi
 
 releasetar: maintainer-clean
-	if [ ! -d .git ]; then echo Cannot create release tar without git information; exit 2; fi
-	sed -i "s/SUBST/`git describe --tags`/" version.c
-	P=`pwd | sed 's:.*/::'`; (cd ..; tar --exclude .git -czf $$P.tar.gz  $$P)
-	git checkout version.c
+	@echo "Please use make -f Makefile.release"; exit 1
 
 FORCE:
 lastmake.c: FORCE
@@ -127,3 +124,6 @@ EXRTA_DIST = $(man1_MANS)
 vtwm.man: doc/vtwm.man
 	-$(RM) $@
 	$(LN) doc/$@ $@
+
+clean-local:
+	-rm -rf .release

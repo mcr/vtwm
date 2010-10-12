@@ -1,15 +1,49 @@
 # -*- Makefile -*-
 
 PRODUCT=vtwm
+RELEASEDIR=.release
+RSYNCDIR=$(RELEASEDIR)/$(PRODUCT)-SF-FRS
+SFTPBATCH=$(RELEASEDIR)/sftp.batch
 
 release:
 	@VERSION=`git describe --exact-match --match '[0-9]*' 2>/dev/null`;							\
 	  if [ $$? -ne 0 -o "$$VERSION" = "" ]; then echo "Not a tagged version, you may not release"; exit 3; fi;		\
 	  if [ `git status --porcelain | wc -l` -gt 0 ]; then echo "Uncommitted changes, you may not release"; exit 2; fi;	\
-	  git checkout-index -a -f --prefix=/tmp/$(PRODUCT)-$$VERSION/;								\
-	  cd /tmp/$(PRODUCT)-$$VERSION;												\
+	  git checkout-index -a -f --prefix=$(RELEASEDIR)/$(PRODUCT)-$$VERSION/;						\
+	  cd $(RELEASEDIR)/$(PRODUCT)-$$VERSION;										\
 	  sed -i "s/SUBST/$${VERSION}/" version.c;										\
 	  cd ..;														\
 	  tar czf $(PRODUCT)-$$VERSION.tar.gz $(PRODUCT)-$$VERSION;								\
-	  rm -rf /tmp/$(PRODUCT)-$$VERSION;											\
-	  echo /tmp/$(PRODUCT)-$$VERSION.tar.gz
+	  rm -rf $(RELEASEDIR)/$(PRODUCT)-$$VERSION;										\
+	  echo $(RELEASEDIR)/$(PRODUCT)-$$VERSION.tar.gz
+
+install:
+	echo "Please use install-snap install-stable"; exit 1;
+
+install-snap: NAME=snap
+install-snap: install-actual
+
+install-stable: NAME=stable
+install-stable: ALTNAME=snap
+install-stable: install-actual
+
+install-actual: clean release
+	@if [ "$(NAME)" = "" ]; then echo "Please use install-snap install-stable"; exit 1; fi
+	@VERSION=`git describe --exact-match --match '[0-9]*' 2>/dev/null`;							\
+	  if [ $$? -ne 0 -o "$$VERSION" = "" ]; then echo "Not a tagged version, you may not install release"; exit 3; fi;	\
+	  if [ "$$SFUSER" = "" ]; then echo "Must set SFUSER environmental variable to install "; exit 4; fi;			\
+	  mkdir -p $(RSYNCDIR);													\
+	  cp $(RELEASEDIR)/$(PRODUCT)-$$VERSION.tar.gz $(RSYNCDIR);								\
+	  cp doc/CHANGELOG $(RSYNCDIR)/CHANGELOG-$$VERSION;									\
+	  echo "cd /home/frs/project/v/vt/vtwm" > $(SFTPBATCH);									\
+	  echo "rm $(PRODUCT)-$(NAME).tar.gz" >> $(SFTPBATCH);									\
+	  ln -s $(PRODUCT)-$$VERSION.tar.gz $(RSYNCDIR)/$(PRODUCT)-$(NAME).tar.gz;						\
+	  chmod 664 $(RSYNCDIR)/*;												\
+	  if [ "$(ALTNAME)" != "" ]; then ln -s $(PRODUCT)-$$VERSION.tar.gz $(RSYNCDIR)/$(PRODUCT)-$(ALTNAME).tar.gz; fi;	\
+	  if [ "$(ALTNAME)" != "" ]; then echo "rm $(PRODUCT)-$(ALTNAME).tar.gz" >> $(SFTPBATCH); fi;				\
+	  sftp -b $(SFTPBATCH) $$SFUSER,vtwm@frs.sourceforge.net;								\
+	  rsync -vPr --links -e ssh $(RSYNCDIR)/. $$SFUSER,vtwm@frs.sourceforge.net:/home/frs/project/v/vt/vtwm
+	make  -f Makefile.release clean
+
+clean:
+	rm -fr $(RELEASEDIR)

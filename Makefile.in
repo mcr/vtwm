@@ -170,6 +170,7 @@ LTLIBOBJS = @LTLIBOBJS@
 M4_BIN = @M4_BIN@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
+MAN_SUBSTS = @MAN_SUBSTS@
 MISC_MAN_DIR = @MISC_MAN_DIR@
 MISC_MAN_SUFFIX = @MISC_MAN_SUFFIX@
 MKDIR_P = @MKDIR_P@
@@ -188,7 +189,10 @@ PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
+PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
+PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 RM = @RM@
+SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 SOUND_SUPPORT = @SOUND_SUPPORT@
@@ -200,6 +204,7 @@ TWM_USE_SPACING = @TWM_USE_SPACING@
 VERSION = @VERSION@
 VTWM_CFLAGS = @VTWM_CFLAGS@
 VTWM_LIBS = @VTWM_LIBS@
+XORG_MAN_PAGE = @XORG_MAN_PAGE@
 YACC = @YACC@
 YFLAGS = @YFLAGS@
 abs_builddir = @abs_builddir@
@@ -268,17 +273,17 @@ xrandr_AUX_CFLAGS = @xrandr_AUX_CFLAGS@
 xrandr_CFLAGS = @xrandr_CFLAGS@
 xrandr_LIBS = @xrandr_LIBS@
 AM_YFLAGS = -d
-rcdir = ${datadir}/X11/twm
+rcdir = ${datadir}/X11/vtwm
 dist_rc_DATA = system.vtwmrc
 vtwm_CFLAGS = $(VWM_CFLAGS) -D_BSD_SOURCE -fno-strict-aliasing \
-	-DSYSTEM_VTWMRC=\"${datadir}/X11/twm/system.vtwmrc\" \
-	-DSYSTEM_TWMRC=\"${datadir}/X11/twm/system.twmrc\" \
-	@SOUND_SUPPORT@ @xpm_CFLAGS@ @regex_CFLAGS@ @xft_CFLAGS@ \
-	@xft_AUX_CFLAGS@ @xrandr_CFLAGS@ @xrandr_AUX_CFLAGS@ \
-	@TWM_USE_SPACING@ @TWM_USE_OPACITY@ @TWM_USE_SLOPPYFOCUS@ \
-	@xinerama_CFLAGS@ @xinerama_AUX_CFLAGS@ @NO_BUILD_INFO@ \
-	@NEED_SELECT_H@ @NEED_PROCESS_H@ @NEED_PUTENV_F@ \
-	@NO_M4_SUPPORT@ @png_CFLAGS@ $(am__append_1)
+	-DSYSTEM_VTWMRC=\"${rcdir}/system.vtwmrc\" \
+	-DSYSTEM_TWMRC=\"${rcdir}/system.twmrc\" @SOUND_SUPPORT@ \
+	@xpm_CFLAGS@ @regex_CFLAGS@ @xft_CFLAGS@ @xft_AUX_CFLAGS@ \
+	@xrandr_CFLAGS@ @xrandr_AUX_CFLAGS@ @TWM_USE_SPACING@ \
+	@TWM_USE_OPACITY@ @TWM_USE_SLOPPYFOCUS@ @xinerama_CFLAGS@ \
+	@xinerama_AUX_CFLAGS@ @NO_BUILD_INFO@ @NEED_SELECT_H@ \
+	@NEED_PROCESS_H@ @NEED_PUTENV_F@ @NO_M4_SUPPORT@ @png_CFLAGS@ \
+	$(am__append_1)
 vtwm_LDADD = $(VTWM_LIBS) $(xpm_LIBS) $(png_LIBS) $(regex_LIBS) $(xft_LIBS) $(xrandr_LIBS) $(xinerama_LIBS)
 nexpm_CFLAGS = $(vtwm_CFLAGS) -Icontrib/nexpm
 nexpm_LDADD = $(vtwm_LDADD)
@@ -1101,7 +1106,7 @@ maintainer-clean-generic:
 	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-am
 
-clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
+clean-am: clean-binPROGRAMS clean-generic clean-local mostlyclean-am
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
@@ -1177,21 +1182,21 @@ uninstall-man: uninstall-man1
 .MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am am--refresh check check-am clean \
-	clean-binPROGRAMS clean-generic ctags dist dist-all dist-bzip2 \
-	dist-gzip dist-lzma dist-shar dist-tarZ dist-zip distcheck \
-	distclean distclean-compile distclean-generic distclean-hdr \
-	distclean-tags distcleancheck distdir distuninstallcheck dvi \
-	dvi-am html html-am info info-am install install-am \
-	install-binPROGRAMS install-data install-data-am \
-	install-dist_rcDATA install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-man1 install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic pdf pdf-am ps ps-am tags uninstall \
-	uninstall-am uninstall-binPROGRAMS uninstall-dist_rcDATA \
-	uninstall-man uninstall-man1
+	clean-binPROGRAMS clean-generic clean-local ctags dist \
+	dist-all dist-bzip2 dist-gzip dist-lzma dist-shar dist-tarZ \
+	dist-zip distcheck distclean distclean-compile \
+	distclean-generic distclean-hdr distclean-tags distcleancheck \
+	distdir distuninstallcheck dvi dvi-am html html-am info \
+	info-am install install-am install-binPROGRAMS install-data \
+	install-data-am install-dist_rcDATA install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
+	install-info install-info-am install-man install-man1 \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic pdf pdf-am ps ps-am \
+	tags uninstall uninstall-am uninstall-binPROGRAMS \
+	uninstall-dist_rcDATA uninstall-man uninstall-man1
 
 
 deftwmrc.c: system.vtwmrc
@@ -1210,10 +1215,7 @@ version-tmp.c: version.c
 	if [ -d .git ]; then sed "s/SUBST/`git describe --tags`/" < version.c > version-tmp.c; else cp version.c version-tmp.c; fi
 
 releasetar: maintainer-clean
-	if [ ! -d .git ]; then echo Cannot create release tar without git information; exit 2; fi
-	sed -i "s/SUBST/`git describe --tags`/" version.c
-	P=`pwd | sed 's:.*/::'`; (cd ..; tar --exclude .git -czf $$P.tar.gz  $$P)
-	git checkout version.c
+	@echo "Please use make -f Makefile.release"; exit 1
 
 FORCE:
 lastmake.c: FORCE
@@ -1239,6 +1241,9 @@ system.vtwmrc:
 vtwm.man: doc/vtwm.man
 	-$(RM) $@
 	$(LN) doc/$@ $@
+
+clean-local:
+	-rm -rf .release
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
