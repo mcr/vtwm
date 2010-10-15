@@ -777,7 +777,9 @@ SetVirtualDesktop(char *geom, int scale)
    * where "@1" is panel "1"
    */
   int tile;
+  int bw;
   char *tile_name = strchr (geom, '@');
+
   if (tile_name != NULL)
     *tile_name++ = '\0';
   tile = ParsePanelIndex (tile_name);
@@ -845,14 +847,19 @@ SetVirtualDesktop(char *geom, int scale)
     height *= Scr->VirtualDesktopDScale;
   }
 
+  if (Scr->NoBorders || LookInList(Scr->NoBorder, VTWM_DESKTOP_CLASS, NULL))
+      bw = 0;
+  else
+      bw = Scr->BorderWidth + Scr->VirtualDesktopBevelWidth;
+
 #ifdef TILED_SCREEN
   if ((Scr->use_tiles == TRUE) && (mask & XValue) && (mask & YValue))
   {
     EnsureGeometryVisibility(tile, mask, &x, &y,
 			     (width/Scr->VirtualDesktopDScale)
-				+ 2 * (Scr->BorderWidth + Scr->VirtualDesktopBevelWidth),
+				+ 2 * bw,
 			     (height/Scr->VirtualDesktopDScale)
-				+ 2 * (Scr->BorderWidth + Scr->VirtualDesktopBevelWidth));
+				+ 2 * bw);
 
     Scr->VirtualDesktopDX = x;
     Scr->VirtualDesktopDY = y;
@@ -868,7 +875,7 @@ SetVirtualDesktop(char *geom, int scale)
       {
 	Scr->VirtualDesktopDX = Scr->MyDisplayWidth
 	  - (width/Scr->VirtualDesktopDScale)
-	  - (2 * Scr->BorderWidth) - (2 * Scr->VirtualDesktopBevelWidth) + x;
+	  - (2 * bw) + x;
       }
       else
 	Scr->VirtualDesktopDX = x;
@@ -879,7 +886,7 @@ SetVirtualDesktop(char *geom, int scale)
       {
 	Scr->VirtualDesktopDY = Scr->MyDisplayHeight
 	  - (height/Scr->VirtualDesktopDScale)
-	  - (2 * Scr->BorderWidth) - (2 * Scr->VirtualDesktopBevelWidth) + y;
+	  - (2 * bw) + y;
       }
       else
 	Scr->VirtualDesktopDY = y;
