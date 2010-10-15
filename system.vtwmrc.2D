@@ -99,7 +99,7 @@ Color
 {
 	DefaultBackground		"#20305a"
 	DefaultForeground		"gray85"
-	BorderColor			"grey70"
+	BorderColor			"gray70"
 	BorderTileBackground		"gray60"
 	BorderTileForeground		"gray60"
 	DoorBackground			"#20305a"
@@ -117,7 +117,7 @@ Color
 	IconManagerForeground		"gray85"
 	VirtualBackground		"gray70"
 	VirtualForeground		"black"
-	DesktopDisplayBackground	"grey85"
+	DesktopDisplayBackground	"gray85"
 	DesktopDisplayForeground	"black"
         RealScreenBackground            "gray60" 
 }
@@ -126,7 +126,7 @@ Monochrome
 {
 	DefaultBackground		"gray50"
 	DefaultForeground		"gray85"
-	BorderColor			"grey70"
+	BorderColor			"gray70"
 	BorderTileBackground		"gray60"
 	BorderTileForeground		"gray60"
 	DoorBackground			"gray50"
@@ -144,7 +144,7 @@ Monochrome
 	IconManagerForeground		"gray85"
 	VirtualBackground		"gray70"
 	VirtualForeground		"black"
-	DesktopDisplayBackground	"grey85"
+	DesktopDisplayBackground	"gray85"
 	DesktopDisplayForeground	"black"
         RealScreenBackground            "gray60" 
 }
