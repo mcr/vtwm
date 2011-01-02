@@ -9,13 +9,17 @@ release:
 	@VERSION=`git describe --exact-match --match '[0-9]*' 2>/dev/null`;							\
 	  if [ $$? -ne 0 -o "$$VERSION" = "" ]; then echo "Not a tagged version, you may not release"; exit 3; fi;		\
 	  if [ `git status --porcelain | wc -l` -gt 0 ]; then echo "Uncommitted changes, you may not release"; exit 2; fi;	\
-	  git checkout-index -a -f --prefix=$(RELEASEDIR)/$(PRODUCT)-$$VERSION/;						\
-	  cd $(RELEASEDIR)/$(PRODUCT)-$$VERSION;										\
-	  sed -i "s/SUBST/$${VERSION}/" version.c;										\
-	  cd ..;														\
-	  tar czf $(PRODUCT)-$$VERSION.tar.gz $(PRODUCT)-$$VERSION;								\
-	  rm -rf $(RELEASEDIR)/$(PRODUCT)-$$VERSION;										\
-	  echo $(RELEASEDIR)/$(PRODUCT)-$$VERSION.tar.gz
+	  VERSION=$$VERSION make subrelease
+
+subrelease:
+	@if [ -z "$$VERSION" ]; then VERSION=`git describe 2>/dev/null`; fi;  \
+	 git checkout-index -af --prefix=$(RELEASEDIR)/$(PRODUCT)-$$VERSION/; \
+	 cd $(RELEASEDIR)/$(PRODUCT)-$$VERSION;				      \
+	 sed -i "s/SUBST/$${VERSION}/" version.c;			      \
+	 cd ..;								      \
+	 tar czf $(PRODUCT)-$$VERSION.tar.gz $(PRODUCT)-$$VERSION;	      \
+	 rm -rf $(RELEASEDIR)/$(PRODUCT)-$$VERSION;			      \
+	 echo $(RELEASEDIR)/$(PRODUCT)-$$VERSION.tar.gz
 
 install:
 	echo "Please use install-snap install-stable"; exit 1;
