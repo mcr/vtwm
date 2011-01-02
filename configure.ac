@@ -19,8 +19,8 @@ AC_PROG_LEX
 AC_CHECK_FUNC([mkstemp],
    AC_DEFINE(HAS_MKSTEMP,1,[Define to 1 if you have the `mkstemp' function.]))
 
-AC_CHECK_LIB(rplay,replay_destroy)
-AC_CHECK_LIB(rplay,replay_create,SOUND_SUPPORT=,SOUND_SUPPORT=-DNO_SOUND_SUPPORT)
+AC_CHECK_LIB(rplay,rplay_destroy)
+AC_CHECK_LIB(rplay,rplay_create,SOUND_SUPPORT=,SOUND_SUPPORT=-DNO_SOUND_SUPPORT)
 AC_SUBST(SOUND_SUPPORT)
 
 dnl Checks for pkg-config packages
