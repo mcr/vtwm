@@ -12,7 +12,7 @@ release:
 	  VERSION=$$VERSION make subrelease
 
 subrelease:
-	@if [ -z "$$VERSION" ]; then VERSION=`git describe 2>/dev/null`; fi;  \
+	@if [ -z "$$VERSION" ]; then VERSION=`git describe --tags 2>/dev/null`; fi;  \
 	 git checkout-index -af --prefix=$(RELEASEDIR)/$(PRODUCT)-$$VERSION/; \
 	 cd $(RELEASEDIR)/$(PRODUCT)-$$VERSION;				      \
 	 sed -i "s/SUBST/$${VERSION}/" version.c;			      \

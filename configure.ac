@@ -19,8 +19,27 @@ AC_PROG_LEX
 AC_CHECK_FUNC([mkstemp],
    AC_DEFINE(HAS_MKSTEMP,1,[Define to 1 if you have the `mkstemp' function.]))
 
-AC_CHECK_LIB(rplay,rplay_destroy)
-AC_CHECK_LIB(rplay,rplay_create,SOUND_SUPPORT=,SOUND_SUPPORT=-DNO_SOUND_SUPPORT)
+dnl Check for sound support
+AC_ARG_ENABLE(sound,AC_HELP_STRING([--disable-sound],[Turn off sound support]),[if test "$enable_sound" = "no"; then SOUND_SUPPORT=; fi ])
+if test "x$enable_sound" != "xno"; then
+
+  AC_ARG_ENABLE(oss-sound,AC_HELP_STRING([--disable-oss-sound],[Turn off oss sound support]))
+  if test "x$enable_oss_sound" != "xno"; then
+    AC_CHECK_FILE(/dev/dsp,SOUND_SUPPORT=-DHAVE_OSS)
+  fi
+
+  AC_ARG_ENABLE(rplay-sound,AC_HELP_STRING([--disable-rplay-sound],[Turn off rplay sound support]))
+  if test "x$enable_rplay_sound" != "xno"; then
+    AC_CHECK_LIB(rplay,rplay_create)
+    AC_CHECK_LIB(rplay,rplay_create,SOUND_SUPPORT="${SOUND_SUPPORT} -DHAVE_RPLAY")
+  fi
+
+  AC_ARG_ENABLE(esd-sound,AC_HELP_STRING([--disable-esd-sound],[Turn off esd sound support]))
+  if test "x$enable_esd_sound" != "xno"; then
+    AC_CHECK_LIB(esd,esd_audio_open)
+    AC_CHECK_LIB(esd,esd_audio_open,SOUND_SUPPORT="${SOUND_SUPPORT} -DHAVE_ESD")
+  fi
+fi
 AC_SUBST(SOUND_SUPPORT)
 
 dnl Checks for pkg-config packages

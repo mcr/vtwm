@@ -749,6 +749,10 @@ ac_user_opts='
 enable_option_checking
 enable_maintainer_mode
 enable_dependency_tracking
+enable_sound
+enable_oss_sound
+enable_rplay_sound
+enable_esd_sound
 enable_nexpm
 enable_spacing
 enable_opacity
@@ -1406,6 +1410,10 @@ Optional Features:
 			  (and sometimes confusing) to the casual installer
   --disable-dependency-tracking  speeds up one-time build
   --enable-dependency-tracking   do not reject slow dependency extractors
+  --disable-sound         Turn off sound support
+  --disable-oss-sound     Turn off oss sound support
+  --disable-rplay-sound   Turn off rplay sound support
+  --disable-esd-sound     Turn off esd sound support
   --disable-nexpm         Turn off nexpm building
   --disable-spacing       Turn off font height dependent text layout spacing
   --disable-opacity       Turn off _NET_WM_WINDOW_OPACITY client window
@@ -4050,52 +4058,47 @@ $as_echo "#define HAS_MKSTEMP 1" >>confdefs.h
 fi
 
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for rplay_destroy in -lrplay" >&5
-$as_echo_n "checking for rplay_destroy in -lrplay... " >&6; }
-if test "${ac_cv_lib_rplay_rplay_destroy+set}" = set; then :
+# Check whether --enable-sound was given.
+if test "${enable_sound+set}" = set; then :
+  enableval=$enable_sound; if test "$enable_sound" = "no"; then SOUND_SUPPORT=; fi
+fi
+
+if test "x$enable_sound" != "xno"; then
+
+  # Check whether --enable-oss-sound was given.
+if test "${enable_oss_sound+set}" = set; then :
+  enableval=$enable_oss_sound;
+fi
+
+  if test "x$enable_oss_sound" != "xno"; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for /dev/dsp" >&5
+$as_echo_n "checking for /dev/dsp... " >&6; }
+if test "${ac_cv_file__dev_dsp+set}" = set; then :
   $as_echo_n "(cached) " >&6
 else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lrplay  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char rplay_destroy ();
-int
-main ()
-{
-return rplay_destroy ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_rplay_rplay_destroy=yes
+  test "$cross_compiling" = yes &&
+  as_fn_error "cannot check for file existence when cross compiling" "$LINENO" 5
+if test -r "/dev/dsp"; then
+  ac_cv_file__dev_dsp=yes
 else
-  ac_cv_lib_rplay_rplay_destroy=no
+  ac_cv_file__dev_dsp=no
 fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_rplay_rplay_destroy" >&5
-$as_echo "$ac_cv_lib_rplay_rplay_destroy" >&6; }
-if test "x$ac_cv_lib_rplay_rplay_destroy" = x""yes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBRPLAY 1
-_ACEOF
-
-  LIBS="-lrplay $LIBS"
-
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_file__dev_dsp" >&5
+$as_echo "$ac_cv_file__dev_dsp" >&6; }
+if test "x$ac_cv_file__dev_dsp" = x""yes; then :
+  SOUND_SUPPORT=-DHAVE_OSS
 fi
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for rplay_create in -lrplay" >&5
+  fi
+
+  # Check whether --enable-rplay-sound was given.
+if test "${enable_rplay_sound+set}" = set; then :
+  enableval=$enable_rplay_sound;
+fi
+
+  if test "x$enable_rplay_sound" != "xno"; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for rplay_create in -lrplay" >&5
 $as_echo_n "checking for rplay_create in -lrplay... " >&6; }
 if test "${ac_cv_lib_rplay_rplay_create+set}" = set; then :
   $as_echo_n "(cached) " >&6
@@ -4132,11 +4135,149 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_rplay_rplay_create" >&5
 $as_echo "$ac_cv_lib_rplay_rplay_create" >&6; }
 if test "x$ac_cv_lib_rplay_rplay_create" = x""yes; then :
-  SOUND_SUPPORT=
-else
-  SOUND_SUPPORT=-DNO_SOUND_SUPPORT
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBRPLAY 1
+_ACEOF
+
+  LIBS="-lrplay $LIBS"
+
 fi
 
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for rplay_create in -lrplay" >&5
+$as_echo_n "checking for rplay_create in -lrplay... " >&6; }
+if test "${ac_cv_lib_rplay_rplay_create+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lrplay  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char rplay_create ();
+int
+main ()
+{
+return rplay_create ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_rplay_rplay_create=yes
+else
+  ac_cv_lib_rplay_rplay_create=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_rplay_rplay_create" >&5
+$as_echo "$ac_cv_lib_rplay_rplay_create" >&6; }
+if test "x$ac_cv_lib_rplay_rplay_create" = x""yes; then :
+  SOUND_SUPPORT="${SOUND_SUPPORT} -DHAVE_RPLAY"
+fi
+
+  fi
+
+  # Check whether --enable-esd-sound was given.
+if test "${enable_esd_sound+set}" = set; then :
+  enableval=$enable_esd_sound;
+fi
+
+  if test "x$enable_esd_sound" != "xno"; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for esd_audio_open in -lesd" >&5
+$as_echo_n "checking for esd_audio_open in -lesd... " >&6; }
+if test "${ac_cv_lib_esd_esd_audio_open+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lesd  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char esd_audio_open ();
+int
+main ()
+{
+return esd_audio_open ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_esd_esd_audio_open=yes
+else
+  ac_cv_lib_esd_esd_audio_open=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_esd_esd_audio_open" >&5
+$as_echo "$ac_cv_lib_esd_esd_audio_open" >&6; }
+if test "x$ac_cv_lib_esd_esd_audio_open" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBESD 1
+_ACEOF
+
+  LIBS="-lesd $LIBS"
+
+fi
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for esd_audio_open in -lesd" >&5
+$as_echo_n "checking for esd_audio_open in -lesd... " >&6; }
+if test "${ac_cv_lib_esd_esd_audio_open+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lesd  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char esd_audio_open ();
+int
+main ()
+{
+return esd_audio_open ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_esd_esd_audio_open=yes
+else
+  ac_cv_lib_esd_esd_audio_open=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_esd_esd_audio_open" >&5
+$as_echo "$ac_cv_lib_esd_esd_audio_open" >&6; }
+if test "x$ac_cv_lib_esd_esd_audio_open" = x""yes; then :
+  SOUND_SUPPORT="${SOUND_SUPPORT} -DHAVE_ESD"
+fi
+
+  fi
+fi
 
 
 
