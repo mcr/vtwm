@@ -116,6 +116,15 @@ AC_PATH_PROG(M4_BIN, m4)
 if test -z "$M4_BIN"; then NO_M4_SUPPORT=-DNO_M4_SUPPORT; fi
 AC_SUBST(NO_M4_SUPPORT)
 
+dnl DEBUG
+AC_ARG_ENABLE(debug,AC_HELP_STRING([--enable-debug],[Turn on value added debugging]),[if test "$enable_debug" = "yes"; then DDEBUG=-DDEBUG; fi ])
+AC_ARG_ENABLE(debug-events,AC_HELP_STRING([--enable-debug-events],[Turn on value added debugging of events]),[if test "$enable_debug_events" = "yes"; then DDEBUG="$DDEBUG -DDEBUG_EVENTS"; fi ])
+AC_ARG_ENABLE(debug-autoraisedelay,AC_HELP_STRING([--enable-debug-autoraisedelay],[Turn on value added debugging]),[if test "$enable_debug_autoraisedelay" = "yes"; then DDEBUG="$DDEBUG -DDEBUG_AUTORAISEDELAY"; fi ])
+AC_ARG_ENABLE(debug-stolenfocus,AC_HELP_STRING([--enable-debug-stolenfocus],[Turn on value added debugging]),[if test "$enable_debug_stolenfocus" = "yes"; then DDEBUG="$DDEBUG -DDEBUG_STOLENFOCUS"; fi ])
+AC_ARG_ENABLE(debug-iconmgr,AC_HELP_STRING([--enable-debug-iconmgr],[Turn on value added debugging]),[if test "$enable_debug_iconmgr" = "yes"; then DDEBUG="$DDEBUG -DDEBUG_ICONMGR"; fi ])
+AC_ARG_ENABLE(debug-warpclass,AC_HELP_STRING([--enable-debug-warpclass],[Turn on value added debugging]),[if test "$enable_debug_warpclass" = "yes"; then DDEBUG="$DDEBUG -DDEBUG_WARPCLASS"; fi ])
+AC_SUBST(DDEBUG)
+
 PKG_CHECK_EXISTS(xpm)
 AC_SUBST(VTWM_CFLAGS)
 AC_SUBST(VTWM_LIBS)

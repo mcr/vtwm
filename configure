@@ -620,6 +620,7 @@ build_os
 build_vendor
 build_cpu
 build
+DDEBUG
 NO_M4_SUPPORT
 M4_BIN
 NEED_PUTENV_F
@@ -759,6 +760,12 @@ enable_opacity
 enable_sloppyfocus
 enable_buildinfo
 enable_m4
+enable_debug
+enable_debug_events
+enable_debug_autoraisedelay
+enable_debug_stolenfocus
+enable_debug_iconmgr
+enable_debug_warpclass
 with_SYS_VTWMRC_LOOK
 '
       ac_precious_vars='build_alias
@@ -1421,6 +1428,15 @@ Optional Features:
   --disable-sloppyfocus   Turn off sloppy window focus
   --disable-build-info    Prevent version window from having build information
   --disable-m4            Turn off m4 vtwmrc processing
+  --enable-debug          Turn on value added debugging
+  --enable-debug-events   Turn on value added debugging of events
+  --enable-debug-autoraisedelay
+                          Turn on value added debugging
+  --enable-debug-stolenfocus
+                          Turn on value added debugging
+  --enable-debug-iconmgr  Turn on value added debugging
+  --enable-debug-warpclass
+                          Turn on value added debugging
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -5628,6 +5644,38 @@ fi
 
 
 if test -z "$M4_BIN"; then NO_M4_SUPPORT=-DNO_M4_SUPPORT; fi
+
+
+# Check whether --enable-debug was given.
+if test "${enable_debug+set}" = set; then :
+  enableval=$enable_debug; if test "$enable_debug" = "yes"; then DDEBUG=-DDEBUG; fi
+fi
+
+# Check whether --enable-debug-events was given.
+if test "${enable_debug_events+set}" = set; then :
+  enableval=$enable_debug_events; if test "$enable_debug_events" = "yes"; then DDEBUG="$DDEBUG -DDEBUG_EVENTS"; fi
+fi
+
+# Check whether --enable-debug-autoraisedelay was given.
+if test "${enable_debug_autoraisedelay+set}" = set; then :
+  enableval=$enable_debug_autoraisedelay; if test "$enable_debug_autoraisedelay" = "yes"; then DDEBUG="$DDEBUG -DDEBUG_AUTORAISEDELAY"; fi
+fi
+
+# Check whether --enable-debug-stolenfocus was given.
+if test "${enable_debug_stolenfocus+set}" = set; then :
+  enableval=$enable_debug_stolenfocus; if test "$enable_debug_stolenfocus" = "yes"; then DDEBUG="$DDEBUG -DDEBUG_STOLENFOCUS"; fi
+fi
+
+# Check whether --enable-debug-iconmgr was given.
+if test "${enable_debug_iconmgr+set}" = set; then :
+  enableval=$enable_debug_iconmgr; if test "$enable_debug_iconmgr" = "yes"; then DDEBUG="$DDEBUG -DDEBUG_ICONMGR"; fi
+fi
+
+# Check whether --enable-debug-warpclass was given.
+if test "${enable_debug_warpclass+set}" = set; then :
+  enableval=$enable_debug_warpclass; if test "$enable_debug_warpclass" = "yes"; then DDEBUG="$DDEBUG -DDEBUG_WARPCLASS"; fi
+fi
+
 
 
 if test -n "$PKG_CONFIG" && \

@@ -17,6 +17,7 @@ vtwm_CFLAGS = $(VWM_CFLAGS) -D_BSD_SOURCE -fno-strict-aliasing
 vtwm_CFLAGS += -DSYSTEM_VTWMRC=\"${rcdir}/system.vtwmrc\" -DSYSTEM_TWMRC=\"${rcdir}/system.twmrc\"
 vtwm_CFLAGS += @SOUND_SUPPORT@ @xpm_CFLAGS@ @regex_CFLAGS@ @xft_CFLAGS@ @xft_AUX_CFLAGS@ @xrandr_CFLAGS@ @xrandr_AUX_CFLAGS@
 vtwm_CFLAGS += @TWM_USE_SPACING@ @TWM_USE_OPACITY@ @TWM_USE_SLOPPYFOCUS@ @xinerama_CFLAGS@ @xinerama_AUX_CFLAGS@
+vtwm_CFLAGS += @DDEBUG@
 vtwm_CFLAGS += @NO_BUILD_INFO@ @NEED_SELECT_H@ @NEED_PROCESS_H@ @NEED_PUTENV_F@ @NO_M4_SUPPORT@ @png_CFLAGS@
 if MAINTAINER_MODE
 vtwm_CFLAGS += -Wall -Werror -Wstrict-prototypes -Wold-style-definition -Wmissing-prototypes
