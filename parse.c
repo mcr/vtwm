@@ -54,6 +54,7 @@
 #include <errno.h>
 
 #ifndef NO_M4_SUPPORT
+#include <signal.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include <netdb.h>
@@ -145,7 +146,7 @@ ParseTwmrc(char *filename)
 #ifndef NO_M4_SUPPORT
   char *m4_cmdline;
   int m4_status;
-  int m4_mask = 0;
+  sigset_t oset;
 #endif
 
   /*
@@ -218,8 +219,14 @@ ParseTwmrc(char *filename)
       {
 	if ((m4_cmdline = make_m4_cmdline(display_name, cp, m4_option)) != NULL)
 	{
-	  m4_mask = siggetmask();
-	  sigsetmask(m4_mask | sigmask(SIGCHLD));
+	  sigset_t set;
+
+	  sigemptyset(&set);
+	  sigaddset(&set, SIGCHLD);
+
+	  if (sigprocmask(SIG_BLOCK, &set, &oset) < 0)
+	    perror("sigprocmask-add");
+
 	  twmrc = popen(m4_cmdline, "r");
 	  if (!twmrc)
 	    fprintf(stderr,"%s: popen of m4 failed: %s\n", ProgramName, strerror(errno));
@@ -266,7 +273,9 @@ ParseTwmrc(char *filename)
 	fprintf(stderr, "%s: m4 returned %d %d\n", ProgramName, WEXITSTATUS(m4_status),m4_status);
 	exit(-1);
       }
-      sigsetmask(m4_mask);
+
+      if (sigprocmask(SIG_SETMASK, &oset, NULL) < 0)
+	perror("sigprocmask-reset");
     }
     else
     {
