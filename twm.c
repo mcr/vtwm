@@ -247,6 +247,9 @@ main(int argc, char **argv, char **environ)
 	continue;
       case 'V':
 	printf("%s\n", Version);
+#ifdef DOC_CFLAGS
+	printf("Compile flags: %s\n", DOC_CFLAGS);
+#endif /*DOC_CFLAGS*/
 	exit(0);
       }
     }
