@@ -51,6 +51,7 @@
 #include "parse.h"
 #include "prototypes.h"
 #include <X11/Xatom.h>
+#include <errno.h>
 
 #ifndef NO_M4_SUPPORT
 #include <sys/wait.h>
@@ -144,6 +145,7 @@ ParseTwmrc(char *filename)
 #ifndef NO_M4_SUPPORT
   char *m4_cmdline;
   int m4_status;
+  int m4_mask = 0;
 #endif
 
   /*
@@ -216,7 +218,11 @@ ParseTwmrc(char *filename)
       {
 	if ((m4_cmdline = make_m4_cmdline(display_name, cp, m4_option)) != NULL)
 	{
+	  m4_mask = siggetmask();
+	  sigsetmask(m4_mask | sigmask(SIGCHLD));
 	  twmrc = popen(m4_cmdline, "r");
+	  if (!twmrc)
+	    fprintf(stderr,"%s: popen of m4 failed: %s\n", ProgramName, strerror(errno));
 	  free(m4_cmdline);
 	}
 	else
@@ -250,11 +256,17 @@ ParseTwmrc(char *filename)
     if (m4_preprocess)
     {
       m4_status = pclose(twmrc);
+      if (m4_status < 0)
+      {
+	fprintf(stderr, "%s: pclose of m4 failed: %s\n", ProgramName, strerror(errno));
+      }
+
       if (!WIFEXITED(m4_status) || (WIFEXITED(m4_status) && WEXITSTATUS(m4_status)))
       {
-	fprintf(stderr, "%s: m4 returned %d\n", ProgramName, WEXITSTATUS(m4_status));
+	fprintf(stderr, "%s: m4 returned %d %d\n", ProgramName, WEXITSTATUS(m4_status),m4_status);
 	exit(-1);
       }
+      sigsetmask(m4_mask);
     }
     else
     {
