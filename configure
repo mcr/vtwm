@@ -766,6 +766,7 @@ enable_debug_autoraisedelay
 enable_debug_stolenfocus
 enable_debug_iconmgr
 enable_debug_warpclass
+enable_debug_trace
 with_SYS_VTWMRC_LOOK
 '
       ac_precious_vars='build_alias
@@ -1437,6 +1438,7 @@ Optional Features:
   --enable-debug-iconmgr  Turn on value added debugging
   --enable-debug-warpclass
                           Turn on value added debugging
+  --enable-debug-trace    Turn on value added X event tracing
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -5674,6 +5676,11 @@ fi
 # Check whether --enable-debug-warpclass was given.
 if test "${enable_debug_warpclass+set}" = set; then :
   enableval=$enable_debug_warpclass; if test "$enable_debug_warpclass" = "yes"; then DDEBUG="$DDEBUG -DDEBUG_WARPCLASS"; fi
+fi
+
+# Check whether --enable-debug-trace was given.
+if test "${enable_debug_trace+set}" = set; then :
+  enableval=$enable_debug_trace; if test "$enable_debug_trace" = "yes"; then DDEBUG="$DDEBUG -DTRACE"; fi
 fi
 
 

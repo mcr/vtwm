@@ -123,6 +123,7 @@ AC_ARG_ENABLE(debug-autoraisedelay,AC_HELP_STRING([--enable-debug-autoraisedelay
 AC_ARG_ENABLE(debug-stolenfocus,AC_HELP_STRING([--enable-debug-stolenfocus],[Turn on value added debugging]),[if test "$enable_debug_stolenfocus" = "yes"; then DDEBUG="$DDEBUG -DDEBUG_STOLENFOCUS"; fi ])
 AC_ARG_ENABLE(debug-iconmgr,AC_HELP_STRING([--enable-debug-iconmgr],[Turn on value added debugging]),[if test "$enable_debug_iconmgr" = "yes"; then DDEBUG="$DDEBUG -DDEBUG_ICONMGR"; fi ])
 AC_ARG_ENABLE(debug-warpclass,AC_HELP_STRING([--enable-debug-warpclass],[Turn on value added debugging]),[if test "$enable_debug_warpclass" = "yes"; then DDEBUG="$DDEBUG -DDEBUG_WARPCLASS"; fi ])
+AC_ARG_ENABLE(debug-trace,AC_HELP_STRING([--enable-debug-trace],[Turn on value added X event tracing]),[if test "$enable_debug_trace" = "yes"; then DDEBUG="$DDEBUG -DTRACE"; fi ])
 AC_SUBST(DDEBUG)
 
 PKG_CHECK_EXISTS(xpm)
