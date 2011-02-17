@@ -82,6 +82,8 @@ extern int createSoundFromFunction;
 extern int destroySoundFromFunction;
 #endif
 
+extern Bool PrintErrorMessages;
+
 #define MAX_X_EVENT 256
 event_proc EventHandler[MAX_X_EVENT];	/* event handler jump table */
 char *Action;
@@ -2452,7 +2454,6 @@ HENQueueScannerCancelAutoRaiseDelay(Display * dpy, XEvent * ev, char *args)
 {
 #ifdef DEBUG_AUTORAISEDELAY
   /* recover vtwm client-name and -detail: */
-  extern Bool PrintErrorMessages;
   TwmWindow *tmp = NULL;
   char *n = "", *d = "";
 
@@ -3570,9 +3571,18 @@ HandleGraphicsExpose(void)
 void
 HandleUnknown(void)
 {
-#ifdef DEBUG_EVENTS
-  fprintf(stderr, "type = %d\n", Event.type);
+#if defined(DEBUG_EVENTS) && !defined(TRACE)
+  fprintf(stderr, "vtwm: unhandled event type = %d\n", Event.type);
 #endif
+#if defined(TRACE)
+#ifndef DEBUG_EVENTS
+  if (PrintErrorMessages)
+#endif /* DEBUG_EVENTS */
+  {
+    fprintf(stderr, "vtwm: unhandled event type = %d: ", Event.type);
+    dumpevent(&Event, stderr);
+  }
+#endif /* TRACE */
 }
 
 
@@ -3900,7 +3910,7 @@ SendConfigureNotify(TwmWindow * tmp_win, int x, int y)
 
 #ifdef TRACE
 int
-dumpevent(XEvent * e)
+dumpevent(XEvent * e, FILE *out)
 {
   char *name = NULL;
 
@@ -4017,11 +4027,11 @@ dumpevent(XEvent * e)
 
   if (name)
   {
-    printf("event:  %s, %d remaining\n", name, QLength(dpy));
+    fprintf(out,"event:  %s, %d remaining\n", name, QLength(dpy));
   }
   else
   {
-    printf("unknown event %d, %d remaining\n", e->type, QLength(dpy));
+    fprintf(out,"unknown event %d, %d remaining\n", e->type, QLength(dpy));
   }
 }
 #endif /* TRACE */
