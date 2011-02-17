@@ -3,11 +3,24 @@ A COMPLETE LISTING OF CHANGES MADE TO VTWM SINCE VERSION 5.0
 IN CHRONOLOGICAL ORDER FROM MOST RECENT CHANGES TO EARLIEST.
 ============================================================
 
+    February 2011
+        Seth Robertson - Eliminate bug/race when OSS sound
+	     is configured and m4 is used.  Prevent children I/O
+	     attempts from stopping vtwm. Add ability to configure
+	     debugging code #defines on.  Add compile flags display on
+	     -V for ./configure users.
+
+    January 2011
+        Seth Robertson - Better autoconf sound support
+
     October 2010
 	Seth Robertson - Do not honor insane (zero) maximum Width and
 	     Height hints.  Prevent window storm insanity when
 	     NotVirtualGeometry. Add NoStormPositioning to allow
 	     disable.  5.5.0-rc3
+
+	Callum Gibson - Fix positioning of cirtual desktop when
+	       using negative gravity in geometry and NoBorder.
 
     September 2010
 	Seth Robertson - Put in code to cause spammed popup

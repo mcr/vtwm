@@ -312,6 +312,25 @@ main(int argc, char **argv, char **environ)
 #undef sounddonehandler
 #undef donehandler
 
+  {
+    sigset_t set;
+    sigemptyset(&set);
+#ifdef NOONE_WANT_TO_CTRL_Z_VTWM
+#ifdef SIGTSTP
+    sigaddset(&set, SIGTSTP);
+#endif
+#endif
+#ifdef SIGTTIN
+    sigaddset(&set, SIGTTIN);
+#endif
+#ifdef SIGTTOU
+    sigaddset(&set, SIGTTOU);
+#endif
+
+    if (sigprocmask(SIG_BLOCK, &set, NULL) < 0)
+      perror("sigprocmask-initial-block");
+  }
+
   signal(SIGUSR1, QueueRestartVtwm);
 
   Home = getenv("HOME");
