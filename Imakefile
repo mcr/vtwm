@@ -92,6 +92,15 @@ XCOMM Installation path for the system resource file
 XCOMM Installation path for the man page
        VTWMMANDIR = $(MANDIR)
 
+XCOMM Method to manipulate process group so child does not muck with vtwm
+	PROCESSGROUP = -DHAS_SETPGID
+XCOMM	PROCESSGROUP = -DHAS_SETPGRP
+XCOMM	PROCESSGROUP = -DHAS_SETPGRP -DSETPGRP_VOID
+XCOMM	PROCESSGROUP = -DHAS_SETSID
+XCOMM	PROCESSGROUP =
+
+
+
 XCOMM For the traditional look of TWM as the system fallback,
 XCOMM change this to "2D"
   SYS_VTWMRC_LOOK = 3D
@@ -128,7 +137,7 @@ XCOMM ========= Editing below here should not be necessary ==========
 		    $(TWM_USE_XFT) $(TWM_USE_SPACING) $(TWM_USE_OPACITY) \
 		    $(TWM_USE_XINERAMA) \
 		    $(TWM_USE_XRANDR) \
-		    $(TWM_USE_SLOPPYFOCUS)
+		    $(TWM_USE_SLOPPYFOCUS) $(PROCESSGROUP)
 
              SRCS = gram.c lex.c deftwmrc.c add_window.c gc.c list.c \
                     twm.c sound.c parse.c menus.c events.c resize.c util.c \

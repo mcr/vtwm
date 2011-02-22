@@ -8,6 +8,7 @@ AC_PREFIX_DEFAULT([/usr])
 
 AM_CONFIG_HEADER(config.h)
 
+AC_PATH_PROG(BOURNE_SHELL, sh)
 AC_PATH_PROG(LN, ln)
 AC_PATH_PROG(CP, cp)
 AC_PATH_PROG(RM, rm)
@@ -18,6 +19,37 @@ AC_PROG_LEX
 
 AC_CHECK_FUNC([mkstemp],
    AC_DEFINE(HAS_MKSTEMP,1,[Define to 1 if you have the `mkstemp' function.]))
+
+dnl setpgid support
+AC_CHECK_FUNC([setpgid],
+   AC_DEFINE(HAS_SETPGID,1,[Define to 1 if you have the `setpgid' function.]))
+
+dnl setsid support
+AC_CHECK_FUNC([setsid],
+   AC_DEFINE(HAS_SETSID,1,[Define to 1 if you have the `setsid' function.]))
+
+dnl setpgrp support
+AC_CHECK_FUNC([setpgrp],
+   AC_DEFINE(HAS_SETPGRP,1,[Define to 1 if you have the `setpgrp' function.]))
+
+dnl AC_FUNC_SETPGRP does not work if cross compiling
+dnl Instead, assume we will have a prototype for setpgrp if cross compiling.
+if test "$cross_compiling" = no; then
+  AC_FUNC_SETPGRP
+else
+  AC_CACHE_CHECK([whether setpgrp takes no argument], ac_cv_func_setpgrp_void,
+    [AC_TRY_COMPILE([
+#include <unistd.h>
+], [
+  if (setpgrp(1,1) == -1)
+    exit (0);
+  else
+    exit (1);
+], ac_cv_func_setpgrp_void=no, ac_cv_func_setpgrp_void=yes)])
+if test $ac_cv_func_setpgrp_void = yes; then
+  AC_DEFINE(SETPGRP_VOID, 1)
+fi
+fi
 
 dnl Check for sound support
 AC_ARG_ENABLE(sound,AC_HELP_STRING([--disable-sound],[Turn off sound support]),[if test "$enable_sound" = "no"; then SOUND_SUPPORT=; fi ])

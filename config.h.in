@@ -60,6 +60,21 @@
 /* Patch version of this package */
 #undef PACKAGE_VERSION_PATCHLEVEL
 
+/* Shell */
+#undef BOURNE_SHELL
+
+/* setpgid */
+#undef HAS_SETPGID
+
+/* setsid */
+#undef HAS_SETSID
+
+/* setpgrp */
+#undef HAS_SETPGRP
+
+/* setpgrp_void */
+#undef SETPGRP_VOID
+
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 

@@ -46,6 +46,11 @@
 
 #define MAX_FILE_SIZE	4096	/* max chars to read from file for cut */
 
+/* for builtin system, presumably never needs changing */
+#ifndef BOURNE_SHELL
+#define BOURNE_SHELL	"/bin/sh"
+#endif
+
 typedef struct MenuItem
 {
   struct MenuItem *next;	/* next menu item */

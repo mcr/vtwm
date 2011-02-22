@@ -45,6 +45,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <signal.h>
+#include <errno.h>
 #include <unistd.h>
 #ifdef NEED_PROCESS_H
 #include <process.h>
@@ -4258,7 +4259,60 @@ NeedToDefer(MenuRoot * root)
   return None;
 }
 
+/*
+ * Taken from FreeBSD's libc implementation of system(3), with modifications.
+ *
+ * Copyright (c) 1988, 1993
+ *      The Regents of the University of California.  All rights reserved.
+ *
+ * under the 3-clause BSD license
+ * Refer http://www.freebsd.org/copyright/license.html
+ *
+ */
+static void
+newsystem(const char *command)
+{
+    pid_t pid, savedpid;
+    int pstat;
+    sigset_t newsigblock, oldsigblock;
 
+    if (!command)           /* just checking... */
+	return;
+
+    (void)sigemptyset(&newsigblock);
+    (void)sigaddset(&newsigblock, SIGCHLD);
+    (void)sigprocmask(SIG_BLOCK, &newsigblock, &oldsigblock);
+    switch(pid = fork()) {
+	case -1:                        /* error */
+	    break;
+	case 0:                         /* child */
+	    /*
+	     * Restore original signal dispositions and exec the command.
+	     */
+#ifdef HAS_SETPGID
+	    setpgid(0, 0);
+#elif defined(HAS_SETGRP)
+#ifdef SETPGRP_VOID
+	    setpgrp();
+#else /*SETPGRP_VOID*/
+	    setpgrp(0, 0);
+#endif /*SETPGRP_VOID*/
+#elif defined(HAS_SETSID)
+	    setsid();
+#endif
+
+	    (void)sigprocmask(SIG_SETMASK, &oldsigblock, NULL);
+	    execl(BOURNE_SHELL, "sh", "-c", command, (char *)NULL);
+	    _exit(127);
+	default:                        /* parent */
+	    savedpid = pid;
+	    do {
+		pid = wait4(savedpid, &pstat, 0, (struct rusage *)0);
+	    } while (pid == -1 && errno == EINTR);
+	    break;
+    }
+    (void)sigprocmask(SIG_SETMASK, &oldsigblock, NULL);
+}
 
 void
 Execute(ScreenInfo * scr, char *s)
@@ -4320,7 +4374,7 @@ Execute(ScreenInfo * scr, char *s)
     restorevar = 1;
   }
 
-  (void)system(es);
+  (void)newsystem(es);
   free(es);
 
   if (restorevar)
