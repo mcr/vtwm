@@ -9,7 +9,7 @@ release:
 	@VERSION=`git describe --exact-match --match '[0-9]*' 2>/dev/null`;							\
 	  if [ $$? -ne 0 -o "$$VERSION" = "" ]; then echo "Not a tagged version, you may not release"; exit 3; fi;		\
 	  if [ `git status --porcelain | wc -l` -gt 0 ]; then echo "Uncommitted changes, you may not release"; exit 2; fi;	\
-	  VERSION=$$VERSION make subrelease
+	  VERSION=$$VERSION $(MAKE) -f Makefile.release subrelease
 
 subrelease:
 	@if [ -z "$$VERSION" ]; then VERSION=`git describe --tags 2>/dev/null`; fi;  \
