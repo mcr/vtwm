@@ -300,7 +300,11 @@ ReadPNG(char *Path, unsigned char **ImgData, int *width, int *length)
   }
 
   /* set error handling */
+#if PNG_LIBPNG_VER_SONUM >= 15
+  if (setjmp(png_jmpbuf(png_ptr)))
+#else /*PNG_LIBPNG_VER_SONUM >= 15*/
   if (setjmp(png_ptr->jmpbuf))
+#endif /*PNG_LIBPNG_VER_SONUM >= 15*/
   {
     png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp) NULL);
     free(Tempstr);
