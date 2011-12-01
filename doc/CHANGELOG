@@ -5,6 +5,7 @@ IN CHRONOLOGICAL ORDER FROM MOST RECENT CHANGES TO EARLIEST.
 
     December 2011
         Eeri Kask - Allow vtwm's own windows to start iconified
+	Seth Robertson - Fix OSS sound warnings
 
     February 2011
         Seth Robertson - Eliminate bug/race when OSS sound

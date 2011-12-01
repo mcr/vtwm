@@ -335,10 +335,15 @@ ReadWAV(int fd)
   WAVData Data;
   TAudioInfo *AudioInfo;
 
-  AudioInfo = (TAudioInfo *) calloc(1,sizeof(TAudioInfo));
-  read(fd, &Riff, sizeof(RIFFHeader));
-  read(fd, &Wav, sizeof(WAVHeader));
-  read(fd, &Data, sizeof(WAVData));
+  if (!(AudioInfo = (TAudioInfo *) calloc(1,sizeof(TAudioInfo))))
+    return(NULL);
+  if (read(fd, &Riff, sizeof(RIFFHeader)) != sizeof(RIFFHeader) ||
+      read(fd, &Wav, sizeof(WAVHeader)) != sizeof(WAVHeader) ||
+      read(fd, &Data, sizeof(WAVData)) != sizeof(WAVData))
+  {
+    free(AudioInfo);
+    return(NULL);
+  }
   AudioInfo->Channels = Wav.Channels;
   AudioInfo->SampleRate = Wav.SampleRate;
   AudioInfo->DataSize = 0xFFFFFFFF;
@@ -361,8 +366,10 @@ ReadAU(int fd)
   AUHeader Header;
   TAudioInfo *AudioInfo;
 
-  AudioInfo = (TAudioInfo *)calloc(1, sizeof(TAudioInfo));
-  read(fd, &Header, sizeof(AUHeader));
+  if (!(AudioInfo = (TAudioInfo *)calloc(1, sizeof(TAudioInfo))))
+    return(NULL);
+  if (read(fd, &Header, sizeof(AUHeader)) != sizeof(AUHeader))
+    goto error;
   /* AU uses big endian */
   Header.DataSize = htonl(Header.DataSize);
   Header.DataStart = htonl(Header.DataStart);
@@ -384,8 +391,15 @@ ReadAU(int fd)
       AudioInfo->Format = AFMT_S16_BE;
       break;
   }
-  lseek(fd, Header.DataStart, SEEK_SET);
+  if (lseek(fd, Header.DataStart, SEEK_SET) == -1)
+    goto error;
+
   return(AudioInfo);
+
+ error:
+  if (AudioInfo)
+    free(AudioInfo);
+  return(NULL);
 }
 
 static int
@@ -429,7 +443,8 @@ OSSPlaySound(char *filename, int volume)
     soundfilefd = open(filename, O_RDONLY);
     if (soundfilefd == -1)
       return(0);
-    read(soundfilefd, FourCharacter, 4);
+    if (read(soundfilefd, FourCharacter, 4) != 4)
+      goto error;
     FourCharacter[4] = '\0';
     if (strcmp(FourCharacter, ".snd") == 0)
       AudioInfo = ReadAU(soundfilefd);
@@ -437,6 +452,7 @@ OSSPlaySound(char *filename, int volume)
       AudioInfo = ReadWAV(soundfilefd);
     if (AudioInfo == NULL)
     {
+    error:
       close(soundfilefd);
       _exit(0);
     }
@@ -475,7 +491,12 @@ OSSPlaySound(char *filename, int volume)
     val = 0;
     while ((result > 0) && (val < AudioInfo->DataSize))
     {
-      write(fd, data, result);
+      int written = 0;
+      while (result > written)
+      {
+	if ((written = write(fd, data, result)) < 1)
+	  break;
+      }
       val += result;
       result = read(soundfilefd, data, buflen);
     }
@@ -578,8 +599,8 @@ SetSound(char *function, char *filename, int volume)
       {
 	twmrc_error_prefix();
 	fprintf(stderr,
-		"unable to allocate %d bytes for sound_entries\n",
-		sound_size * sizeof(sound_entry));
+		"unable to allocate %lu bytes for sound_entries\n",
+		(unsigned long)sound_size * sizeof(sound_entry));
 	Done(0);
       }
       else
