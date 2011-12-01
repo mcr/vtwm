@@ -7,6 +7,9 @@ IN CHRONOLOGICAL ORDER FROM MOST RECENT CHANGES TO EARLIEST.
         Eeri Kask - Allow vtwm's own windows to start iconified
 	Seth Robertson - Fix OSS sound warnings
 
+    October 2011
+	Seth Robertson - Support libpng15
+
     February 2011
         Seth Robertson - Eliminate bug/race when OSS sound
 	     is configured and m4 is used.  Prevent children I/O
