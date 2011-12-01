@@ -1726,13 +1726,61 @@ HandleCreateNotify(void)
  */
 
 void
+DoInitialMapping(TwmWindow *tmp_win)
+{
+  /* If it's not merely iconified, and we have hints, use them. */
+  if (tmp_win->icon == FALSE)
+  {
+    int state;
+    /* use WM_STATE if enabled */
+    if ((RestartPreviousState && GetWMState(tmp_win->w, &state, &JunkChild)
+			&& (state == NormalState || state == IconicState || state == ZoomState))
+	|| (tmp_win->wmhints && (tmp_win->wmhints->flags & StateHint)
+			&& (state=tmp_win->wmhints->initial_state) == state))
+    {
+      int zoom_save;
+
+      switch (state)
+      {
+      case ZoomState:
+	if (Scr->ZoomFunc != ZOOM_NONE)
+	  fullzoom(Scr->ZoomTile, tmp_win, Scr->ZoomFunc);
+      case DontCareState:
+      case NormalState:
+      case InactiveState:
+	XMapWindow(dpy, tmp_win->w);
+	XMapWindow(dpy, tmp_win->frame);
+	SetMapStateProp(tmp_win, NormalState);
+	SetRaiseWindow(tmp_win);
+
+	if (Scr->StrictIconManager)
+	  if (tmp_win->list)
+	    RemoveIconManager(tmp_win);
+
+	return;
+
+      case IconicState:
+	zoom_save = Scr->DoZoom;
+	Scr->DoZoom = FALSE;
+	Iconify(tmp_win, 0, 0);
+	Scr->DoZoom = zoom_save;
+	return;
+      }
+    }
+  }
+
+  /* If no hints, or currently an icon, just "deiconify" */
+  DeIconify(tmp_win);
+  SetRaiseWindow(tmp_win);
+}
+
+
+
+void
 HandleMapRequest(void)
 {
-  int state;
-
   Event.xany.window = Event.xmaprequest.window;
-  state = XFindContext(dpy, Event.xany.window, TwmContext, (caddr_t *) & Tmp_win);
-  if (state == XCNOENT)
+  if (XFindContext(dpy, Event.xany.window, TwmContext, (caddr_t *) & Tmp_win) == XCNOENT)
     Tmp_win = NULL;
 
   /* If the window has never been mapped before ... */
@@ -1782,50 +1830,7 @@ HandleMapRequest(void)
       (void)AddIconManager(Tmp_win);
   }
 
-  /* If it's not merely iconified, and we have hints, use them. */
-  if (Tmp_win->icon == FALSE)
-  {
-    /* use WM_STATE if enabled */
-    if ((RestartPreviousState && GetWMState(Tmp_win->w, &state, &JunkChild)
-			&& (state == NormalState || state == IconicState || state == ZoomState))
-	|| (Tmp_win->wmhints && (Tmp_win->wmhints->flags & StateHint)
-			&& (state=Tmp_win->wmhints->initial_state) == state))
-    {
-      int zoom_save;
-
-      switch (state)
-      {
-      case ZoomState:
-	if (Scr->ZoomFunc != ZOOM_NONE)
-	  fullzoom(Scr->ZoomTile, Tmp_win, Scr->ZoomFunc);
-      case DontCareState:
-      case NormalState:
-      case InactiveState:
-	XMapWindow(dpy, Tmp_win->w);
-	XMapWindow(dpy, Tmp_win->frame);
-	SetMapStateProp(Tmp_win, NormalState);
-	SetRaiseWindow(Tmp_win);
-
-	if (Scr->StrictIconManager)
-	  if (Tmp_win->list)
-	    RemoveIconManager(Tmp_win);
-
-	goto hmrxit;
-
-      case IconicState:
-	zoom_save = Scr->DoZoom;
-	Scr->DoZoom = FALSE;
-	Iconify(Tmp_win, 0, 0);
-	Scr->DoZoom = zoom_save;
-	goto hmrxit;
-      }
-    }
-  }
-  /* If no hints, or currently an icon, just "deiconify" */
-  DeIconify(Tmp_win);
-  SetRaiseWindow(Tmp_win);
-
-  hmrxit:;
+  DoInitialMapping(Tmp_win);
 
   UpdateDesktop(Tmp_win);
   RaiseStickyAbove();

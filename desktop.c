@@ -249,21 +249,19 @@ CreateDesktopDisplay(void)
 
   Scr->VirtualDesktopDisplayTwin = AddWindow(Scr->VirtualDesktopDisplayOuter, FALSE, NULL);
 
+  SetMapStateProp(Scr->VirtualDesktopDisplayTwin, WithdrawnState);
+
   /* limit the minimum size of the virtual desktop - djhjr - 2/23/99 */
   Scr->VirtualDesktopDisplayTwin->hints.flags |= PMinSize;
   Scr->VirtualDesktopDisplayTwin->hints.min_width = SCALE_D(Scr->MyDisplayWidth) + (Scr->VirtualDesktopBevelWidth * 2);
   Scr->VirtualDesktopDisplayTwin->hints.min_height = SCALE_D(Scr->MyDisplayHeight) + (Scr->VirtualDesktopBevelWidth * 2);
 
-
-  SetMapStateProp(Scr->VirtualDesktopDisplayTwin, NormalState);
-
   /* position the representation */
   DisplayScreenOnDesktop();
 
-  /* map them all */
+  /* map them all, except top-level "Scr->VirtualDesktopDisplayOuter" (which is in 'WithdrawnState') */
   XMapWindow(dpy, Scr->VirtualDesktopDScreen);
   XMapWindow(dpy, Scr->VirtualDesktopDisplay);
-  XMapWindow(dpy, Scr->VirtualDesktopDisplayOuter);
 
   /* create the autopan windows if we are doing this */
   if (Scr->AutoPanX > 0)

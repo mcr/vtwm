@@ -181,6 +181,7 @@ extern void InitEvents(void);
 extern int StashEventTime(register XEvent * ev);
 extern Time lastTimestamp;
 extern void SimulateMapRequest(Window w);
+extern void DoInitialMapping(TwmWindow *tmp_win);
 extern void AutoRaiseWindow(TwmWindow * tmp);
 extern int DispatchEvent(void);
 extern void HandleEvents(void);

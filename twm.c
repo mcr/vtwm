@@ -773,11 +773,12 @@ main(int argc, char **argv, char **environ)
 
     XQueryTree(dpy, Scr->Root, &root, &parent, &children, &nchildren);
     CreateIconManagers();
-    if (!Scr->NoIconManagers)
-      Scr->iconmgr.twm_win->icon = TRUE;
 
     if (Scr->VirtualDesktopWidth > 0)
+    {
       CreateDesktopDisplay();
+      DoInitialMapping(Scr->VirtualDesktopDisplayTwin);
+    }
 
     /* create all of the door windows */
     door_open_all();
@@ -823,13 +824,10 @@ main(int argc, char **argv, char **environ)
 
     if (Scr->ShowIconManager && !Scr->NoIconManagers)
     {
-      Scr->iconmgr.twm_win->icon = FALSE;
-      if (Scr->iconmgr.count)
-      {
-	SetMapStateProp(Scr->iconmgr.twm_win, NormalState);
-	XMapWindow(dpy, Scr->iconmgr.w);
-	XMapWindow(dpy, Scr->iconmgr.twm_win->frame);
-      }
+      IconMgr *ip;
+      for (ip = &Scr->iconmgr; ip != NULL; ip = ip->next)
+        if (ip->count > 0)
+	  DoInitialMapping(ip->twm_win);
     }
 
     if (!(Scr->InfoBevelWidth > 0))

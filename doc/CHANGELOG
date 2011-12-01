@@ -3,6 +3,9 @@ A COMPLETE LISTING OF CHANGES MADE TO VTWM SINCE VERSION 5.0
 IN CHRONOLOGICAL ORDER FROM MOST RECENT CHANGES TO EARLIEST.
 ============================================================
 
+    December 2011
+        Eeri Kask - Allow vtwm's own windows to start iconified
+
     February 2011
         Seth Robertson - Eliminate bug/race when OSS sound
 	     is configured and m4 is used.  Prevent children I/O

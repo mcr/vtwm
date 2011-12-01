@@ -571,14 +571,16 @@ AddIconManager(TwmWindow * tmp_win)
   XSaveContext(dpy, tmp->icon, ScreenContext, (caddr_t) Scr);
   tmp_win->list = tmp;
 
-  if (!ip->twm_win->icon)
+  if (HandlingEvents == TRUE)
   {
-    XMapWindow(dpy, ip->w);
-    XMapWindow(dpy, ip->twm_win->frame);
+    if (!ip->twm_win->icon)
+    {
+      XMapWindow(dpy, ip->w);
+      XMapWindow(dpy, ip->twm_win->frame);
+    }
+    else
+      XMapWindow(dpy, ip->twm_win->icon_w.win);
   }
-
-  else
-    XMapWindow(dpy, ip->twm_win->icon_w.win);
 
   return (tmp);
 }
