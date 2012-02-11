@@ -16,6 +16,10 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_YACC
 AC_PROG_LEX
+if test "x$LEX" = x:; then
+  echo "Missing required program lex (or flex)!"
+  exit 1
+fi
 
 AC_CHECK_FUNC([mkstemp],
    AC_DEFINE(HAS_MKSTEMP,1,[Define to 1 if you have the `mkstemp' function.]))
