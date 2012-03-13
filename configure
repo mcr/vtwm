@@ -640,13 +640,14 @@ xinerama_CFLAGS
 xrandr_AUX_CFLAGS
 xrandr_LIBS
 xrandr_CFLAGS
-xft_AUX_CFLAGS
-xft_LIBS
-xft_CFLAGS
 NO_BUILD_INFO
 TWM_USE_SLOPPYFOCUS
 TWM_USE_OPACITY
 TWM_USE_SPACING
+TWM_USE_XFT
+xft_AUX_CFLAGS
+xft_LIBS
+xft_CFLAGS
 regex_LIBS
 regex_CFLAGS
 png_LIBS
@@ -764,6 +765,7 @@ enable_oss_sound
 enable_rplay_sound
 enable_esd_sound
 enable_nexpm
+enable_xft
 enable_spacing
 enable_opacity
 enable_sloppyfocus
@@ -1433,6 +1435,7 @@ Optional Features:
   --disable-rplay-sound   Turn off rplay sound support
   --disable-esd-sound     Turn off esd sound support
   --disable-nexpm         Turn off nexpm building
+  --disable-xft           Turn off libXft rendering
   --disable-spacing       Turn off font height dependent text layout spacing
   --disable-opacity       Turn off _NET_WM_WINDOW_OPACITY client window
                           property support
@@ -5355,41 +5358,13 @@ fi
 
 
 
-# Check whether --enable-spacing was given.
-if test "${enable_spacing+set}" = set; then :
-  enableval=$enable_spacing; if test "$enable_spacing" = "yes"; then TWM_USE_SPACING=-DTWM_USE_SPACING; fi
-else
-  TWM_USE_SPACING=-DTWM_USE_SPACING
+# Check whether --enable-xft was given.
+if test "${enable_xft+set}" = set; then :
+  enableval=$enable_xft;
 fi
 
-
-
-# Check whether --enable-opacity was given.
-if test "${enable_opacity+set}" = set; then :
-  enableval=$enable_opacity; if test "$enable_opacity" = "yes"; then TWM_USE_OPACITY=-DTWM_USE_OPACITY; fi
-else
-  TWM_USE_OPACITY=-DTWM_USE_OPACITY
-fi
-
-
-
-# Check whether --enable-sloppyfocus was given.
-if test "${enable_sloppyfocus+set}" = set; then :
-  enableval=$enable_sloppyfocus; if test "$enable_sloppyfocus" = "yes"; then TWM_USE_SLOPPYFOCUS=-DTWM_USE_SLOPPYFOCUS; fi
-else
-  TWM_USE_SLOPPYFOCUS=-DTWM_USE_SLOPPYFOCUS
-fi
-
-
-
-# Check whether --enable-buildinfo was given.
-if test "${enable_buildinfo+set}" = set; then :
-  enableval=$enable_buildinfo; if test "$enable_build_info" = "no"; then NO_BUILD_INFO=-DNO_BUILD_INFO; fi
-fi
-
-
-
-if test -n "$PKG_CONFIG" && \
+if test "x$enable_xft" != "xno"; then
+  if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"xft\""; } >&5
   ($PKG_CONFIG --exists --print-errors "xft") 2>&5
   ac_status=$?
@@ -5488,6 +5463,42 @@ $as_echo "yes" >&6; }
 fi;xft_AUX_CFLAGS=-DTWM_USE_XFT
 fi
 
+
+
+fi
+
+
+# Check whether --enable-spacing was given.
+if test "${enable_spacing+set}" = set; then :
+  enableval=$enable_spacing; if test "$enable_spacing" = "yes"; then TWM_USE_SPACING=-DTWM_USE_SPACING; fi
+else
+  TWM_USE_SPACING=-DTWM_USE_SPACING
+fi
+
+
+
+# Check whether --enable-opacity was given.
+if test "${enable_opacity+set}" = set; then :
+  enableval=$enable_opacity; if test "$enable_opacity" = "yes"; then TWM_USE_OPACITY=-DTWM_USE_OPACITY; fi
+else
+  TWM_USE_OPACITY=-DTWM_USE_OPACITY
+fi
+
+
+
+# Check whether --enable-sloppyfocus was given.
+if test "${enable_sloppyfocus+set}" = set; then :
+  enableval=$enable_sloppyfocus; if test "$enable_sloppyfocus" = "yes"; then TWM_USE_SLOPPYFOCUS=-DTWM_USE_SLOPPYFOCUS; fi
+else
+  TWM_USE_SLOPPYFOCUS=-DTWM_USE_SLOPPYFOCUS
+fi
+
+
+
+# Check whether --enable-buildinfo was given.
+if test "${enable_buildinfo+set}" = set; then :
+  enableval=$enable_buildinfo; if test "$enable_build_info" = "no"; then NO_BUILD_INFO=-DNO_BUILD_INFO; fi
+fi
 
 
 

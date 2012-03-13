@@ -101,6 +101,16 @@ AC_SEARCH_LIBS(regcomp,regex c,[regex_LIBS=$LIBS;regex_CFLAGS=],[regex_CFLAGS=-D
 AC_SUBST(regex_CFLAGS)
 AC_SUBST(regex_LIBS)
 
+dnl Xft Font rendering
+AC_ARG_ENABLE(xft,AC_HELP_STRING([--disable-xft],[Turn off libXft rendering]))
+if test "x$enable_xft" != "xno"; then
+  PKG_CHECK_EXISTS(xft,[PKG_CHECK_MODULES(xft, xft);xft_AUX_CFLAGS=-DTWM_USE_XFT])
+  AC_SUBST(xft_CFLAGS)
+  AC_SUBST(xft_AUX_CFLAGS)
+  AC_SUBST(xft_LIBS)
+fi
+AC_SUBST(TWM_USE_XFT)
+
 dnl Font height dependent text layout spacing
 AC_ARG_ENABLE(spacing,AC_HELP_STRING([--disable-spacing],[Turn off font height dependent text layout spacing]),[if test "$enable_spacing" = "yes"; then TWM_USE_SPACING=-DTWM_USE_SPACING; fi ],[TWM_USE_SPACING=-DTWM_USE_SPACING])
 AC_SUBST(TWM_USE_SPACING)
@@ -116,12 +126,6 @@ AC_SUBST(TWM_USE_SLOPPYFOCUS)
 dnl Version window build information
 AC_ARG_ENABLE(buildinfo,AC_HELP_STRING([--disable-build-info],[Prevent version window from having build information]),[if test "$enable_build_info" = "no"; then NO_BUILD_INFO=-DNO_BUILD_INFO; fi ])
 AC_SUBST(NO_BUILD_INFO)
-
-dnl xft library checks
-PKG_CHECK_EXISTS(xft,[PKG_CHECK_MODULES(xft, xft);xft_AUX_CFLAGS=-DTWM_USE_XFT])
-AC_SUBST(xft_CFLAGS)
-AC_SUBST(xft_AUX_CFLAGS)
-AC_SUBST(xft_LIBS)
 
 dnl nsl library checks
 AC_SEARCH_LIBS(gethostbyname,nsl)
