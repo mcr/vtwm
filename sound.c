@@ -33,6 +33,7 @@
 #ifdef SOUND_SUPPORT
 
 #include <X11/Xmu/CharSet.h>
+#include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include "gram.h"
