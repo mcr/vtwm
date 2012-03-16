@@ -605,29 +605,6 @@ ac_includes_default="\
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 SYS_VTWMRC_LOOK
-MAN_SUBSTS
-XORG_MAN_PAGE
-ADMIN_MAN_DIR
-DRIVER_MAN_DIR
-MISC_MAN_DIR
-FILE_MAN_DIR
-LIB_MAN_DIR
-APP_MAN_DIR
-ADMIN_MAN_SUFFIX
-DRIVER_MAN_SUFFIX
-MISC_MAN_SUFFIX
-FILE_MAN_SUFFIX
-LIB_MAN_SUFFIX
-APP_MAN_SUFFIX
-SED
-host_os
-host_vendor
-host_cpu
-host
-build_os
-build_vendor
-build_cpu
-build
 DDEBUG
 NO_M4_SUPPORT
 M4_BIN
@@ -644,7 +621,6 @@ NO_BUILD_INFO
 TWM_USE_SLOPPYFOCUS
 TWM_USE_OPACITY
 TWM_USE_SPACING
-TWM_USE_XFT
 xft_AUX_CFLAGS
 xft_LIBS
 xft_CFLAGS
@@ -764,12 +740,16 @@ enable_sound
 enable_oss_sound
 enable_rplay_sound
 enable_esd_sound
+enable_xpm
 enable_nexpm
+enable_png
 enable_xft
 enable_spacing
 enable_opacity
 enable_sloppyfocus
 enable_buildinfo
+enable_xrandr
+enable_xinerama
 enable_m4
 enable_debug
 enable_debug_events
@@ -1409,10 +1389,6 @@ Program names:
   --program-prefix=PREFIX            prepend PREFIX to installed program names
   --program-suffix=SUFFIX            append SUFFIX to installed program names
   --program-transform-name=PROGRAM   run sed PROGRAM on installed program names
-
-System types:
-  --build=BUILD     configure for building on BUILD [guessed]
-  --host=HOST       cross-compile to build programs to run on HOST [BUILD]
 _ACEOF
 fi
 
@@ -1434,13 +1410,17 @@ Optional Features:
   --disable-oss-sound     Turn off oss sound support
   --disable-rplay-sound   Turn off rplay sound support
   --disable-esd-sound     Turn off esd sound support
+  --disable-xpm           Turn off libXpm rendering
   --disable-nexpm         Turn off nexpm building
+  --disable-png           Turn off png support
   --disable-xft           Turn off libXft rendering
   --disable-spacing       Turn off font height dependent text layout spacing
   --disable-opacity       Turn off _NET_WM_WINDOW_OPACITY client window
                           property support
   --disable-sloppyfocus   Turn off sloppy window focus
   --disable-build-info    Prevent version window from having build information
+  --disable-xrandr        Turn off Xrandr support
+  --disable-xinerama      Turn off Xinerama support
   --disable-m4            Turn off m4 vtwmrc processing
   --enable-debug          Turn on value added debugging
   --enable-debug-events   Turn on value added debugging of events
@@ -5074,15 +5054,13 @@ $as_echo "yes" >&6; }
 
 fi
 
-# Check whether --enable-nexpm was given.
-if test "${enable_nexpm+set}" = set; then :
-  enableval=$enable_nexpm; if test "$enable_nexpm" = "yes"; then ENABLE_NEXPM=yes; fi
-else
-  ENABLE_NEXPM=yes
+# Check whether --enable-xpm was given.
+if test "${enable_xpm+set}" = set; then :
+  enableval=$enable_xpm;
 fi
 
-
-if test -n "$PKG_CONFIG" && \
+if test "x$enable_xpm" != "xno"; then
+  if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"xpm\""; } >&5
   ($PKG_CONFIG --exists --print-errors "xpm") 2>&5
   ac_status=$?
@@ -5180,10 +5158,20 @@ $as_echo "yes" >&6; }
 
 fi
 else
-  xpm_CFLAGS=-DNO_XPM_SUPPORT; unset ENABLE_NEXPM
+  xpm_CFLAGS=-DNO_XPM_SUPPORT
 fi
 
 
+fi
+
+# Check whether --enable-nexpm was given.
+if test "${enable_nexpm+set}" = set; then :
+  enableval=$enable_nexpm;
+fi
+
+if test "x$enable_xpm" != "xno" -a "x$enable_nexpm" != "xno"; then
+  ENABLE_NEXPM=yes;
+fi
 
  if test x$ENABLE_NEXPM = xyes; then
   ENABLE_NEXPM_TRUE=
@@ -5194,7 +5182,13 @@ else
 fi
 
 
-if test -n "$PKG_CONFIG" && \
+# Check whether --enable-png was given.
+if test "${enable_png+set}" = set; then :
+  enableval=$enable_png;
+fi
+
+if test "x$enable_png" != "xno"; then
+  if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libpng\""; } >&5
   ($PKG_CONFIG --exists --print-errors "libpng") 2>&5
   ac_status=$?
@@ -5296,6 +5290,7 @@ else
 fi
 
 
+fi
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing regcomp" >&5
 $as_echo_n "checking for library containing regcomp... " >&6; }
@@ -5467,7 +5462,6 @@ fi
 
 fi
 
-
 # Check whether --enable-spacing was given.
 if test "${enable_spacing+set}" = set; then :
   enableval=$enable_spacing; if test "$enable_spacing" = "yes"; then TWM_USE_SPACING=-DTWM_USE_SPACING; fi
@@ -5559,7 +5553,13 @@ if test "$ac_res" != no; then :
 fi
 
 
-if test -n "$PKG_CONFIG" && \
+# Check whether --enable-xrandr was given.
+if test "${enable_xrandr+set}" = set; then :
+  enableval=$enable_xrandr;
+fi
+
+if test "x$enable_xrandr" != "xno"; then
+  if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"xrandr\""; } >&5
   ($PKG_CONFIG --exists --print-errors "xrandr") 2>&5
   ac_status=$?
@@ -5660,8 +5660,15 @@ fi
 
 
 
+fi
 
-if test -n "$PKG_CONFIG" && \
+# Check whether --enable-xinerama was given.
+if test "${enable_xinerama+set}" = set; then :
+  enableval=$enable_xinerama;
+fi
+
+if test "x$enable_xinerama" != "xno"; then
+  if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"xinerama\""; } >&5
   ($PKG_CONFIG --exists --print-errors "xinerama") 2>&5
   ac_status=$?
@@ -5762,6 +5769,7 @@ fi
 
 
 
+fi
 
 ac_fn_c_check_header_mongrel "$LINENO" "sys/select.h" "ac_cv_header_sys_select_h" "$ac_includes_default"
 if test "x$ac_cv_header_sys_select_h" = xyes; then :
@@ -5872,270 +5880,6 @@ fi
 
 
 
-if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"xpm\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "xpm") 2>&5
-  ac_status=$?
-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-  test $ac_status = 0; }; then
-  :
-fi
-
-
-
-# Make sure we can run config.sub.
-$SHELL "$ac_aux_dir/config.sub" sun4 >/dev/null 2>&1 ||
-  as_fn_error $? "cannot run $SHELL $ac_aux_dir/config.sub" "$LINENO" 5
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking build system type" >&5
-$as_echo_n "checking build system type... " >&6; }
-if ${ac_cv_build+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_build_alias=$build_alias
-test "x$ac_build_alias" = x &&
-  ac_build_alias=`$SHELL "$ac_aux_dir/config.guess"`
-test "x$ac_build_alias" = x &&
-  as_fn_error $? "cannot guess build type; you must specify one" "$LINENO" 5
-ac_cv_build=`$SHELL "$ac_aux_dir/config.sub" $ac_build_alias` ||
-  as_fn_error $? "$SHELL $ac_aux_dir/config.sub $ac_build_alias failed" "$LINENO" 5
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_build" >&5
-$as_echo "$ac_cv_build" >&6; }
-case $ac_cv_build in
-*-*-*) ;;
-*) as_fn_error $? "invalid value of canonical build" "$LINENO" 5;;
-esac
-build=$ac_cv_build
-ac_save_IFS=$IFS; IFS='-'
-set x $ac_cv_build
-shift
-build_cpu=$1
-build_vendor=$2
-shift; shift
-# Remember, the first character of IFS is used to create $*,
-# except with old shells:
-build_os=$*
-IFS=$ac_save_IFS
-case $build_os in *\ *) build_os=`echo "$build_os" | sed 's/ /-/g'`;; esac
-
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking host system type" >&5
-$as_echo_n "checking host system type... " >&6; }
-if ${ac_cv_host+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  if test "x$host_alias" = x; then
-  ac_cv_host=$ac_cv_build
-else
-  ac_cv_host=`$SHELL "$ac_aux_dir/config.sub" $host_alias` ||
-    as_fn_error $? "$SHELL $ac_aux_dir/config.sub $host_alias failed" "$LINENO" 5
-fi
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_host" >&5
-$as_echo "$ac_cv_host" >&6; }
-case $ac_cv_host in
-*-*-*) ;;
-*) as_fn_error $? "invalid value of canonical host" "$LINENO" 5;;
-esac
-host=$ac_cv_host
-ac_save_IFS=$IFS; IFS='-'
-set x $ac_cv_host
-shift
-host_cpu=$1
-host_vendor=$2
-shift; shift
-# Remember, the first character of IFS is used to create $*,
-# except with old shells:
-host_os=$*
-IFS=$ac_save_IFS
-case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
-
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for a sed that does not truncate output" >&5
-$as_echo_n "checking for a sed that does not truncate output... " >&6; }
-if ${ac_cv_path_SED+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-            ac_script=s/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/
-     for ac_i in 1 2 3 4 5 6 7; do
-       ac_script="$ac_script$as_nl$ac_script"
-     done
-     echo "$ac_script" 2>/dev/null | sed 99q >conftest.sed
-     { ac_script=; unset ac_script;}
-     if test -z "$SED"; then
-  ac_path_SED_found=false
-  # Loop through the user's path and test for each of PROGNAME-LIST
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_prog in sed gsed; do
-    for ac_exec_ext in '' $ac_executable_extensions; do
-      ac_path_SED="$as_dir/$ac_prog$ac_exec_ext"
-      { test -f "$ac_path_SED" && $as_test_x "$ac_path_SED"; } || continue
-# Check for GNU ac_path_SED and select it if it is found.
-  # Check for GNU $ac_path_SED
-case `"$ac_path_SED" --version 2>&1` in
-*GNU*)
-  ac_cv_path_SED="$ac_path_SED" ac_path_SED_found=:;;
-*)
-  ac_count=0
-  $as_echo_n 0123456789 >"conftest.in"
-  while :
-  do
-    cat "conftest.in" "conftest.in" >"conftest.tmp"
-    mv "conftest.tmp" "conftest.in"
-    cp "conftest.in" "conftest.nl"
-    $as_echo '' >> "conftest.nl"
-    "$ac_path_SED" -f conftest.sed < "conftest.nl" >"conftest.out" 2>/dev/null || break
-    diff "conftest.out" "conftest.nl" >/dev/null 2>&1 || break
-    as_fn_arith $ac_count + 1 && ac_count=$as_val
-    if test $ac_count -gt ${ac_path_SED_max-0}; then
-      # Best one so far, save it but keep looking for a better one
-      ac_cv_path_SED="$ac_path_SED"
-      ac_path_SED_max=$ac_count
-    fi
-    # 10*(2^10) chars as input seems more than enough
-    test $ac_count -gt 10 && break
-  done
-  rm -f conftest.in conftest.tmp conftest.nl conftest.out;;
-esac
-
-      $ac_path_SED_found && break 3
-    done
-  done
-  done
-IFS=$as_save_IFS
-  if test -z "$ac_cv_path_SED"; then
-    as_fn_error $? "no acceptable sed could be found in \$PATH" "$LINENO" 5
-  fi
-else
-  ac_cv_path_SED=$SED
-fi
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_path_SED" >&5
-$as_echo "$ac_cv_path_SED" >&6; }
- SED="$ac_cv_path_SED"
-  rm -f conftest.sed
-
-
-
-
-
-if test x$APP_MAN_SUFFIX = x    ; then
-    APP_MAN_SUFFIX=1
-fi
-if test x$APP_MAN_DIR = x    ; then
-    APP_MAN_DIR='$(mandir)/man$(APP_MAN_SUFFIX)'
-fi
-
-if test x$LIB_MAN_SUFFIX = x    ; then
-    LIB_MAN_SUFFIX=3
-fi
-if test x$LIB_MAN_DIR = x    ; then
-    LIB_MAN_DIR='$(mandir)/man$(LIB_MAN_SUFFIX)'
-fi
-
-if test x$FILE_MAN_SUFFIX = x    ; then
-    case $host_os in
-	solaris*)	FILE_MAN_SUFFIX=4  ;;
-	*)		FILE_MAN_SUFFIX=5  ;;
-    esac
-fi
-if test x$FILE_MAN_DIR = x    ; then
-    FILE_MAN_DIR='$(mandir)/man$(FILE_MAN_SUFFIX)'
-fi
-
-if test x$MISC_MAN_SUFFIX = x    ; then
-    case $host_os in
-	solaris*)	MISC_MAN_SUFFIX=5  ;;
-	*)		MISC_MAN_SUFFIX=7  ;;
-    esac
-fi
-if test x$MISC_MAN_DIR = x    ; then
-    MISC_MAN_DIR='$(mandir)/man$(MISC_MAN_SUFFIX)'
-fi
-
-if test x$DRIVER_MAN_SUFFIX = x    ; then
-    case $host_os in
-	solaris*)	DRIVER_MAN_SUFFIX=7  ;;
-	*)		DRIVER_MAN_SUFFIX=4  ;;
-    esac
-fi
-if test x$DRIVER_MAN_DIR = x    ; then
-    DRIVER_MAN_DIR='$(mandir)/man$(DRIVER_MAN_SUFFIX)'
-fi
-
-if test x$ADMIN_MAN_SUFFIX = x    ; then
-    case $host_os in
-	solaris*)	ADMIN_MAN_SUFFIX=1m ;;
-	*)		ADMIN_MAN_SUFFIX=8  ;;
-    esac
-fi
-if test x$ADMIN_MAN_DIR = x    ; then
-    ADMIN_MAN_DIR='$(mandir)/man$(ADMIN_MAN_SUFFIX)'
-fi
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-XORG_MAN_PAGE="X Version 11"
-
-MAN_SUBSTS="\
-	-e 's|__vendorversion__|\"\$(PACKAGE_STRING)\" \"\$(XORG_MAN_PAGE)\"|' \
-	-e 's|__xorgversion__|\"\$(PACKAGE_STRING)\" \"\$(XORG_MAN_PAGE)\"|' \
-	-e 's|__xservername__|Xorg|g' \
-	-e 's|__xconfigfile__|xorg.conf|g' \
-	-e 's|__projectroot__|\$(prefix)|g' \
-	-e 's|__apploaddir__|\$(appdefaultdir)|g' \
-	-e 's|__appmansuffix__|\$(APP_MAN_SUFFIX)|g' \
-	-e 's|__drivermansuffix__|\$(DRIVER_MAN_SUFFIX)|g' \
-	-e 's|__adminmansuffix__|\$(ADMIN_MAN_SUFFIX)|g' \
-	-e 's|__libmansuffix__|\$(LIB_MAN_SUFFIX)|g' \
-	-e 's|__miscmansuffix__|\$(MISC_MAN_SUFFIX)|g' \
-	-e 's|__filemansuffix__|\$(FILE_MAN_SUFFIX)|g'"
-
-
-
-
-
-cat >>confdefs.h <<_ACEOF
-#define PACKAGE_VERSION_MAJOR `echo $PACKAGE_VERSION | cut -d . -f 1`
-_ACEOF
-
-	PVM=`echo $PACKAGE_VERSION | cut -d . -f 2 | cut -d - -f 1`
-	if test "x$PVM" = "x"; then
-		PVM="0"
-	fi
-
-cat >>confdefs.h <<_ACEOF
-#define PACKAGE_VERSION_MINOR $PVM
-_ACEOF
-
-	PVP=`echo $PACKAGE_VERSION | cut -d . -f 3 | cut -d - -f 1`
-	if test "x$PVP" = "x"; then
-		PVP="0"
-	fi
-
-cat >>confdefs.h <<_ACEOF
-#define PACKAGE_VERSION_PATCHLEVEL $PVP
-_ACEOF
 
 
 
@@ -6146,7 +5890,6 @@ if test "${with_SYS_VTWMRC_LOOK+set}" = set; then :
 else
   SYS_VTWMRC_LOOK=3D
 fi
-
 
 
 

@@ -81,20 +81,28 @@ AC_SUBST(SOUND_SUPPORT)
 dnl Checks for pkg-config packages
 PKG_CHECK_MODULES(VTWM, x11 xext xt xmu)
 
-dnl Font height dependent text layout spacing
-AC_ARG_ENABLE(nexpm,AC_HELP_STRING([--disable-nexpm],[Turn off nexpm building]),[if test "$enable_nexpm" = "yes"; then ENABLE_NEXPM=yes; fi ],[ENABLE_NEXPM=yes])
+dnl Xpm library checks
+AC_ARG_ENABLE(xpm,AC_HELP_STRING([--disable-xpm],[Turn off libXpm rendering]))
+if test "x$enable_xpm" != "xno"; then
+  PKG_CHECK_EXISTS(xpm,[PKG_CHECK_MODULES(xpm, xpm)],[xpm_CFLAGS=-DNO_XPM_SUPPORT])
+  AC_SUBST(xpm_CFLAGS)
+  AC_SUBST(xpm_LIBS)
+fi
 
-dnl xpm library checks
-PKG_CHECK_EXISTS(xpm,[PKG_CHECK_MODULES(xpm, xpm)],[xpm_CFLAGS=-DNO_XPM_SUPPORT; unset ENABLE_NEXPM])
-AC_SUBST(xpm_CFLAGS)
-AC_SUBST(xpm_LIBS)
+AC_ARG_ENABLE(nexpm,AC_HELP_STRING([--disable-nexpm],[Turn off nexpm building]))
+if test "x$enable_xpm" != "xno" -a "x$enable_nexpm" != "xno"; then
+  ENABLE_NEXPM=yes;
+fi
 AC_SUBST(ENABLE_NEXPM)
 AM_CONDITIONAL(ENABLE_NEXPM, test x$ENABLE_NEXPM = xyes)
 
 dnl png library checks
-PKG_CHECK_EXISTS(libpng,[PKG_CHECK_MODULES(png, libpng)],[png_CFLAGS=-DNO_PNG_SUPPORT])
-AC_SUBST(png_CFLAGS)
-AC_SUBST(png_LIBS)
+AC_ARG_ENABLE(png,AC_HELP_STRING([--disable-png],[Turn off png support]))
+if test "x$enable_png" != "xno"; then
+  PKG_CHECK_EXISTS(libpng,[PKG_CHECK_MODULES(png, libpng)],[png_CFLAGS=-DNO_PNG_SUPPORT])
+  AC_SUBST(png_CFLAGS)
+  AC_SUBST(png_LIBS)
+fi
 
 dnl regexp library checks
 AC_SEARCH_LIBS(regcomp,regex c,[regex_LIBS=$LIBS;regex_CFLAGS=],[regex_CFLAGS=-DNO_REGEX_SUPPORT])
@@ -109,7 +117,6 @@ if test "x$enable_xft" != "xno"; then
   AC_SUBST(xft_AUX_CFLAGS)
   AC_SUBST(xft_LIBS)
 fi
-AC_SUBST(TWM_USE_XFT)
 
 dnl Font height dependent text layout spacing
 AC_ARG_ENABLE(spacing,AC_HELP_STRING([--disable-spacing],[Turn off font height dependent text layout spacing]),[if test "$enable_spacing" = "yes"; then TWM_USE_SPACING=-DTWM_USE_SPACING; fi ],[TWM_USE_SPACING=-DTWM_USE_SPACING])
@@ -131,16 +138,22 @@ dnl nsl library checks
 AC_SEARCH_LIBS(gethostbyname,nsl)
 
 dnl xrandr library checks
-PKG_CHECK_EXISTS(xrandr,[PKG_CHECK_MODULES(xrandr, xrandr);xrandr_AUX_CFLAGS=-DTWM_USE_XRANDR])
-AC_SUBST(xrandr_CFLAGS)
-AC_SUBST(xrandr_AUX_CFLAGS)
-AC_SUBST(xrandr_LIBS)
+AC_ARG_ENABLE(xrandr,AC_HELP_STRING([--disable-xrandr],[Turn off Xrandr support]))
+if test "x$enable_xrandr" != "xno"; then
+  PKG_CHECK_EXISTS(xrandr,[PKG_CHECK_MODULES(xrandr, xrandr);xrandr_AUX_CFLAGS=-DTWM_USE_XRANDR])
+  AC_SUBST(xrandr_CFLAGS)
+  AC_SUBST(xrandr_AUX_CFLAGS)
+  AC_SUBST(xrandr_LIBS)
+fi
 
 dnl xinerama library checks
-PKG_CHECK_EXISTS(xinerama,[PKG_CHECK_MODULES(xinerama, xinerama);xinerama_AUX_CFLAGS=-DTWM_USE_XINERAMA])
-AC_SUBST(xinerama_CFLAGS)
-AC_SUBST(xinerama_AUX_CFLAGS)
-AC_SUBST(xinerama_LIBS)
+AC_ARG_ENABLE(xinerama,AC_HELP_STRING([--disable-xinerama],[Turn off Xinerama support]))
+if test "x$enable_xinerama" != "xno"; then
+  PKG_CHECK_EXISTS(xinerama,[PKG_CHECK_MODULES(xinerama, xinerama);xinerama_AUX_CFLAGS=-DTWM_USE_XINERAMA])
+  AC_SUBST(xinerama_CFLAGS)
+  AC_SUBST(xinerama_AUX_CFLAGS)
+  AC_SUBST(xinerama_LIBS)
+fi
 
 AC_CHECK_HEADER(sys/select.h,NEED_SELECT_H=-DNEED_SELECT_H)
 AC_SUBST(NEED_SELECT_H)
@@ -166,15 +179,10 @@ AC_ARG_ENABLE(debug-warpclass,AC_HELP_STRING([--enable-debug-warpclass],[Turn on
 AC_ARG_ENABLE(debug-trace,AC_HELP_STRING([--enable-debug-trace],[Turn on value added X event tracing]),[if test "$enable_debug_trace" = "yes"; then DDEBUG="$DDEBUG -DTRACE"; fi ])
 AC_SUBST(DDEBUG)
 
-PKG_CHECK_EXISTS(xpm)
 AC_SUBST(VTWM_CFLAGS)
 AC_SUBST(VTWM_LIBS)
 
-XORG_MANPAGE_SECTIONS
-XORG_RELEASE_VERSION
-
 AC_ARG_WITH([SYS_VTWMRC_LOOK], AC_HELP_STRING([--disable-3dlook],['2D' or '3D' (3D default) look and feel]), [SYS_VTWMRC_LOOK=$withval],[SYS_VTWMRC_LOOK=3D])
 AC_SUBST(SYS_VTWMRC_LOOK)
-
 
 AC_OUTPUT([Makefile])
