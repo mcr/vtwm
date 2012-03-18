@@ -6,6 +6,7 @@ IN CHRONOLOGICAL ORDER FROM MOST RECENT CHANGES TO EARLIEST.
     December 2011
         Eeri Kask - Allow vtwm's own windows to start iconified
 	Seth Robertson - Fix OSS sound warnings
+	Portability and configuration fixes
 
     October 2011
 	Seth Robertson - Support libpng15
@@ -26,7 +27,7 @@ IN CHRONOLOGICAL ORDER FROM MOST RECENT CHANGES TO EARLIEST.
 	     NotVirtualGeometry. Add NoStormPositioning to allow
 	     disable.  5.5.0-rc3
 
-	Callum Gibson - Fix positioning of cirtual desktop when
+	Callum Gibson - Fix positioning of virtual desktop when
 	       using negative gravity in geometry and NoBorder.
 
     September 2010
