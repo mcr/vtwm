@@ -822,12 +822,15 @@ main(int argc, char **argv, char **environ)
       }
     }
 
-    if (Scr->ShowIconManager && !Scr->NoIconManagers)
+    if (!Scr->NoIconManagers)
     {
       IconMgr *ip;
       for (ip = &Scr->iconmgr; ip != NULL; ip = ip->next)
-        if (ip->count > 0)
-	  DoInitialMapping(ip->twm_win);
+	if (Scr->ShowIconManager) {
+	  if (ip->count > 0)
+	    DoInitialMapping(ip->twm_win);
+	} else
+	  ip->twm_win->icon = TRUE;
     }
 
     if (!(Scr->InfoBevelWidth > 0))

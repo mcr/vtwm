@@ -1559,7 +1559,7 @@ area should be rendered with a "flatter" appearance. It is set by default if
 \&\fBvtwm\fP is built with 3D features.
 .IP "\fBShowIconManager\fP" 8
 This variable indicates that the icon manager window should be displayed when
-\&\fBvtwm\fP is started.  It can always be brought up using the
+\&\fBvtwm\fP is started. If not set it will remain hidden unless brought up using the
 \&\fBf.showiconmgr\fP function.
 .IP "\fBSloppyFocus\fP"
 This boolean variable sets the vtwm client focusing model initially into sloppy mode:
