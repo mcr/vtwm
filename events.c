@@ -1728,6 +1728,8 @@ HandleCreateNotify(void)
 void
 DoInitialMapping(TwmWindow *tmp_win)
 {
+  if (!tmp_win)
+    return;
   /* If it's not merely iconified, and we have hints, use them. */
   if (tmp_win->icon == FALSE)
   {
