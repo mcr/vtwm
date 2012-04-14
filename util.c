@@ -845,7 +845,7 @@ GetFont(MyFont * font)
     if (!font->name)
       font->name = Scr->DefaultFont.name;
     if ((basename2 = (char *)malloc(strlen(font->name) + 3)))
-      sprintf(basename2, "%s,*", font->name);
+      sprintf(basename2, "%s", font->name);
     else
       basename2 = font->name;
     if ((font->fontset = XCreateFontSet(dpy, basename2,
