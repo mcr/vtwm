@@ -3511,28 +3511,38 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 	register TwmWindow *t;
 	int did_warpto = FALSE;
 
-	for (t = Scr->TwmRoot.next; t != NULL; t = t->next)
-	{
-	  /*
-	   * This used to fall through into F_WARP, but the
-	   * warp_if_warpunmapped() meant this loop couldn't
-	   * continue to look for a match in the window list.
-	   */
+#ifdef MCRDEBUG
+        fprintf(stderr,"looking for window: %s\n",action);
+#endif
+        t=Focus;
+        if(t)
+        {
+          t=t->next;
+          for (; t != NULL; t = t->next)
+          {
+            if( MatchWinName( action, t )==0 && warp_if_warpunmapped(t, func)) break;
+          }
+        }
 
-	  if (MatchWinName(action, t) == 0 && warp_if_warpunmapped(t, func))
-	  {
-	    tmp_win = t;
-	    RaiseStickyAbove();
-	    RaiseAutoPan();
+        if(t==NULL) {
+          for (t = Scr->TwmRoot.next; t != NULL; t = t->next)
+          {   /* jason@tfs.com */
+            if( MatchWinName( action, t )==0 && warp_if_warpunmapped(t, func)) break;
+          }
+        }
+
+        if (t != NULL)
+        {
+          tmp_win = t;
+          RaiseStickyAbove();
+          RaiseAutoPan();
 
 #ifdef SOUND_SUPPORT
-	    PlaySound(func);
+          PlaySound(func);
 #endif
-	    did_warpto = TRUE;
+          did_warpto = TRUE;
 
-	    WarpToWindow(tmp_win);
-	    break;
-	  }
+          WarpToWindow(tmp_win);
 	}
 
 	if (!did_warpto)
