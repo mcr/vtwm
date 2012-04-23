@@ -2202,10 +2202,10 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 #endif
 
         /* immutables can't be resized - slr - 12252009 */
-        if (tmp_win && tmp_win->immutable == TRUE) { 
+        if (tmp_win && tmp_win->immutable == TRUE) {
           /* DoAudible(); */
 	  break;
-        } 
+        }
 
 	if (DeferExecution(context, func, Scr->ResizeCursor))
 	  return TRUE;
@@ -2512,10 +2512,10 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 #endif
 
         /* immutables can't be moved - slr - 12252009 */
-        if (tmp_win && tmp_win->immutable == TRUE) { 
+        if (tmp_win && tmp_win->immutable == TRUE) {
           /* DoAudible(); */
           break;
-        } 
+        }
 
 	if (DeferExecution(context, func, Scr->MoveCursor))
 	  return TRUE;
@@ -3041,7 +3041,7 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 	       * Yes, this is an intentional uninitialized variable dereference, the
 	       * sole purpose of which is to draw your attention to the problem
 	       * expressed herewithin:
-	       * 
+	       *
 	       * Eeri Kask writes:
 	       * Actually the whole concept of 'have_twmwindows', 'have_showdesktop',
 	       * 'have_showdesktop' being 'global' variables is defect because one can
@@ -3049,25 +3049,25 @@ ExecuteFunction(int func, char *action, Window w, TwmWindow * tmp_win, XEvent * 
 	       * .vtwmrc.1, etc. and then it is not apparent which of these screens
 	       * state do these three variables then denote.  (At least they should be
 	       * enclosed into 'Scr'.)
-	       * 
-	       * 
+	       *
+	       *
 	       * It seems the whole idea of
-	       * 
+	       *
 	       * "don't iconify if there's no way to get it back - not fool-proof"
-	       * 
+	       *
 	       * snippet is to guard the user from losing windows by iconifying "by
 	       * unmapping" and the same time not having e.g.
-	       * 
+	       *
 	       * f.menu "TwmWindows"
-	       * 
+	       *
 	       * (a) attached to any hotkey/hotbutton (FindMenuOrFuncInBindings()), or
 	       * (b) attached to any context (frame, titlebar) or titlebar-buttons
 	       * (FindMenuOrFuncInWindows()).
-	       * 
-	       * 
+	       *
+	       *
 	       * Further, the 'mr' pointer cannot be made 'static' as well because of the
 	       * same reason as the three 'global' context bitmap variables above.
-	       * 
+	       *
 	       * The 'mr' pointer is checked in FindMenuOrFuncInWindows() against window
 	       * title buttons: i.e. a window is assumed deiconifiable if the
 	       * "TwmWindows" menu is attached to some title-bar-button.  In case there
